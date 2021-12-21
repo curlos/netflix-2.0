@@ -1,3 +1,30 @@
 * {
   box-sizing: border-box;
 }
+
+.fade-effect {
+  height: 100vh;
+  background-image: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,1) 100%);
+  margin-top: -100vh;
+}
+
+.movieImage {
+  width: 250px;
+}
+
+.smallMovie {
+  font-size: 10px;
+}
+
+.smallMovie:hover {
+  transform: scale(1.1);
+}
+
+.hoveredMovie {
+  cursor: pointer;
+  z-index: 50;
+}
+
+.hoveredMovie img {
+  width: 300px;
+}
