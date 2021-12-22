@@ -4,12 +4,13 @@ import MovieModal from './MovieModal'
 
 const SmallMovie = ({ movie, }) => {
   const [hoveredMovie, setHoveredMovie] = useState(null)
+  const [showModal, setShowModal] = useState(false)
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
 
   console.log(movie)
 
   return (
-    <div className="smallMovie text-white fs-6" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <div className="smallMovie text-white fs-6" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => setShowModal(true)}>
       {hoveredMovie && hoveredMovie === movie.id ? (
         <div class="card bg-dark hoveredMovie" onMouseLeave={() => setHoveredMovie(null)}>
           <img src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path}`} class="card-img-top" alt="..." />
@@ -51,6 +52,8 @@ const SmallMovie = ({ movie, }) => {
           />
         </div>
       )}
+
+      {showModal ? <MovieModal movie={movie} genreNames={genreNames}/> : null}
     </div>
   )
 }

@@ -1,8 +1,10 @@
 import React from 'react'
 
 const MovieModal = ({ movie, genreNames }) => {
+  console.log(movie)
+
   return (
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1"  aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content bg-dark text-white">
           <div class="modal-header d-flex justify-content-end align-items-start" style={{
