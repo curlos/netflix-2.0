@@ -1,5 +1,30 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.topNavbar {
+  height: 70px;
+}
+
+.navLink {
+  font-size: 14px;
+}
+
+.navImage {
+  height: 35px;
+  border-radius: 7px;
+}
+
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.mediumIcon {
+  font-size: 18px;
 }
 
 .fade-effect {
@@ -9,22 +34,76 @@
 }
 
 .movieImage {
-  width: 250px;
+  max-width: 200px;
+}
+
+.bg-black {
+  background-color: black;
+}
+
+.carousel-control-prev {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 25px;
+  width: 40px;
+}
+
+.carousel-control-next {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 25px;
+  width: 40px;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: black;
+  height: 70px;
+  width: 40px;
+  border-radius: 10px;
 }
 
 .smallMovie {
-  font-size: 10px;
-}
-
-.smallMovie:hover {
-  transform: scale(1.1);
-}
-
-.hoveredMovie {
   cursor: pointer;
-  z-index: 50;
 }
 
-.hoveredMovie img {
-  width: 300px;
+.modal-header {
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.closeButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.closeButtonContainer .closeButtonModal {
+  margin: 0;
+}
+
+.closeButtonModal:focus, .closeButtonModal:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.smallMovieTag {
+  border: 1px solid white;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 12px;
+}
+
+.text-lightgray {
+  color: rgb(160, 160, 160)
+}
+
+.space-between-x-1 div {
+  margin-bottom: 2px;
+}
+
+.space-between-x-2 div {
+  margin-bottom: 4px;
 }
