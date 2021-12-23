@@ -142,3 +142,53 @@
   border-radius: 10px;
   border: none;
 }
+
+.authPage {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), url('https://assets.nflxext.com/ffe/siteui/vlv3/757ab38f-5d08-40bc-b3eb-eaba63ed8203/93c34f94-56c8-40a7-8b2e-b4aac6427977/GB-en-20210125-popsignuptwoweeks-perspective_alpha_website_medium.jpg');
+  height: 100vh;
+  width: 100vw;
+  padding: 20px;
+}
+
+.authLogo {
+  height: 40px;
+}
+
+.netflixRedButton {
+  background-color: #E50A14;
+  border: none;
+  border-radius: 7px;
+  padding: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+}
+
+.netflixRedButton:hover {
+  cursor: pointer;
+  background-color: #bd0811;
+}
+
+.authForm {
+  border-radius: 10px;
+  width: 70%;
+}
+
+.authInput {
+  border-radius: 10px;
+  padding: 15px;
+  outline: none;
+  border: none;
+}
+
+.authLink {
+  color: white;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.authLink:hover {
+  text-decoration: underline;
+}
