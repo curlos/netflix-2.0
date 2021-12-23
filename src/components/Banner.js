@@ -35,11 +35,11 @@ const Banner = () => {
             <div className="fs-1 fw-bold mb-2">{movie.name}</div>
             <div className="fs-5 fw-light mb-2">{movie.overview}</div>
             <div className="d-flex">
-              <button type="button" class="btn btn-light me-2 fw-bold d-flex align-items-center">
+              <button type="button" className="btn btn-light me-2 fw-bold d-flex align-items-center">
                 <div className="bi-play-fill me-2 fs-4" />
                 <div className="fs-6">Play</div>
               </button>
-              <button type="button" class="btn btn-secondary fw-bold d-flex align-items-center">
+              <button type="button" className="btn btn-secondary fw-bold d-flex align-items-center">
                 <div className="bi-info-circle me-2 fs-4" />
                 <div className="fs-6">More Info</div>
               </button>

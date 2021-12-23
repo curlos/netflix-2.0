@@ -19,10 +19,10 @@ const TopNavbar = () => {
         </div>
 
         <div className="d-flex align-items-center gap-3">
-          <i class="bi bi-search mediumIcon"></i>
+          <i className="bi bi-search mediumIcon"></i>
           <Nav.Link href="#features">Kids</Nav.Link>
           <Nav.Link href="#features">DVD</Nav.Link>
-          <i class="bi bi-bell-fill mediumIcon"></i>
+          <i className="bi bi-bell-fill mediumIcon"></i>
           
 
           <Dropdown>
