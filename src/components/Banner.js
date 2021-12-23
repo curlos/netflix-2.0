@@ -20,37 +20,36 @@ const Banner = () => {
     fetchFromAPI()
   }, [])
 
-  console.log(movie)
-
   return (
-    loading ? <div>Loading...</div> :
-    <div>
-      <div
-        style={{
-          backgroundSize: 'cover',
-          backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
-          backgroundPosition: 'center center'
-        }}
-        className="vw-100 vh-100 d-flex align-items-center"
-      >
-        <div className="px-5 w-50">
-          <div className="fs-1 fw-bold mb-2">{movie.name}</div>
-          <div className="fs-5 fw-light mb-2">{movie.overview}</div>
-          <div className="d-flex">
-            <button type="button" class="btn btn-light me-2 fw-bold d-flex align-items-center">
-              <div className="bi-play-fill me-2 fs-4" />
-              <div className="fs-6">Play</div>
-            </button>
-            <button type="button" class="btn btn-secondary fw-bold d-flex align-items-center">
-              <div className="bi-info-circle me-2 fs-4" />
-              <div className="fs-6">More Info</div>
-            </button>
+    loading ? <div>Loading...</div> : (
+      <div>
+        <div
+          style={{
+            backgroundSize: 'cover',
+            backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
+            backgroundPosition: 'center center'
+          }}
+          className="vw-100 vh-100 d-flex align-items-center"
+        >
+          <div className="px-5 w-50">
+            <div className="fs-1 fw-bold mb-2">{movie.name}</div>
+            <div className="fs-5 fw-light mb-2">{movie.overview}</div>
+            <div className="d-flex">
+              <button type="button" class="btn btn-light me-2 fw-bold d-flex align-items-center">
+                <div className="bi-play-fill me-2 fs-4" />
+                <div className="fs-6">Play</div>
+              </button>
+              <button type="button" class="btn btn-secondary fw-bold d-flex align-items-center">
+                <div className="bi-info-circle me-2 fs-4" />
+                <div className="fs-6">More Info</div>
+              </button>
+            </div>
           </div>
         </div>
+        <div className="fade-effect" />
+        
       </div>
-      <div className="fade-effect" />
-      
-    </div>
+    )
   )
 }
 
