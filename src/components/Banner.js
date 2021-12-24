@@ -1,12 +1,15 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import requests, { API_BASE_URL } from '../requests';
 import { Link } from 'react-router-dom';
+import Typed from 'typed.js'
 
 const Banner = () => {
 
   const [movie, setMovie] = useState()
   const [loading, setLoading] = useState(true)
+  const overviewRef = useRef(null)
+  const typedRef = useRef(null)
 
   useEffect(() => {
     const fetchFromAPI = async () => {
@@ -21,6 +24,26 @@ const Banner = () => {
     fetchFromAPI()
   }, [])
 
+  useEffect(() => {
+    if (!loading) {
+      const options = {
+        strings: [movie.overview],
+        typeSpeed: 20,
+        startDelay: 300,
+        showCursor: false
+      }
+  
+      typedRef.current = new Typed(overviewRef.current, options) 
+
+      return () => {
+        typedRef.current.destroy()
+      }
+    }
+
+  }, [loading, movie])
+
+
+
   return (
     loading ? <div>Loading...</div> : (
       <div>
@@ -34,7 +57,7 @@ const Banner = () => {
         >
           <div className="px-5 w-50">
             <div className="fs-1 fw-bold mb-2">{movie.name}</div>
-            <div className="fs-5 fw-light mb-2">{movie.overview.length > 140 ? movie.overview.slice(0, 280) + '...' : movie.overview}</div>
+            <div className="fs-5 fw-light mb-2" ref={overviewRef}>{movie.overview.length > 140 ? movie.overview.slice(0, 140) + '...' : movie.overview}</div>
             <div className="d-flex">
               <Link to={`/title/${movie.id}`} className="btn btn-light me-2 fw-bold d-flex align-items-center">
                 <div className="bi-play-fill me-2 fs-4" />
