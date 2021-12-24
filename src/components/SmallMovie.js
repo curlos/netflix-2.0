@@ -118,7 +118,7 @@ const SmallMovie = ({ movie }) => {
                     )}
                     
                     {OMDBMovieInfo.imdbRating !== 'N/A' && (
-                      <div className="fs-6 text-secondary">{OMDBMovieInfo.imdbVotes}</div>
+                      <div className="fs-6 text-secondary text-center">{OMDBMovieInfo.imdbVotes}</div>
                     )}
                   </div>
                 </div>

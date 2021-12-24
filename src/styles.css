@@ -9,6 +9,10 @@
   font-size: 12px;
 }
 
+.fs-md {
+  font-size: 14px;
+}
+
 .topNavbar {
   height: 70px;
 }
@@ -105,12 +109,20 @@
   color: rgb(160, 160, 160)
 }
 
-.space-between-y-1 div, .space-between-y-1 span, .space-between-y-2 button {
+.space-between-y-1 > div, .space-between-y-1 > span, .space-between-y-1 > button {
   margin-bottom: 2px;
 }
 
-.space-between-y-2 div, .space-between-y-2 span, .space-between-y-2 button {
+.space-between-y-2 > div, .space-between-y-2 > span, .space-between-2 > button {
+  margin-bottom: 6px;
+}
+
+.space-between-y-3 > div, .space-between-y-3 > span, .space-between-y-3 > button {
   margin-bottom: 10px;
+}
+
+.space-between-y-4 > div, .space-between-y-4 > span, .space-between-y-4 > button {
+  margin-bottom: 25px;
 }
 
 .videoWrapper {
@@ -175,6 +187,23 @@
   background-color: #bd0811;
 }
 
+.netflixGrayButton {
+  background-color: gray;
+  border: none;
+  border-radius: 7px;
+  padding: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+}
+
+.netflixGrayButton:hover {
+  cursor: pointer;
+  background-color: gray;
+}
+
 .authForm {
   border-radius: 10px;
   width: 70%;
@@ -205,7 +234,7 @@
 
 
 .profileNetflixLogo {
-  height: 40px;
+  height: 35px;
 }
 
 .profileProfileUserAvatar {
