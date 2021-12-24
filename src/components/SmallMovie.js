@@ -94,7 +94,7 @@ const SmallMovie = ({ movie }) => {
     <div>
       {hoveredMovie && hoveredMovie === movie ? (
 
-        <HoveredMovie handleShow={handleShow} setHoveredMovie={setHoveredMovie} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos}/>
+        <HoveredMovie handleShow={handleShow} setHoveredMovie={setHoveredMovie} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
         
         ) : (
         <Link to={`/title/${movie.id}`} className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >
