@@ -11,6 +11,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase'
 import { useDispatch } from 'react-redux';
 import { login, logout } from './features/userSlice'
+import Profile from './pages/Profile';
 
 
 const App = () => {
@@ -43,6 +44,8 @@ const App = () => {
       <Routes>
 
         <Route path="/title/:id" element={<Home />} />
+
+        <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
 

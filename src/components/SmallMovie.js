@@ -152,7 +152,7 @@ const SmallMovie = ({ movie }) => {
               <div className="my-3">{movie.overview}</div>
               
               
-              <div className="space-between-x-1">
+              <div className="space-between-y-1">
 
                 {OMDBMovieInfo.Country && OMDBMovieInfo.Country !== 'N/A' && (
                   <div><span className="text-lightgray">
