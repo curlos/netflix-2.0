@@ -26,7 +26,7 @@ const TopNavbar = () => {
           
 
           <Dropdown>
-            <Dropdown.Toggle variant="transparent text-white dropdownButtonTop d-flex align-items-center gap-1" id="dropdown-basic" className="p-0 ">
+            <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0" id="dropdown-basic" className="p-0 ">
               <img src="/assets/netflix_avatar.png" alt="" className="navImage"/>
             </Dropdown.Toggle>
 
