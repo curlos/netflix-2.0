@@ -1,45 +1,131 @@
 import React, { useState, useEffect } from 'react'
+import { collection, doc, getDocs, getDoc, addDoc, query, where, onSnapshot } from 'firebase/firestore'
+import { db } from '../firebase'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../features/userSlice'
+import { loadStripe } from '@stripe/stripe-js'
 
 const Plans = () => {
-  useEffect(() => {
+  const [products, setProducts] = useState({})
+  const user = useSelector(selectUser)
+  const [subscription, setSubscription] = useState(null)
+  const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    setLoading(true)
+    const fetchFromDB = async () => {
+      const customerDoc = doc(db, 'customers', user.uid)
+      const querySnapshot = await getDocs(collection(customerDoc, 'subscriptions'))
+
+      querySnapshot.forEach((subscription) => {
+        setSubscription({
+          role: subscription.data().role,
+          current_period_end: subscription.data().current_period_end.seconds,
+          current_period_start: subscription.data().current_period_start.seconds
+        })
+      })
+      setLoading(false)
+    }
+    fetchFromDB()
   }, [])
 
+  useEffect(() => {
+    setLoading(true)
+    const fetchFromDB = async () => {
+      const q = query(collection(db, "products"), where("active", "==", true) )
+      const querySnapshot = await getDocs(q)
+      const products = {}
+
+      querySnapshot.forEach(async (productDoc) => {
+        products[productDoc.id] = productDoc.data()
+        const priceSnap = await getDocs(collection(productDoc.ref, 'prices'))
+
+        priceSnap.docs.forEach((price) => {
+          products[productDoc.id].prices = {
+            priceId: price.id,
+            priceData: price.data()
+          }
+        })
+        setProducts(products)
+      })
+      setLoading(false)
+    }
+
+    fetchFromDB()
+  }, [])
+
+  console.log(subscription)
+
+  const loadCheckout = async (priceID) => {
+    const customerDoc = doc(db, 'customers', user.uid)
+    const customerCollection = collection(customerDoc, 'checkout_sessions')
+    console.log({
+      price: priceID,
+      success_url: window.location.origin,
+      cancel_url: window.location.origin
+    })
+
+    const docRef = await addDoc(customerCollection, {
+      price: priceID,
+      success_url: window.location.origin,
+      cancel_url: window.location.origin
+    })
+    
+    onSnapshot(docRef, async (snap) => {
+      const { error, sessionId } = snap.data()
+
+      if (error) {
+        alert(`An error occured: ${error.message}`)
+      }
+
+      if (sessionId) {
+        const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
+        stripe.redirectToCheckout({ sessionId })
+      }
+    })
+  }
+
+  const getTitleCase = (string) => {
+    const strArr = []
+    string.split(' ').forEach((word) => {
+      strArr.push(`${string[0].toUpperCase()}${string.slice(1,)}`)
+    })
+    return strArr.join(' ')
+  }
+
+  console.log(user)
+
   return (
-    <div className="space-between-y-2">
-      <div>Plans (Current Plan: Premium)</div>
-      <div className="fs-md">Renewal date: 04/03/2021</div>
+    loading ? <div>Loading...</div> : (
+      <div className="space-between-y-2">
+        <div>Plans (Current Plan: {getTitleCase(subscription?.role)})</div>
+        <div className="fs-md">Renewal date: {new Date(subscription.current_period_end * 1000).toLocaleDateString()}</div>
 
-      <div className="fs-md space-between-y-4">
-        <div className="d-flex justify-content-between ms-4">
-          <div>
-            <div>Netflix Standard</div>
-            <div>1080p</div>
-          </div>
-          
-          <button className="netflixRedButton">Subscribe</button>
-        </div>
+        <div className="fs-md space-between-y-4">
+          {Object.entries(products).map(([productId, productData]) => {
+            const isCurrentPackage = productData?.name.toLowerCase().includes(subscription?.role)
 
-        <div className="d-flex justify-content-between ms-4">
-          <div>
-            <div>Netflix Basic</div>
-            <div>480p</div>
-          </div>
-          
-          <button className="netflixRedButton">Subscribe</button>
-        </div>
+            return (
+              <div key={productId} className="d-flex justify-content-between ms-4">
+                <div>
+                  <div>{productData.name}</div>
+                  <div>{productData.description}</div>
+                </div>
 
-        <div className="d-flex justify-content-between ms-4">
-          <div>
-            <div>Netflix Premium</div>
-            <div>4K+HDR</div>
-          </div>
+                <button className={`${isCurrentPackage ? 'netflixGrayButton' : 'netflixRedButton'}`} onClick={() => {
+                  if (!isCurrentPackage) {
+                    loadCheckout(productData.prices.priceId)}
+                  }
+                }>
+                  {isCurrentPackage ? 'Current Package' : 'Subscribe'}
+                </button>
+              </div>
+            )
+          })}
           
-          <button className="netflixGrayButton">Current Package</button>
         </div>
-        
       </div>
-    </div>
+    )
   )
 }
 

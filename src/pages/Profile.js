@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { Link } from 'react-router-dom'
 import Plans from '../components/Plans'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../features/userSlice'
 
 const Profile = () => {
+  const user = useSelector(selectUser)
+  const [currentEmail, setCurrentEmail] = useState(user.email)
+  
   return (
     <div className="d-flex justify-content-center align-items-center profilePage">
       <div className="fixed-top p-4">
@@ -20,7 +25,7 @@ const Profile = () => {
           </div>
 
           <div className="w-100">
-            <input className="profileInput mb-4 text-white"/>
+            <input className="profileInput mb-4 text-white" value={currentEmail} onChange={(e) => setCurrentEmail(e.target.value)}/>
 
             <div className="text-lightgray mb-2">Language:</div>
 
