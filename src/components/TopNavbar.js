@@ -5,7 +5,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 
 const TopNavbar = () => {
   return (
-    <Navbar variant="dark" className="px-4 bg-black">
+    <Navbar variant="dark" className="px-4 bg-black fixed-top">
       <Nav.Link href="#home" className="h-100">
         <img src="/assets/netflix_logo.png" alt="" className="navImage"/>
       </Nav.Link>

@@ -1,7 +1,31 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { auth } from '../firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
-const Login = () => {
+const SignUp = () => {
+  const emailRef = useRef(null)
+  const passwordRef = useRef(null)
+
+  const handleRegister = (e) => {
+    e.preventDefault()
+
+    createUserWithEmailAndPassword()
+
+    createUserWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+      .then((authUser) => {
+        console.log(authUser)
+      })
+      .catch((error) => {
+        alert(error.message)
+      })
+    
+  }
+
   return (
     <div className="authPage d-flex justify-content-center align-items-center">
       <div className="d-flex justify-content-between fixed-top p-4">
@@ -13,11 +37,11 @@ const Login = () => {
         <div className="fs-2 fw-bold">Sign Up</div>
 
         <div className="my-3">
-          <input type="text" className="w-100 mb-3 authInput" placeholder="Email"/>
-          <input type="password" className="w-100 authInput" placeholder="Password"/>
+          <input ref={emailRef} type="text" className="w-100 mb-3 authInput" placeholder="Email"/>
+          <input ref={passwordRef} type="password" className="w-100 authInput" placeholder="Password"/>
         </div>
 
-        <div className="w-100 my-4 netflixRedButton">Sign Up</div>
+        <div className="w-100 my-4 netflixRedButton" onClick={handleRegister}>Sign Up</div>
 
         <div>
           <span className="text-lightgray">Have an account?</span> 
@@ -28,4 +52,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default SignUp
