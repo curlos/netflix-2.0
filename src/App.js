@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import {
   Routes,
   Route
@@ -10,16 +9,26 @@ import SignUp from './pages/SignUp';
 import './styles.css'
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase'
+import { useDispatch } from 'react-redux';
+import { login, logout } from './features/userSlice'
+
 
 const App = () => {
+  const user = null
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (userAuth) => {
       if (userAuth) {
         // Logged in
         console.log(userAuth)
+        dispatch(login({
+          uid: userAuth.uid,
+          email: userAuth.email,
+        }))
       } else {
         // Logged out
+        dispatch(logout)
       }
     })
 
