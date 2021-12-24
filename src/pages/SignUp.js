@@ -10,8 +10,6 @@ const SignUp = () => {
   const handleRegister = (e) => {
     e.preventDefault()
 
-    createUserWithEmailAndPassword()
-
     createUserWithEmailAndPassword(
         auth,
         emailRef.current.value,

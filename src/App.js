@@ -8,8 +8,25 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import './styles.css'
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase'
 
 const App = () => {
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (userAuth) => {
+      if (userAuth) {
+        // Logged in
+        console.log(userAuth)
+      } else {
+        // Logged out
+      }
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
   return (
     <div className="bg-black text-white vw-100 vh-100">    
