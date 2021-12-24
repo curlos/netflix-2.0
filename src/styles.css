@@ -72,6 +72,42 @@
 
 .smallMovie {
   cursor: pointer;
+  transition: .2s;
+}
+
+.hoveredMovie {
+  z-index: 50;
+  transition: .2s;
+  height: 300px !important;
+}
+
+.hoveredMovie img {
+  width: 250px;
+}
+
+.circleIcon {
+  color: white;
+  border: 2px solid gray;
+  border-radius: 50% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 5px;
+}
+
+.circleIcon:hover {
+  border-color: white;
+}
+
+.noBottomBorderRadius {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.cardBody {
+  width: 250px;
 }
 
 .modal-header {
