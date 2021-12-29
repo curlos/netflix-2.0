@@ -8,7 +8,6 @@ import Typed from 'typed.js'
 const Banner = () => {
 
   const [movie, setMovie] = useState()
-  const [OMDBMovieInfo, setOMDBMovieInfo] = useState(null)
   const [videos, setVideos] = useState(null)
   const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -48,44 +47,14 @@ const Banner = () => {
   }, [loading, movie])
 
   const handleClose = () => {
-    setOMDBMovieInfo(null)
-    setVideos(null)
     setShow(false)
   };
 
   const handleShow = async () => {
-    await getAndSetOMDBData()
     setLoading(false)
     setShow(true)
 
   };
-
-  const fetchMovieFromOMDB = async () => {
-    const response = await axios.get(`https://www.omdbapi.com/?t=${movie.title || movie.name}&apikey=${process.env.REACT_APP_OMDB_API_KEY}`)
-    console.log(response.data)
-    return response.data
-  }
-
-  const getVideos = async (OMDBMovieInfo) => {
-    const response = await axios.get(`https://api.themoviedb.org/3/${OMDBMovieInfo.Type === 'movie' ? 'movie' : 'tv'}/${movie.id}/videos?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`)
-    return response.data
-  }
-
-  const getAndSetOMDBData = async () => {
-    console.log('fetching')
-    try {
-      const movieData = await fetchMovieFromOMDB()
-      if (movieData.Error) {
-        return
-      }
-
-      const videoData = await getVideos(movieData)
-      setOMDBMovieInfo(movieData)
-      setVideos(videoData)
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   const convertMinToHours = (n) => {
       var num = Number(n);
@@ -120,7 +89,7 @@ const Banner = () => {
           className="vw-100 vh-100 d-flex align-items-center"
         >
           <div className="px-5 w-50">
-            <div className="fs-1 fw-bold mb-2">{movie.title || movie.name}</div>
+            <div className="fs-1 fw-bold mb-2">{movie?.title || movie?.name}</div>
             <div className="fs-5 fw-light mb-2" ref={overviewRef}></div>
             <div className="d-flex">
               <div className="btn btn-light me-2 fw-bold d-flex align-items-center" onClick={handleShow}>
@@ -136,9 +105,9 @@ const Banner = () => {
         </div>
         <div className="fade-effect" />
 
-        {show && !loading ? (
+        {/* {show && !loading ? (
           <MovieModal movie={movie} show={show} handleClose={handleClose} convertMinToHours={convertMinToHours} OMDBMovieInfo={OMDBMovieInfo} videos={videos}/>
-        ) : null}
+        ) : null} */}
         
       </div>
     )

@@ -9,76 +9,71 @@ import MovieModal from './MovieModal'
 import HoveredMovie from './HoveredMovie';
 import { debounce } from 'lodash'
 
+const API_KEY = process.env.REACT_APP_TMDB_API_KEY
+
 const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   const [hoveredMovie, setHoveredMovie] = useState(false)
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
-  const [OMDBMovieInfo, setOMDBMovieInfo] = useState(null)
-  const [videos, setVideos] = useState(null)
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    debounceHoveredMovie(hoveredValue)
-  }, [hoveredValue])
+  const [details, setDetails] = useState()
+  const [videos, setVideos] = useState()
+  const [credits, setCredits] = useState()
+  const [recommendedMovies, setRecommendedMovies] = useState()
 
   const debounceHoveredMovie = useCallback(
-    debounce((newHoveredMovie) => {
+    debounce(async (newHoveredMovie) => {
+      setHoveredValue(newHoveredMovie)
       setHoveredMovie(newHoveredMovie)
+      await getAndSetAllMovieDetails()
+      setLoading(false)
     }, 500),
   [hoveredValue])
 
 
   const handleClose = () => {
-    setOMDBMovieInfo(null)
     setVideos(null)
     setShow(false)
   };
 
   const handleShow = async () => {
-    await getAndSetOMDBData()
     setLoading(false)
     setShow(true)
 
   };
 
   const handleHover = async () => {
-    if (OMDBMovieInfo) {
-      setHoveredValue(movie)
-      setLoading(false)
-      return
-    }
-
-    await getAndSetOMDBData()
-    setHoveredValue(movie)
-    setLoading(false)
+    debounceHoveredMovie(movie)
   };
 
-  const fetchMovieFromOMDB = async () => {
-    const response = await axios.get(`https://www.omdbapi.com/?t=${movie.title || movie.name}&apikey=${process.env.REACT_APP_OMDB_API_KEY}`)
-    console.log(response.data)
+  const getAndSetAllMovieDetails = async () => {
+    setLoading(true)
+    setDetails(await getMovieDetails())
+    setVideos(await getVideos())
+    setCredits(await getCredits())
+    setRecommendedMovies(await getRecommendedMovies())
+  }
+
+  const getMovieDetails = async () => {
+    const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`)
     return response.data
   }
 
-  const getVideos = async (OMDBMovieInfo) => {
-    const response = await axios.get(`https://api.themoviedb.org/3/${OMDBMovieInfo.Type === 'movie' ? 'movie' : 'tv'}/${movie.id}/videos?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US`)
+  const getVideos = async () => {
+    const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${API_KEY}&language=en-US`)
     return response.data
   }
 
-  const getAndSetOMDBData = async () => {
-    console.log('fetching')
-    try {
-      const movieData = await fetchMovieFromOMDB()
-      if (movieData.Error) {
-        return
-      }
+  const getCredits = async () => {
+    const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${API_KEY}&language=en-US`)
+    return response.data
+  }
 
-      const videoData = await getVideos(movieData)
-      setOMDBMovieInfo(movieData)
-      setVideos(videoData)
-    } catch (err) {
-      console.log(err)
-    }
+  const getRecommendedMovies = async () => {
+    const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`)
+    return response.data
   }
 
   const convertMinToHours = (n) => {
@@ -97,13 +92,14 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   if(show) {
     console.log(videos)
   }
+  
 
   return (
     <di className="flex-1"v>
-      {hoveredMovie && hoveredMovie === movie ? (
+      {hoveredMovie && hoveredMovie === movie && !loading ? (
 
         <div className="text-white">
-          <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} setHoveredMovie={setHoveredMovie} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
+          <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} setHoveredMovie={setHoveredMovie} movie={movie} details={details} videos={videos} credits={credits} recommendedMovies={recommendedMovies} convertMinToHours={convertMinToHours}/>
         </div>
         
         ) : (
@@ -116,7 +112,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
       )}
 
       {show && !loading ? (
-        <MovieModal movie={movie} show={show} handleClose={handleClose} convertMinToHours={convertMinToHours} OMDBMovieInfo={OMDBMovieInfo} videos={videos}/>
+        <MovieModal movie={movie} show={show} handleClose={handleClose} convertMinToHours={convertMinToHours} details={details} videos={videos} credits={credits} recommendedMovies={recommendedMovies} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
       ) : null}
     </di>
   )
