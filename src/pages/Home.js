@@ -7,18 +7,23 @@ import {
   useParams,
   useNavigate
 } from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { selectUser } from '../features/userSlice'
 
 const Home = () => {
   const { id } = useParams()
-
-  console.log(id)
-
-
+  const user = useSelector(selectUser)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    console.log(id)
+    console.log('fuck ing')
+    console.log(user)
 
-  }, [id])
+    // if (!user) {
+    //   navigate('/login')
+    // }
+
+  }, [id, user])
 
   return (
     <div className="bg-black vw-100">

@@ -12,11 +12,15 @@ import { auth } from './firebase'
 import { useDispatch } from 'react-redux';
 import { login, logout } from './features/userSlice'
 import Profile from './pages/Profile';
+import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux'
+import { selectUser } from './features/userSlice'
 
 
 const App = () => {
-  const user = null
+  const user = useSelector(selectUser)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (userAuth) => {

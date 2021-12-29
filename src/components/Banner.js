@@ -57,7 +57,7 @@ const Banner = () => {
         >
           <div className="px-5 w-50">
             <div className="fs-1 fw-bold mb-2">{movie.name}</div>
-            <div className="fs-5 fw-light mb-2" ref={overviewRef}>{movie.overview.length > 140 ? movie.overview.slice(0, 140) + '...' : movie.overview}</div>
+            <div className="fs-5 fw-light mb-2" ref={overviewRef}></div>
             <div className="d-flex">
               <Link to={`/title/${movie.id}`} className="btn btn-light me-2 fw-bold d-flex align-items-center">
                 <div className="bi-play-fill me-2 fs-4" />

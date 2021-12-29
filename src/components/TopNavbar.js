@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Dropdown from 'react-bootstrap/Dropdown'
+import { Link } from 'react-router-dom'
 
 const TopNavbar = () => {
   return (
@@ -31,7 +32,9 @@ const TopNavbar = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu variant="dark" align="end">
-              <Dropdown.Item href="#/action-1">Account</Dropdown.Item>
+              <Dropdown.Item href="#/action-1">
+                <Link to="/profile">My Account</Link>
+              </Dropdown.Item>
               <Dropdown.Item href="#/action-2">Help Center</Dropdown.Item>
               <Dropdown.Item href="#/action-3">Sign Out</Dropdown.Item>
             </Dropdown.Menu>

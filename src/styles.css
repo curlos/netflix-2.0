@@ -5,6 +5,11 @@
   font-family: sans-serif;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+}
+
 .fs-xs {
   font-size: 12px;
 }

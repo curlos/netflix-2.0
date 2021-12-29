@@ -7,7 +7,11 @@ import { selectUser } from '../features/userSlice'
 
 const Profile = () => {
   const user = useSelector(selectUser)
-  const [currentEmail, setCurrentEmail] = useState(user.email)
+  const [currentEmail, setCurrentEmail] = useState(user && user.email)
+  
+  if (!currentEmail) {
+    return
+  }
   
   return (
     <div className="d-flex justify-content-center align-items-center profilePage">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { getGenreNames } from '../utils/genres'
 import {
   Link,
@@ -7,9 +7,14 @@ import {
 import axios from 'axios'
 import MovieModal from './MovieModal'
 import HoveredMovie from './HoveredMovie';
+import { debounce } from 'lodash'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectHoveredMovie, hoverOverMovie } from '../features/userSlice'
 
 const SmallMovie = ({ movie }) => {
-  const [hoveredMovie, setHoveredMovie] = useState(false)
+  const dispatch = useDispatch()
+
+  const [hoveredValue, setHoveredValue] = useState(null)
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
   const [OMDBMovieInfo, setOMDBMovieInfo] = useState(null)
   const [videos, setVideos] = useState()
@@ -17,43 +22,48 @@ const SmallMovie = ({ movie }) => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const hoveredMovie = useSelector(selectHoveredMovie)
+
+  useEffect(() => {
+    console.log(hoveredMovie)
+    debounceHoveredMovie(hoveredValue)
+  }, [])
+
+  const debounceHoveredMovie = useCallback(
+    debounce((newHoveredMovie) => {
+      console.log(newHoveredMovie)
+      dispatch(hoverOverMovie({ newHoveredMovie }))
+    }, 500),
+  [hoveredValue])
 
 
   const handleClose = () => {
-    console.log('hello')
-    window.location.href = 'http://localhost:3000/'
     setOMDBMovieInfo(null)
     setVideos(null)
     setShow(false)
+    navigate('/')
   };
 
   const handleShow = async () => {
     await getAndSetOMDBData()
     setLoading(false)
     setShow(true)
-
   };
 
   const handleHover = async () => {
     if (OMDBMovieInfo) {
-      setHoveredMovie(movie)
+      setHoveredValue(movie)
       setLoading(false)
       return
     }
 
     await getAndSetOMDBData()
-    setHoveredMovie(movie)
+    setHoveredValue(movie)
     setLoading(false)
   };
 
-  const handleHoverLeave = () => {
-    setOMDBMovieInfo(null)
-    setVideos(null)
-    setHoveredMovie(null)
-  }
-
   const fetchMovieFromOMDB = async () => {
-    const response = await axios.get(`http://www.omdbapi.com/?t=${movie.title || movie.name}&apikey=${process.env.REACT_APP_OMDB_API_KEY}`)
+    const response = await axios.get(`https://www.omdbapi.com/?t=${movie.title || movie.name}&apikey=${process.env.REACT_APP_OMDB_API_KEY}`)
     console.log(response.data)
     return response.data
   }
@@ -88,13 +98,11 @@ const SmallMovie = ({ movie }) => {
     console.log(videos)
   }
 
-  console.log(hoveredMovie)
-
   return (
     <div>
       {hoveredMovie && hoveredMovie === movie ? (
 
-        <HoveredMovie handleShow={handleShow} setHoveredMovie={setHoveredMovie} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
+        <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
         
         ) : (
         <Link to={`/title/${movie.id}`} className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >
@@ -113,3 +121,4 @@ const SmallMovie = ({ movie }) => {
 }
 
 export default SmallMovie
+

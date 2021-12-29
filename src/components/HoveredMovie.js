@@ -1,12 +1,18 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
+import { hoverOverMovie } from '../features/userSlice'
+import { useDispatch } from 'react-redux'
 
-const HoveredMovie = ({ handleShow, setHoveredMovie, movie, OMDBMovieInfo, videos, convertMinToHours  }) => {
+const HoveredMovie = ({ handleShow, setHoveredValue, movie, OMDBMovieInfo, videos, convertMinToHours  }) => {
+  const dispatch = useDispatch()
 
   console.log(OMDBMovieInfo)
 
   return (
-    <div className="hoveredMovie m-2" onClick={handleShow} onMouseLeave={() => setHoveredMovie(false)}>
+    <div className="hoveredMovie m-2" onClick={handleShow} onMouseLeave={() => {
+      setHoveredValue(null)
+      dispatch(hoverOverMovie({ payload: null}))
+    }}>
 
       <Card className="p-0 m-0 h-100 border-0 rounded">
         {/* <Card.Img variant="top" src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path}`} alt="" className={`m-0 h-100 rounded noBottomBorderRadius`} /> */}
