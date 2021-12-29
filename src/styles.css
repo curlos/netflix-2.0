@@ -30,6 +30,14 @@ a {
   font-size: 14px;
 }
 
+.navLink a {
+  color: rgb(150, 150, 150);
+}
+
+.navLink a:hover {
+  color: rgb(204, 204, 204);
+}
+
 .navImage {
   height: 35px;
   border-radius: 7px;
@@ -93,10 +101,6 @@ a {
 
 .hoveredMovie img {
   width: 250px;
-}
-
-.hoveredMovie:hover {
-  transform: scale(1.1)
 }
 
 .circleIcon {

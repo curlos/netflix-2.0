@@ -5,7 +5,6 @@ import { getGenreNames } from '../utils/genres'
 const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, OMDBMovieInfo, videos, convertMinToHours  }) => {
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
 
-  console.log('fuck you bitch')
   console.log(movie)
   console.log(OMDBMovieInfo)
   console.log(videos)
@@ -33,6 +32,9 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, OMD
             </Card.Title>
             <Card.Text>
               <div>
+                <div className="">
+                  <span className="">{movie?.title}</span>
+                </div>
                 <div className="space-between-x-1">
                   <span className="me-1">
                     <i className="bi bi-star-fill fs-6 text-warning"></i>
@@ -47,7 +49,9 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, OMD
                   <span className="smallMovieTag">HD</span>
                 </div>
   
-                <div>{genreNames}</div>
+                {genreNames ? (
+                  <div>{genreNames}</div>
+                ) : null}
               </div>
               
             </Card.Text>

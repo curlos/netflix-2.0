@@ -19,13 +19,15 @@ const Home = () => {
   const [movies, setMovies] = useState([])
   const [totalResults, setTotalResults] = useState(0)
   const [hoveredValue, setHoveredValue] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [searchParams] = useSearchParams()
 
   const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
   useEffect(() => {
-    console.log(searchParams.get('query'))
-    debounceMovieSearch(searchParams.get('query'))
+    if (searchParams.get('query')) {
+      debounceMovieSearch(searchParams.get('query'))
+    }
   }, [searchParams.get('query')])
 
   const debounceMovieSearch = useCallback(
@@ -36,6 +38,7 @@ const Home = () => {
         console.log(response.data.results)
         setMovies(response.data.results)
         setTotalResults(response.data)
+        setLoading(false)
     })
     }, 1000),
   [])
@@ -54,7 +57,11 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        <MovieList movies={movies} query={searchParams.get('query')} totalResults={totalResults}/>
+        loading ? (
+          <div>Loader...</div>
+        ) : (
+          <MovieList movies={movies} query={searchParams.get('query')} totalResults={totalResults}/>
+        )
       )}
     </div>
   )

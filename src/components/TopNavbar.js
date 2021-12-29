@@ -8,7 +8,6 @@ const TopNavbar = () => {
 
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
-  const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
   useEffect(() => {
     if (searchQuery) {
@@ -18,23 +17,35 @@ const TopNavbar = () => {
   }, [searchQuery])
 
   return (
-    <Navbar variant="dark" className="px-4 bg-black fixed-top">
-      <Nav.Link href="#home" className="h-100 ps-0">
-        <img src="/assets/netflix_logo.png" alt="" className="navImage"/>
+    <Navbar variant="dark" className="px-5 bg-black fixed-top">
+      <Nav.Link className="h-100 ps-0">
+        <Link to="/" className="navLink">
+          <img src="/assets/netflix_logo.png" alt="" className="navImage"/>
+        </Link>
       </Nav.Link>
       <Nav className="w-100 text-white navLink d-flex justify-content-between align-items-center">
         <div className="d-flex">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">TV Shows</Nav.Link>
-          <Nav.Link href="#features">Movies</Nav.Link>
-          <Nav.Link href="#features">New & Popular</Nav.Link>
-          <Nav.Link href="#features">My List</Nav.Link>
+          <Nav.Link>
+            <Link to="/" className="navLink">Home</Link>
+          </Nav.Link>
+          <Nav.Link>
+            <Link to="/" className="navLink">TV Shows</Link>
+          </Nav.Link>
+          <Nav.Link>
+            <Link to="/" className="navLink">Movies</Link>
+          </Nav.Link>
+          <Nav.Link>
+            <Link to="/" className="navLink">New & Popular</Link>
+          </Nav.Link>
+          <Nav.Link>
+            <Link to="/" className="navLink">My List</Link>
+          </Nav.Link>
         </div>
 
         <div className="d-flex align-items-center gap-3">
-          <div className="border-1 border-white">
+          <div className="border border-white px-2 py-1">
             <i className="bi bi-search mediumIcon"></i>
-            <input className="bg-black border-0 text-white p-1 px-2" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onSubmit={(e) => setSearchQuery(e.target.value)}/>
+            <input autoFocus={true} className="bg-black border-0 text-white p-1 px-2" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onSubmit={(e) => setSearchQuery(e.target.value)} />
           </div>
           <Nav.Link href="#features">Kids</Nav.Link>
           <Nav.Link href="#features">DVD</Nav.Link>
