@@ -3,8 +3,6 @@ import Card from 'react-bootstrap/Card'
 
 const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, OMDBMovieInfo, videos, convertMinToHours  }) => {
 
-  console.log(OMDBMovieInfo)
-
   return (
     <div className="hoveredMovie m-2" onClick={handleShow} onMouseLeave={() => {
       setHoveredValue(null)

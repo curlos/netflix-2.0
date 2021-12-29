@@ -13,8 +13,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   const [hoveredMovie, setHoveredMovie] = useState(false)
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
   const [OMDBMovieInfo, setOMDBMovieInfo] = useState(null)
-  const [videos, setVideos] = useState()
-
+  const [videos, setVideos] = useState(null)
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
@@ -69,10 +68,18 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
 
   const getAndSetOMDBData = async () => {
     console.log('fetching')
-    const movieData = await fetchMovieFromOMDB()
-    const videoData = await getVideos(movieData)
-    setOMDBMovieInfo(movieData)
-    setVideos(videoData)
+    try {
+      const movieData = await fetchMovieFromOMDB()
+      if (movieData.Error) {
+        return
+      }
+      
+      const videoData = await getVideos(movieData)
+      setOMDBMovieInfo(movieData)
+      setVideos(videoData)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const convertMinToHours = (n) => {
@@ -96,7 +103,9 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
     <div>
       {hoveredMovie && hoveredMovie === movie ? (
 
-        <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} setHoveredMovie={setHoveredMovie} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
+        <Link to={`/title/${movie.id}`} className="text-white ">
+          <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} setHoveredMovie={setHoveredMovie} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
+        </Link>
         
         ) : (
         <Link to={`/title/${movie.id}`} className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >

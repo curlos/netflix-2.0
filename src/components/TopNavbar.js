@@ -1,13 +1,25 @@
-import React from 'react'
+import React, { useState, useEffect} from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Dropdown from 'react-bootstrap/Dropdown'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const TopNavbar = () => {
+
+  const navigate = useNavigate()
+  const [searchQuery, setSearchQuery] = useState('')
+  const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+
+  useEffect(() => {
+    if (searchQuery) {
+      navigate(`/?query=${searchQuery}`)
+      // window.location.href = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchQuery}`
+    }
+  }, [searchQuery])
+
   return (
     <Navbar variant="dark" className="px-4 bg-black fixed-top">
-      <Nav.Link href="#home" className="h-100">
+      <Nav.Link href="#home" className="h-100 ps-0">
         <img src="/assets/netflix_logo.png" alt="" className="navImage"/>
       </Nav.Link>
       <Nav className="w-100 text-white navLink d-flex justify-content-between align-items-center">
@@ -20,7 +32,10 @@ const TopNavbar = () => {
         </div>
 
         <div className="d-flex align-items-center gap-3">
-          <i className="bi bi-search mediumIcon"></i>
+          <div className="border-1 border-white">
+            <i className="bi bi-search mediumIcon"></i>
+            <input className="bg-black border-0 text-white p-1 px-2" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+          </div>
           <Nav.Link href="#features">Kids</Nav.Link>
           <Nav.Link href="#features">DVD</Nav.Link>
           <i className="bi bi-bell-fill mediumIcon"></i>

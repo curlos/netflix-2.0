@@ -35,7 +35,7 @@ const ContentCarousel = ({ apiUrl, name }) => {
             <Col>
               <div className="d-flex justify-content-between">
                 {movies.slice(0,5).map((movie) => (
-                  <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
+                  <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
                 ))}
               </div>
             </Col>
@@ -45,7 +45,7 @@ const ContentCarousel = ({ apiUrl, name }) => {
             <Col>
               <div className="d-flex justify-content-between">
                 {movies.slice(5,10).map((movie) => (
-                  <SmallMovie movie={movie} />
+                  <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
                 ))}
               </div>
             </Col>
@@ -55,7 +55,7 @@ const ContentCarousel = ({ apiUrl, name }) => {
             <Col>
               <div className="d-flex justify-content-between">
                 {movies.slice(10,15).map((movie) => (
-                  <SmallMovie movie={movie} />
+                  <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
                 ))}
               </div>
             </Col>
@@ -65,7 +65,7 @@ const ContentCarousel = ({ apiUrl, name }) => {
             <Col>
               <div className="d-flex justify-content-between">
                 {movies.slice(15,20).map((movie) => (
-                  <SmallMovie movie={movie} />
+                  <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
                 ))}
               </div>
             </Col>
