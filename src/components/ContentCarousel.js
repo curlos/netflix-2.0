@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col'
 
 const ContentCarousel = ({ apiUrl, name }) => {
   const [movies, setMovies] = useState([])
+  const [hoveredValue, setHoveredValue] = useState(null)
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(true)
 
@@ -34,7 +35,7 @@ const ContentCarousel = ({ apiUrl, name }) => {
             <Col>
               <div className="d-flex justify-content-between">
                 {movies.slice(0,5).map((movie) => (
-                  <SmallMovie movie={movie} />
+                  <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
                 ))}
               </div>
             </Col>

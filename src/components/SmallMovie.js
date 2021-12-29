@@ -8,13 +8,9 @@ import axios from 'axios'
 import MovieModal from './MovieModal'
 import HoveredMovie from './HoveredMovie';
 import { debounce } from 'lodash'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectHoveredMovie, hoverOverMovie } from '../features/userSlice'
 
-const SmallMovie = ({ movie }) => {
-  const dispatch = useDispatch()
-
-  const [hoveredValue, setHoveredValue] = useState(null)
+const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
+  const [hoveredMovie, setHoveredMovie] = useState(false)
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
   const [OMDBMovieInfo, setOMDBMovieInfo] = useState(null)
   const [videos, setVideos] = useState()
@@ -22,17 +18,14 @@ const SmallMovie = ({ movie }) => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  const hoveredMovie = useSelector(selectHoveredMovie)
 
   useEffect(() => {
-    console.log(hoveredMovie)
     debounceHoveredMovie(hoveredValue)
-  }, [])
+  }, [hoveredValue])
 
   const debounceHoveredMovie = useCallback(
     debounce((newHoveredMovie) => {
-      console.log(newHoveredMovie)
-      dispatch(hoverOverMovie({ newHoveredMovie }))
+      setHoveredMovie(newHoveredMovie)
     }, 500),
   [hoveredValue])
 
@@ -48,6 +41,7 @@ const SmallMovie = ({ movie }) => {
     await getAndSetOMDBData()
     setLoading(false)
     setShow(true)
+
   };
 
   const handleHover = async () => {
@@ -102,7 +96,7 @@ const SmallMovie = ({ movie }) => {
     <div>
       {hoveredMovie && hoveredMovie === movie ? (
 
-        <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
+        <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} setHoveredMovie={setHoveredMovie} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
         
         ) : (
         <Link to={`/title/${movie.id}`} className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >
@@ -121,4 +115,3 @@ const SmallMovie = ({ movie }) => {
 }
 
 export default SmallMovie
-
