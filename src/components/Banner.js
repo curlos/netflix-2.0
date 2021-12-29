@@ -59,10 +59,10 @@ const Banner = () => {
             <div className="fs-1 fw-bold mb-2">{movie.name}</div>
             <div className="fs-5 fw-light mb-2" ref={overviewRef}></div>
             <div className="d-flex">
-              <Link to={`/title/${movie.id}`} className="btn btn-light me-2 fw-bold d-flex align-items-center">
+              <div className="btn btn-light me-2 fw-bold d-flex align-items-center">
                 <div className="bi-play-fill me-2 fs-4" />
                 <div className="fs-6">Play</div>
-              </Link>
+              </div>
               <button type="button" className="btn btn-secondary fw-bold d-flex align-items-center">
                 <div className="bi-info-circle me-2 fs-4" />
                 <div className="fs-6">More Info</div>

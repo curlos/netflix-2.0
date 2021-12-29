@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import CloseButton from 'react-bootstrap/CloseButton'
+import { getGenreNames } from '../utils/genres'
 
-const MovieModal = ({ movie, show, handleClose, convertMinToHours, OMDBMovieInfo, videos }) => {  
+const MovieModal = ({ movie, show, handleClose, convertMinToHours, OMDBMovieInfo, videos }) => {
+  const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
+
+  console.log(movie)
+  console.log(OMDBMovieInfo)
+  console.log(videos)
 
   return (
-    <Modal size="lg" show={show} onHide={handleClose}>
+    OMDBMovieInfo ? (
+      <Modal size="lg" show={show} onHide={handleClose}>
       <Modal.Body className="bg-dark text-white p-3"
           style={{
             backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("https://image.tmdb.org/t/p/original${movie?.poster_path}")`,
@@ -21,12 +28,19 @@ const MovieModal = ({ movie, show, handleClose, convertMinToHours, OMDBMovieInfo
               <CloseButton variant="white" className="closeButtonModal"/>
             </div>
           </div>
-          <div className="videoWrapper" style={{}}>
-            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1&rel=0`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
-          </div>
+
+          {videos.results.length > 0 ? (
+            <div className="videoWrapper" style={{}}>
+              <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1&rel=0`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
+            </div>
+          ) : (
+            <div>
+              <img src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path || movie?.poster_path}`} alt="" className="w-100"/>
+            </div>
+          )}
         
           <div className="d-flex justify-content-between align-items-center w-100">
-            <h3 className="fs-3 m-0">{movie.title || movie.name}</h3>
+            <h3 className="fs-3 m-0 mt-3">{movie.title || movie.name}</h3>
             
 
             <div className="d-flex align-items-center gap-2">
@@ -140,6 +154,66 @@ const MovieModal = ({ movie, show, handleClose, convertMinToHours, OMDBMovieInfo
 
         </Modal.Body>
     </Modal>
+    ) : (
+      <Modal size="lg" show={show} onHide={handleClose}>
+        <Modal.Body className="bg-dark text-white p-3"
+            style={{
+              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("https://image.tmdb.org/t/p/original${movie?.poster_path}")`,
+              backgroundColor: '#343A40',
+              backgroundSize: 'cover',
+              objectFit: 'cover',
+              padding: '10px'
+            }}
+          >
+            <div className="d-flex justify-content-end mb-1">
+              <div className="closeButtonContainer" onClick={handleClose}>
+                <CloseButton variant="white" className="closeButtonModal"/>
+              </div>
+            </div>
+            
+            <div>
+              <img src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path || movie?.poster_path}`} alt="" className="w-100"/>
+            </div>
+          
+            <div className="d-flex justify-content-between align-items-center w-100">
+              <h3 className="fs-3 m-0">{movie.title || movie.name}</h3>
+              
+
+              <div className="d-flex align-items-center gap-2">
+                <div>
+                  <i className="bi bi-star-fill fs-3 text-warning"></i>
+                </div>
+                <div className="">
+                  <div className="text-center fs-3">
+                    <span>{movie?.vote_average}</span>
+                    <span className="text-secondary">/10</span> 
+                  </div>
+                  
+                  <div className="fs-6 text-secondary text-center">{movie?.vote_count}</div>
+                </div>
+              </div>
+            </div>
+            <div className="d-flex align-items-center gap-2">
+              <div className="smallMovieTag">HD</div>
+            </div>
+
+            <div className="my-3">{movie.overview}</div>
+            
+            <div className="space-between-y-1">
+
+              <div>
+                <span className="text-lightgray">
+                  Genres:
+                </span> 
+                {genreNames}
+              </div>
+
+              <div><span className="text-lightgray">Release:</span> {movie?.release_date}</div>
+            </div>
+
+          </Modal.Body>
+      </Modal>
+    )
   )
 }
 

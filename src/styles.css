@@ -88,10 +88,15 @@ a {
   z-index: 50;
   transition: .2s;
   height: 300px !important;
+  cursor: pointer;
 }
 
 .hoveredMovie img {
   width: 250px;
+}
+
+.hoveredMovie:hover {
+  transform: scale(1.1)
 }
 
 .circleIcon {

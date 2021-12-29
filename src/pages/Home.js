@@ -18,6 +18,7 @@ const Home = () => {
   const { id } = useParams()
   const [movies, setMovies] = useState([])
   const [totalResults, setTotalResults] = useState(0)
+  const [hoveredValue, setHoveredValue] = useState(null)
   const [searchParams] = useSearchParams()
 
   const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
@@ -36,7 +37,7 @@ const Home = () => {
         setMovies(response.data.results)
         setTotalResults(response.data)
     })
-    }, 500),
+    }, 1000),
   [])
   
 
@@ -48,7 +49,7 @@ const Home = () => {
           <Banner />
           <div className="p-3">
             {Object.values(requests).map((request) => (
-              <ContentCarousel apiUrl={API_BASE_URL + request.url} name={request.name} />
+              <ContentCarousel apiUrl={API_BASE_URL + request.url} name={request.name} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
             ))}
           </div>
         </div>

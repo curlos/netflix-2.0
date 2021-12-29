@@ -33,7 +33,6 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
     setOMDBMovieInfo(null)
     setVideos(null)
     setShow(false)
-    navigate('/')
   };
 
   const handleShow = async () => {
@@ -73,7 +72,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
       if (movieData.Error) {
         return
       }
-      
+
       const videoData = await getVideos(movieData)
       setOMDBMovieInfo(movieData)
       setVideos(videoData)
@@ -103,17 +102,17 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
     <div>
       {hoveredMovie && hoveredMovie === movie ? (
 
-        <Link to={`/title/${movie.id}`} className="text-white ">
+        <div className="text-white ">
           <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} setHoveredMovie={setHoveredMovie} movie={movie} OMDBMovieInfo={OMDBMovieInfo} videos={videos} convertMinToHours={convertMinToHours}/>
-        </Link>
+        </div>
         
         ) : (
-        <Link to={`/title/${movie.id}`} className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >
+        <div className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >
           <div>
             <img src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`} alt="" className={`movieImage m-1 rounded`}
             />
           </div>
-        </Link>
+        </div>
       )}
 
       {show && !loading ? (

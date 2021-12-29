@@ -46,9 +46,6 @@ const App = () => {
     <div className="bg-black text-white vw-100 vh-100">    
           
       <Routes>
-
-        <Route path="/title/:id" element={<Home />} />
-
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />

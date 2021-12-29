@@ -34,7 +34,7 @@ const TopNavbar = () => {
         <div className="d-flex align-items-center gap-3">
           <div className="border-1 border-white">
             <i className="bi bi-search mediumIcon"></i>
-            <input className="bg-black border-0 text-white p-1 px-2" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+            <input className="bg-black border-0 text-white p-1 px-2" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onSubmit={(e) => setSearchQuery(e.target.value)}/>
           </div>
           <Nav.Link href="#features">Kids</Nav.Link>
           <Nav.Link href="#features">DVD</Nav.Link>

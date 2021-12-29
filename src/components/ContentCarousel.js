@@ -5,9 +5,8 @@ import Carousel from 'react-bootstrap/Carousel'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-const ContentCarousel = ({ apiUrl, name }) => {
+const ContentCarousel = ({ apiUrl, name, hoveredValue, setHoveredValue }) => {
   const [movies, setMovies] = useState([])
-  const [hoveredValue, setHoveredValue] = useState(null)
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(true)
 
