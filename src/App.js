@@ -6,6 +6,7 @@ import {
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Genres from './pages/browse/Genres';
 import './styles.css'
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase'
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/browse" element={<Genres />} />
 
         <Route path="/" element={<Home />} />
       </Routes>

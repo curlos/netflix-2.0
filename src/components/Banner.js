@@ -104,6 +104,8 @@ const Banner = () => {
     console.log(videos)
   }
 
+  console.log(movie)
+
 
 
   return (
@@ -118,7 +120,7 @@ const Banner = () => {
           className="vw-100 vh-100 d-flex align-items-center"
         >
           <div className="px-5 w-50">
-            <div className="fs-1 fw-bold mb-2">{movie.name}</div>
+            <div className="fs-1 fw-bold mb-2">{movie.title || movie.name}</div>
             <div className="fs-5 fw-light mb-2" ref={overviewRef}></div>
             <div className="d-flex">
               <div className="btn btn-light me-2 fw-bold d-flex align-items-center" onClick={handleShow}>

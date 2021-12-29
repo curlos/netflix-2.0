@@ -2,7 +2,7 @@ export const getGenreNames = (genreIDs, mediaType) => {
   const genreNames = []
 
   for (let genreID of genreIDs) {
-    const genreName = findGenre(genreID, mediaType)
+    const genreName = getGenreName(genreID, mediaType)
     if (genreName) {
       genreNames.push(genreName)
     }
@@ -11,17 +11,23 @@ export const getGenreNames = (genreIDs, mediaType) => {
   return genreNames
 }
 
-const findGenre = (genreID, mediaType) => {
-  const genres = mediaType == 'movie' ? MOVIE_GENRES : TV_GENRES
-
-  for (let genre of genres) {
+const getGenreName = (genreID) => {
+  for (let genre of GENRES) {
     if (genre.id === genreID) {
       return genre.name
     }
   }
 }
 
-const TV_GENRES = [
+const getGenreID = (genreName) => {
+  for (let genre of GENRES) {
+    if (genre.name === genreName) {
+      return genre.id
+    }
+  }
+}
+
+const GENRES = [
   {
     "id": 10759,
     "name": "Action & Adventure"
@@ -85,10 +91,7 @@ const TV_GENRES = [
   {
     "id": 37,
     "name": "Western"
-  }
-]
-
-const MOVIE_GENRES = [
+  },
   {
     "id": 28,
     "name": "Action"

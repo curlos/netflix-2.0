@@ -3,10 +3,13 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { login, logout } from '../features/userSlice'
 
 const TopNavbar = () => {
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
@@ -58,11 +61,10 @@ const TopNavbar = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu variant="dark" align="end">
-              <Dropdown.Item href="#/action-1">
+              <Dropdown.Item>
                 <Link to="/profile">My Account</Link>
               </Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Help Center</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Sign Out</Dropdown.Item>
+              <Dropdown.Item onClick={() => dispatch(logout)}><Link to="/login">Sign Out</Link></Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
