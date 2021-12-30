@@ -16,6 +16,8 @@ import Profile from './pages/Profile';
 import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux'
 import { selectUser } from './features/userSlice'
+import Movies from './pages/browse/Movies'
+import TVShows from './pages/browse/TVShows'
 
 
 const App = () => {
@@ -50,7 +52,8 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/browse" element={<Genres />} />
+        <Route path="/browse/movies" element={<Movies />} />
+        <Route path="/browse/tv" element={<TVShows />} />
 
         <Route path="/" element={<Home />} />
       </Routes>

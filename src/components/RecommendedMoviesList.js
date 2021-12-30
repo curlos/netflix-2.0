@@ -9,11 +9,16 @@ const RecommendedMoviesList = ({ recommendedMovies, hoveredValue, setHoveredValu
     <div className="p-3">
       <div className="fs-4">More Like This</div>
 
-      <div className="d-flex flex-wrap">
-        {recommendedMovies.results.map((movie) => {
-          console.log(movie)
-          return <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
-        })}
+      <div className="container">
+        <div className="row">
+          {recommendedMovies.results.map((movie) => {
+            return (
+              <div className="col">
+                <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

@@ -96,7 +96,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
 
   return (
     <di className="flex-1"v>
-      {hoveredMovie && hoveredMovie === movie && !loading ? (
+      {hoveredValue && hoveredValue === movie && !loading ? (
 
         <div className="text-white">
           <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} setHoveredMovie={setHoveredMovie} movie={movie} details={details} videos={videos} credits={credits} recommendedMovies={recommendedMovies} convertMinToHours={convertMinToHours}/>

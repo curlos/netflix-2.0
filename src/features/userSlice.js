@@ -13,15 +13,11 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.user = null
     },
-    hoverOverMovie: (state, action) => {
-      state.hoveredMovie = action.payload
-    }
   }
 })
 
 export const { login, logout, hoverOverMovie } = userSlice.actions
 
 export const selectUser = (state) => state.user.user
-export const selectHoveredMovie = (state) => state.user.hoveredMovie
 
 export default userSlice.reducer

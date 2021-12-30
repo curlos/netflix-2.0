@@ -22,7 +22,7 @@ const MovieModal = ({ movie, details, videos, credits, recommendedMovies, show, 
           </div>
         </div>
 
-        {videos.results.length > 1 ? (
+        {videos && videos.results.length > 1 ? (
           <div className="videoWrapper" style={{}}>
             <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
           </div>) : (
@@ -41,72 +41,94 @@ const MovieModal = ({ movie, details, videos, credits, recommendedMovies, show, 
             padding: '12px',
           }}
         >
-          <div className="d-flex justify-content-between align-items-center w-100">
-            <h3 className="fs-3 m-0">{movie.title || movie.name}</h3>
+          <div className="d-flex justify-content-between align-items-center w-100 mb-2">
+            {(movie.title || movie.original_title) ? (
+              <h3 className="fs-3 m-0">{movie.title || movie.original_title}</h3>
+            ) : null}
             
-
-            <div className="d-flex align-items-center gap-2">
-              <div>
-                <i className="bi bi-star-fill fs-3 text-warning"></i>
-              </div>
-              <div className="">
-                <div className="text-center fs-3">
-                  <span>{movie?.vote_average}</span>
-                  <span className="text-secondary">/10</span> 
+            {movie?.vote_count > 0 ? (
+              <div className="d-flex align-items-center gap-2">
+                <div>
+                  <i className="bi bi-star-fill fs-3 text-warning"></i>
                 </div>
-                
-                <div className="fs-6 text-secondary text-center">{Number(movie?.vote_count).toLocaleString()}</div>
+                <div className="">
+                  <div className="text-center fs-3">
+                    <span>{movie?.vote_average}</span>
+                    <span className="text-secondary">/10</span> 
+                  </div>
+                  
+                  <div className="fs-6 text-secondary text-center">{Number(movie?.vote_count).toLocaleString()}</div>
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
           <div className="d-flex gap-1 align-items-center">
-            <div>{new Date(details.release_date).getFullYear()}</div>
-            <div className="">{convertMinToHours(details?.runtime).hours}H</div> 
-            <div>{convertMinToHours(details?.runtime).minutes}M</div>  
+            <div>{details.release_date ? (new Date(details.release_date).getFullYear()) : null}</div>
+            {details.runtime && details.runtime > 0 ? (
+              <div className="">{convertMinToHours(details?.runtime).hours}H</div>
+            ) : null} 
+            {details.runtime && details.runtime > 0 ? (
+              <div className="">{convertMinToHours(details?.runtime).minutes}M</div>
+            ) : null}
             <div className="smallMovieTag">HD</div>
           </div>
 
-          <div className="my-3">{movie.overview}</div>
+          {movie?.overview ? (
+            <div className="my-3">{movie.overview}</div>
+          ) : null}
           
           <div className="space-between-y-1">
 
-            <div><span className="text-lightgray">Release:</span> {movie?.release_date}</div>
+            {movie.release_date ? (
+              <div><span className="text-lightgray">Release:</span> {movie?.release_date}</div>
+            ) : null}
 
-            <div>
-              <span className="text-lightgray me-1 span">
-                Genres:
-              </span> 
-              {genreNamesStr}
-            </div>
+            {genreNamesStr ? (
+              <div>
+                <span className="text-lightgray me-1 span">
+                  Genres:
+                </span> 
+                {genreNamesStr}
+              </div>
+            ) : null}
 
-            <div>
-              <span className="text-lightgray me-1 span">
-                Director:
-              </span> 
-              {credits.crew.filter((member) => member.job === 'Director').map((member) => <span>{member.name}</span>)}
-            </div>
+            {credits && credits.crew && credits.crew.filter(  (member) => member.job === 'Director').length >= 1 ? (
+               <div>
+                <span className="text-lightgray me-1 span">
+                  Director:
+                </span> 
+                {credits.crew.filter((member) => member.job === 'Director').map((member) => <span>{member.name}</span>)}
+              </div>
+            ) : null}
 
-            <div>
-              <span className="text-lightgray me-1 span">
-                Cast:
-              </span> 
-              {credits.cast.slice(0, 3).map((actor, i) => <span>{actor.name}{i !== 2 ? ', ' : null}</span>)}
-            </div>
+            {credits && credits.cast.length >= 1 ? (
+              <div>
+                <span className="text-lightgray me-1 span">
+                  Cast:
+                </span> 
+                {credits.cast.slice(0, 3).map((actor, i) => <span>{actor.name}{i !== 2 ? ', ' : null}</span>)}
+              </div>
+            ) : null}
 
-            <div>
-              <span className="text-lightgray me-1 span">
-                Production:
-              </span> 
-              {details.production_companies.map((company, i) => <span>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}
-            </div>
+            {details && details.production_companies.length >= 1 ? (
+              <div>
+                <span className="text-lightgray me-1 span">
+                  Production:
+                </span> 
+                {details.production_companies.map((company, i) => <span>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}
+              </div>
+            ) : null}
         </div>
-
-        <div className="mb-4"></div>
 
     
         </div>
 
-        <RecommendedMoviesList recommendedMovies={recommendedMovies} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
+        {recommendedMovies.total_results ? (
+          <div>
+            <div className="mb-4"></div>
+            <RecommendedMoviesList recommendedMovies={recommendedMovies} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
+          </div>
+        ) : null}
 
       </Modal.Body>
     </Modal>
