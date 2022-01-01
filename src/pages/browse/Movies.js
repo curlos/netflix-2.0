@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react'
 import SmallMovie from '../../components/SmallMovie'
 import TopNavbar from '../../components/TopNavbar'
 import axios from 'axios'
+import Banner from '../../components/Banner'
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
@@ -23,6 +24,7 @@ const Movies = () => {
     loading ? <div>Loading...</div> : (
       <div className="bg-black">
         <TopNavbar />
+        <Banner apiLink={`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`}/>
 
         <div className="pt-5 text-white">
           <div className="px-5 py-3 fw-bold fs-4 flex align-items-center">

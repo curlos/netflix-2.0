@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import MovieModal from './MovieModal';
 import Typed from 'typed.js'
 
-const Banner = () => {
+const Banner = ({ apiLink }) => {
 
   const [movie, setMovie] = useState()
   const [videos, setVideos] = useState(null)
@@ -17,7 +17,7 @@ const Banner = () => {
 
   useEffect(() => {
     const fetchFromAPI = async () => {
-      const response = await axios.get(`${API_BASE_URL}${requests.fetchNetflixOriginals.url}`)
+      const response = await axios.get(apiLink ? apiLink : `${API_BASE_URL}${requests.fetchNetflixOriginals.url}`)
       console.log(response)
       setMovie(response.data.results[
         Math.floor(Math.random() * response.data.results.length - 1)

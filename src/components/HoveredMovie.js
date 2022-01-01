@@ -21,7 +21,7 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, det
       <Card className="p-0 m-0 h-100 border-0 rounded">
       {videos && videos.results.length > 1 ? (
           <div className="videoWrapper" style={{}}>
-            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1&rel=0&controls=0&modestbranding=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
+            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1&rel=0&controls=0&modestbranding=1&start=10`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
           </div>
         ) : (
           <Card.Img variant="top" src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path || movie?.poster_path}`} alt="" className={`m-0 rounded noBottomBorderRadius`} />

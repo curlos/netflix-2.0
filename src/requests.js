@@ -38,37 +38,21 @@ const requests = {
 };
 
 const movieRequests = {
-  fetch: {
-    name: 'Trending',
-    url: `/movie/popular?api_key=ddsadd&language=en-US&page=1`
+  fetchPopular: {
+    name: 'Popular',
+    url: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
   },
-  fetchNetflixOriginals: {
-    name: 'Netflix Originals',
-    url: `/discover/tv?api_key=${API_KEY}&with_networks=213`
+  fetchLatest: {
+    name: 'Latest',
+    url: `https://api.themoviedb.org/3/movie/latest?api_key=${API_KEY}&language=en-US`
   },
   fetchTopRated: {
     name: 'Top Rated',
-    url: `/movie/top_rated?api_key=${API_KEY}&language=en-US`
+    url: `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`
   },
-  fetchActionMovies: {
+  fetchUpcoming: {
     name: 'Action',
-    url: `/discover/movie?api_key=${API_KEY}&with_genres=28`
-  },
-  fetchComedyMovies: {
-    name: 'Comedy',
-    url: `/discover/movie?api_key=${API_KEY}&with_genres=35`
-  },
-  fetchHorrorMovies: {
-    name: 'Horror',
-    url: `/discover/movie?api_key=${API_KEY}&with_genres=27`
-  },
-  fetchRomanceMovies: {
-    name: 'Romance',
-    url: `/discover/movie?api_key=${API_KEY}&with_genres=10749`
-  },
-  fetchDocumentaries: {
-    name: 'Documentaries',
-    url: `/discover/movie?api_key=${API_KEY}&with_genres=99`
+    url: `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
   }
 };
 

@@ -24,6 +24,8 @@ const Home = () => {
 
   const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
+  console.log(id)
+
   useEffect(() => {
     if (searchParams.get('query')) {
       debounceMovieSearch(searchParams.get('query'))
