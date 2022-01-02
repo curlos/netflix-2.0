@@ -96,10 +96,16 @@ a {
   z-index: 50;
   transition: .2s;
   cursor: pointer;
+  max-width: 200px;
+  height: 300px;
 }
 
 .hoveredMovie img {
-  width: 250px;
+  width: 200px;
+}
+
+.hoveredMovie:hover {
+  transform: scale(1.05);
 }
 
 .circleIcon {
@@ -124,7 +130,7 @@ a {
 }
 
 .cardBody {
-  width: 250px;
+  width: 200px;
 }
 
 .modal-header {
@@ -375,4 +381,22 @@ a {
 .profileBottomButton:hover {
   color: white;
   border-color: white;
+}
+
+.moviePoster {
+  width: 250px;
+  border-radius: 10px;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  justify-content: flex-start;
+}
+
+.recommendedList {
+  justify-content: space-between;
 }

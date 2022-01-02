@@ -95,7 +95,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   
 
   return (
-    <di className="flex-1"v>
+    <div className="flex-1" onClick={() => navigate(`/title/${movie.id}`)}>
       {hoveredValue && hoveredValue === movie && !loading ? (
 
         <div className="text-white">
@@ -114,7 +114,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
       {show && !loading ? (
         <MovieModal movie={movie} show={show} handleClose={handleClose} convertMinToHours={convertMinToHours} details={details} videos={videos} credits={credits} recommendedMovies={recommendedMovies} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
       ) : null}
-    </di>
+    </div>
   )
 }
 

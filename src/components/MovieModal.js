@@ -7,11 +7,7 @@ import RecommendedMoviesList from './RecommendedMoviesList'
 
 const MovieModal = ({ movie, details, videos, credits, recommendedMovies, show, handleClose, convertMinToHours, hoveredValue, setHoveredValue }) => {
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
-
   const genreNamesStr = genreNames.join(', ')
-
-  console.log(details)
-  console.log(credits)
 
   return (
     <Modal size="lg" show={show} onHide={handleClose}>

@@ -1,10 +1,12 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import { getGenreNames } from '../utils/genres'
+import { useNavigate } from 'react-router'
 
 const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, details, videos, recommendedMovies, convertMinToHours  }) => {
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3)
   const genreNamesStr = genreNames.join(' • ')
+  const navigate = useNavigate()
 
   console.log(movie)
   console.log(details)
@@ -13,7 +15,7 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, det
   console.log(genreNames)
 
   return (
-    <div className="hoveredMovie m-2" onClick={handleShow} onMouseLeave={() => {
+    <div className="hoveredMovie m-2" onClick={() => navigate(`/title/${movie.id}`)} onMouseLeave={() => {
       setHoveredValue(null)
       setHoveredMovie(false)
     }}>

@@ -1,29 +1,40 @@
-const getAllActors = (credits) => {
-  return credits.cast.filter((cast) => cast.known_for_department === 'Acting')
+export const getAllActors = (credits) => {
+  const actors = []
+
+  credits.cast.filter((cast) => cast.known_for_department === 'Acting').slice(0,3).map((actor, i) => {
+    actors.push(actor.name)
+  })
+
+  return actors.join(', ')
 }
 
-const getAllCostumeAndMakeup = (credits) => {
+export const getAllCostumeAndMakeup = (credits) => {
   return credits.cast.filter((cast) => cast.known_for_department === 'Costume & Make-up')
 }
 
-const getAllProduction = (credits) => {
+export const getAllProduction = (credits) => {
   return credits.cast.filter((cast) => cast.known_for_department === 'Production')
 }
 
-const getAllArt= (credits) => {
+export const getAllArt= (credits) => {
   return credits.cast.filter((cast) => cast.known_for_department === 'Art')
 }
 
-const getAllSound = (credits) => {
+export const getAllSound = (credits) => {
   return credits.cast.filter((cast) => cast.known_for_department === 'Sound')
 }
 
-const getAllCamera = (credits) => {
+export const getAllCamera = (credits) => {
   return credits.cast.filter((cast) => cast.known_for_department === 'Camera')
 }
 
-const getAllDirecting = (credits) => {
-  return credits.cast.filter((cast) => cast.known_for_department === 'Directing')
+export const getAllDirectors = (credits) => {
+  const directorsArr = []
+  const directorsObj = credits.crew.filter((member) => member.job === 'Director')
+  directorsObj.forEach((director) => {
+    directorsArr.push(director.name)
+  })
+  return directorsArr.join(', ')
 }
 
 const getAllCrew = (credits) => {
@@ -32,5 +43,4 @@ const getAllCrew = (credits) => {
 
 const getAllVisualEffects = (credits) => {
   return credits.cast.filter((cast) => cast.known_for_department === 'Visual Effects')
-  
 }

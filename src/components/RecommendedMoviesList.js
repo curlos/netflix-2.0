@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SmallMovie from '../components/SmallMovie'
 
-const RecommendedMoviesList = ({ recommendedMovies, hoveredValue, setHoveredValue }) => {
+const RecommendedMoviesList = ({ recommendedMovies }) => {
+
+  const [hoveredValue, setHoveredValue] = useState(null)
 
   console.log(recommendedMovies)
 
@@ -9,16 +11,14 @@ const RecommendedMoviesList = ({ recommendedMovies, hoveredValue, setHoveredValu
     <div className="p-3">
       <div className="fs-4">More Like This</div>
 
-      <div className="container">
-        <div className="row">
-          {recommendedMovies.results.map((movie) => {
-            return (
-              <div className="col">
-                <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
-              </div>
-            )
-          })}
-        </div>
+      <div className="d-flex flex-wrap recommendedList">
+        {recommendedMovies.results.map((movie) => {
+          return (
+            <div className="">
+              <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

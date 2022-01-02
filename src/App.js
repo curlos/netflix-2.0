@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux'
 import { selectUser } from './features/userSlice'
 import Movies from './pages/browse/Movies'
 import TVShows from './pages/browse/TVShows'
+import Title from './pages/Title'
 
 
 const App = () => {
@@ -54,7 +55,7 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/browse/movies" element={<Movies />} />
         <Route path="/browse/tv" element={<TVShows />} />
-        <Route path="/title/:id" element={<Home />} />
+        <Route path="/title/:id" element={<Title />} />
 
         <Route path="/" element={<Home />} />
       </Routes>
