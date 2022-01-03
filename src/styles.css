@@ -90,6 +90,7 @@ a {
 .smallMovie {
   cursor: pointer;
   transition: .2s;
+  max-width: 200px;
 }
 
 .hoveredMovie {
@@ -399,4 +400,8 @@ a {
 
 .recommendedList {
   justify-content: space-between;
+}
+
+.page-item {
+  background-color: black !important;
 }

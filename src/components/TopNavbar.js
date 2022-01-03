@@ -32,10 +32,10 @@ const TopNavbar = () => {
             <Link to="/" className="navLink">Home</Link>
           </Nav.Link>
           <Nav.Link>
-            <Link to="/" className="navLink">TV Shows</Link>
+            <Link to="/tv-shows" className="navLink">TV Shows</Link>
           </Nav.Link>
           <Nav.Link>
-            <Link to="/" className="navLink">Movies</Link>
+            <Link to="/movies" className="navLink">Movies</Link>
           </Nav.Link>
           <Nav.Link>
             <Link to="/" className="navLink">New & Popular</Link>

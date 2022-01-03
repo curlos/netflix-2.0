@@ -23,8 +23,16 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   const [credits, setCredits] = useState()
   const [recommendedMovies, setRecommendedMovies] = useState()
 
+  useEffect(() => {
+    // getMovieDetails().then((result) => {
+    //   setDetails(result)
+    //   setLoading(false)
+    // })
+  }, [])
+
   const debounceHoveredMovie = useCallback(
     debounce(async (newHoveredMovie) => {
+      setLoading(true)
       setHoveredValue(newHoveredMovie)
       setHoveredMovie(newHoveredMovie)
       await getAndSetAllMovieDetails()
@@ -103,17 +111,19 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
         </div>
         
         ) : (
-        <div className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >
-          <div>
-            <img src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`} alt="" className={`movieImage m-1 rounded`}
-            />
-          </div>
-        </div>
-      )}
+          <div className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >
+            <div>
+              <img src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`} alt="" className={`movieImage m-1 rounded`}
+              />
+            </div>
 
-      {show && !loading ? (
-        <MovieModal movie={movie} show={show} handleClose={handleClose} convertMinToHours={convertMinToHours} details={details} videos={videos} credits={credits} recommendedMovies={recommendedMovies} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
-      ) : null}
+            {/* <div>{movie.title || movie.name}</div>
+
+            <div>
+              <span>{new Date(movie.release_date).getFullYear()} • {details.runtime}</span>
+            </div> */}
+          </div>
+      )}
     </div>
   )
 }

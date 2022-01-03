@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react'
 import requests, { API_BASE_URL } from '../requests';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MovieModal from './MovieModal';
 import Typed from 'typed.js'
 
@@ -14,6 +14,7 @@ const Banner = ({ apiLink }) => {
   const overviewRef = useRef(null)
   const typedRef = useRef(null)
   
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchFromAPI = async () => {
@@ -94,11 +95,11 @@ const Banner = ({ apiLink }) => {
             <div className="d-flex">
               <div className="btn btn-light me-2 fw-bold d-flex align-items-center" onClick={handleShow}>
                 <div className="bi-play-fill me-2 fs-4" />
-                <div className="fs-6">Play</div>
+                <div className="fs-6" onClick={() => navigate(`/title/${movie.id}`)}>Play</div>
               </div>
               <button type="button" className="btn btn-secondary fw-bold d-flex align-items-center">
                 <div className="bi-info-circle me-2 fs-4" />
-                <div className="fs-6" onClick={handleShow}>More Info</div>
+                <div className="fs-6" onClick={() => navigate(`/title/${movie.id}`)}>More Info</div>
               </button>
             </div>
           </div>

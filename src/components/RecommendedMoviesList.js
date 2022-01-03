@@ -14,7 +14,7 @@ const RecommendedMoviesList = ({ recommendedMovies }) => {
       <div className="d-flex flex-wrap recommendedList">
         {recommendedMovies.results.map((movie) => {
           return (
-            <div className="">
+            <div className="" key={movie.id}>
               <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
             </div>
           )
