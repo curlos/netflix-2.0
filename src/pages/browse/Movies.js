@@ -26,19 +26,30 @@ const Movies = () => {
 
   const [selectedYear, setSelectedYear] = useState(2021)
   const [selectedSortType, setSelectedSortType] = useState('popularity.desc')
-  const [pageNum, setPageNum] = useState(0)
+  const [pageNum, setPageNum] = useState(1)
 
 
   useEffect(() => {
+    if (document.getElementById("pageTitle")) {
+      document.getElementById("pageTitle").scrollIntoView();
+    }
     
-    axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&primary_release_year=${selectedYear}&sort_by=${selectedSortType}`).then((response) => {
+    axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}`).then((response) => {
       console.log(response.data)
       setMovies(response.data.results)
       setLoading(false)
     })
-  }, [genres, selectedYear, selectedSortType])
+  }, [genres, selectedYear, selectedSortType, pageNum])
 
   console.log(movies)
+
+  const getArrayOfNums = (num) => {
+    const arrayOfNums = []
+    for (let i = 1; i <= num; i++) {
+      arrayOfNums.push(i)
+    }
+    return arrayOfNums
+  }
   
 
   return (
@@ -48,11 +59,11 @@ const Movies = () => {
         <Banner apiLink={`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&page=1`}/>
 
         <div className="pt-5 text-white">
-          <div className="px-5 py-3 fw-bold fs-4 flex align-items-center">
+          <div id="pageTitle" className="px-5 py-3 fw-bold fs-4 flex align-items-center">
             Movies
           </div>
 
-          <div className="px-5 py-2 d-flex gap-2">
+          <div className="px-5 py-2 d-flex gap-2 dropdownsContainer">
             <Dropdown>
               <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 bg-secondary" id="dropdown-basic" className="p-0">
                 <div className="">Genre</div>
@@ -113,8 +124,6 @@ const Movies = () => {
                 </div>
               </Dropdown.Menu>
             </Dropdown>
-
-            <div>Filter</div>
           </div>
           <div className="d-flex flex-wrap gap-2 rounded px-5">
             {movies.map((movie) => {
@@ -123,22 +132,31 @@ const Movies = () => {
           </div>
         </div>
 
-        <Pagination className="px-5 py-4">
-          <Pagination.First />
-          <Pagination.Prev />
-          <Pagination.Item>{1}</Pagination.Item>
+        <Pagination className="px-5 py-4 d-flex justify-content-center">
+          <Pagination.First onClick={() => setPageNum(1)}/>
+          <Pagination.Prev onClick={() => setPageNum(pageNum - 1)}/>
+          {getArrayOfNums(500).slice(pageNum - 1, (pageNum - 1) + 5).map((num) => {
 
-          <Pagination.Item>{10}</Pagination.Item>
-          <Pagination.Item>{11}</Pagination.Item>
-          <Pagination.Item>{12}</Pagination.Item>
-          <Pagination.Item>{13}</Pagination.Item>
-          <Pagination.Item disabled>{14}</Pagination.Item>
+            if (num === 999) {
+              return (
+                <span>
+                  <Pagination.Item onClick={() => setPageNum(num)} className={`${pageNum === num ? 'selectedPageNum' : null}`}>{num}</Pagination.Item>
+                </span>
+              )
+            }
+            
+            return (
+              <Pagination.Item onClick={() => setPageNum(num)}>{num}</Pagination.Item>
+            )
+          })}
+
 
           <Pagination.Ellipsis />
-          <Pagination.Item>{20}</Pagination.Item>
-          <Pagination.Next />
-          <Pagination.Last />
+          <Pagination.Next onClick={() => setPageNum(pageNum + 1)} />
+          <Pagination.Last onClick={() => setPageNum(1000)}/>
         </Pagination>
+
+        <div className="py-5">{pageNum}</div>
       </div>
     )
   )
