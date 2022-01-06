@@ -15,14 +15,9 @@ const Movies = () => {
   const [hoveredValue, setHoveredValue] = useState()
   const [loading, setLoading] = useState(true)
 
-
-  const [genres, setGenres] = useState([
-    ...MOVIE_GENRES.map((genre) => {
-      return {
-        name: genre.name,
-        checked: false
-      }
-  })])
+  const [genres, setGenres] = useState(Object.fromEntries(
+    MOVIE_GENRES.map(genre => [genre.name, false])
+  ))
 
   const [selectedYear, setSelectedYear] = useState(2021)
   const [selectedSortType, setSelectedSortType] = useState('popularity.desc')
@@ -33,15 +28,31 @@ const Movies = () => {
     if (document.getElementById("pageTitle")) {
       document.getElementById("pageTitle").scrollIntoView();
     }
+
+    const getIncludedGenresString = () => {
+      const genresArr = []
+  
+      Object.keys(genres).forEach((genreName) => {
+        if (genres[genreName]) {
+          const movieGenreObj = MOVIE_GENRES.find(genre => genre.name === genreName)
+          genresArr.push(movieGenreObj.id)
+        }
+      })
+  
+      return genresArr.join(',')
+    }
+
+    const includedGenres = getIncludedGenresString()
+    console.log(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`)
     
-    axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}`).then((response) => {
+    axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
       console.log(response.data)
       setMovies(response.data.results)
       setLoading(false)
     })
   }, [genres, selectedYear, selectedSortType, pageNum])
 
-  console.log(movies)
+  
 
   const getArrayOfNums = (num) => {
     const arrayOfNums = []
@@ -49,6 +60,12 @@ const Movies = () => {
       arrayOfNums.push(i)
     }
     return arrayOfNums
+  }
+
+  console.log(genres)
+
+  const handleGenreClick = (genreName) => {
+    setGenres({...genres, [genreName]: !genres[genreName]})
   }
   
 
@@ -72,11 +89,11 @@ const Movies = () => {
               <Dropdown.Menu variant="dark" align="end">
                 <div className="p-2">
 
-                  {genres.map((genre) => {
+                  {Object.keys(genres).map((genre) => {
                     return (
                       <div>
-                        <input type="checkbox" className="me-1" checked={genre.checked} onClick={() => setGenres('')}/>
-                        <span>{genre.name}</span>
+                        <input type="checkbox" className="me-1" checked={genres[genre]} onClick={() => handleGenreClick(genre)}/>
+                        <span>{genre}</span>
                       </div>
                     ) 
                   })}
