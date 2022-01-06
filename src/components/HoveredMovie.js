@@ -14,8 +14,17 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, det
   console.log(recommendedMovies)
   console.log(genreNames)
 
+  const handleNavigation = () => {
+    console.log('hello wrold')
+    if (movie.first_air_date) {
+      navigate(`/title/tv/${movie.id}`)
+    } else {
+      navigate(`/title/movie/${movie.id}`)
+    }
+  }
+
   return (
-    <div className="hoveredMovie m-2" onClick={() => navigate(`/title/${movie.id}`)} onMouseLeave={() => {
+    <div className="hoveredMovie m-2" onClick={handleNavigation} onMouseLeave={() => {
       setHoveredValue(null)
       setHoveredMovie(false)
     }}>

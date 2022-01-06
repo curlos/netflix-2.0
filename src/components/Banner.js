@@ -29,8 +29,11 @@ const Banner = ({ apiLink }) => {
     fetchFromAPI()
   }, [])
 
+  console.log(movie)
+
   useEffect(() => {
-    if (!loading) {
+    console.log(movie)
+    if (!loading && movie && movie.overview) {
       const options = {
         strings: [movie.overview],
         typeSpeed: 20,
@@ -74,7 +77,14 @@ const Banner = ({ apiLink }) => {
     console.log(videos)
   }
 
-  console.log(movie)
+  const handleNavigation = () => {
+    console.log('hello wrold')
+    if (movie.first_air_date) {
+      navigate(`/title/tv/${movie.id}`)
+    } else {
+      navigate(`/title/movie/${movie.id}`)
+    }
+  }
 
 
 
@@ -95,11 +105,11 @@ const Banner = ({ apiLink }) => {
             <div className="d-flex">
               <div className="btn btn-light me-2 fw-bold d-flex align-items-center" onClick={handleShow}>
                 <div className="bi-play-fill me-2 fs-4" />
-                <div className="fs-6" onClick={() => navigate(`/title/${movie.id}`)}>Play</div>
+                <div className="fs-6" onClick={handleNavigation}>Play</div>
               </div>
               <button type="button" className="btn btn-secondary fw-bold d-flex align-items-center">
                 <div className="bi-info-circle me-2 fs-4" />
-                <div className="fs-6" onClick={() => navigate(`/title/${movie.id}`)}>More Info</div>
+                <div className="fs-6" onClick={handleNavigation}>More Info</div>
               </button>
             </div>
           </div>

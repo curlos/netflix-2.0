@@ -13,7 +13,7 @@ import RecommendedMoviesList from '../components/RecommendedMoviesList'
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
-const Title = () => {
+const TVShow = () => {
   const { id } = useParams()
   
   const [details, setDetails] = useState()
@@ -36,22 +36,22 @@ const Title = () => {
   }
 
   const getMovieDetails = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`)
+    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`)
     return response.data
   }
 
   const getVideos = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}&language=en-US`)
+    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${API_KEY}&language=en-US`)
     return response.data
   }
 
   const getCredits = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}&language=en-US`)
+    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${API_KEY}&language=en-US`)
     return response.data
   }
 
   const getRecommendedMovies = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`)
+    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`)
     return response.data
   }
 
@@ -154,4 +154,4 @@ const Title = () => {
   )
 }
 
-export default Title
+export default TVShow

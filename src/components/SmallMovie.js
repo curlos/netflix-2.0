@@ -65,23 +65,43 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   }
 
   const getMovieDetails = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`)
-    return response.data
+    if (movie.first_air_date) {
+      const response = await axios.get(`https://api.themoviedb.org/3/tv/${movie.id}?api_key=${API_KEY}&language=en-US`)
+      return response.data
+    } else {
+      const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`)
+      return response.data
+    }
   }
 
   const getVideos = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${API_KEY}&language=en-US`)
-    return response.data
+    if (movie.first_air_date) {
+      const response = await axios.get(`https://api.themoviedb.org/3/tv/${movie.id}/videos?api_key=${API_KEY}&language=en-US`)
+      return response.data
+    } else {
+      const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${API_KEY}&language=en-US`)
+      return response.data
+    }
   }
 
   const getCredits = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${API_KEY}&language=en-US`)
-    return response.data
+    if (movie.first_air_date) {
+      const response = await axios.get(`https://api.themoviedb.org/3/tv/${movie.id}/credits?api_key=${API_KEY}&language=en-US`)
+      return response.data
+    } else {
+      const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${API_KEY}&language=en-US`)
+      return response.data
+    }
   }
 
   const getRecommendedMovies = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`)
-    return response.data
+    if (movie.first_air_date) {
+      const response = await axios.get(`https://api.themoviedb.org/3/tv/${movie.id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`)
+      return response.data
+    } else {
+      const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`)
+      return response.data
+    }
   }
 
   const convertMinToHours = (n) => {
@@ -100,10 +120,19 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   if(show) {
     console.log(videos)
   }
+
+  const handleNavigation = () => {
+    console.log('hello wrold')
+    if (movie.first_air_date) {
+      navigate(`/title/tv/${movie.id}`)
+    } else {
+      navigate(`/title/movie/${movie.id}`)
+    }
+  }
   
 
   return (
-    <div className="flex-1" onClick={() => navigate(`/title/${movie.id}`)}>
+    <div className="flex-1" onClick={handleNavigation}>
       {hoveredValue && hoveredValue === movie && !loading ? (
 
         <div className="text-white">
