@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
+import { useNavigate } from 'react-router'
 
-const Seasons = ({ seasons }) => {
-
-  console.log(seasons)
-
+const Seasons = ({ tvShowID, seasons }) => {
+  const navigate = useNavigate()
   const [selectedSeason, setSelectedSeason] = useState(1)
 
   return (
@@ -30,7 +29,7 @@ const Seasons = ({ seasons }) => {
 
       {seasons[selectedSeason - 1].episodes.map((episode) => {
         return (
-          <div className="p-3 d-flex align-items-center gap-4 border-bottom border-secondary">
+          <div className="p-3 d-flex align-items-center gap-4 border-bottom border-secondary tvSmallEpisode" onClick={() => navigate(`/title/tv/${tvShowID}/season/${selectedSeason}/episode/${episode.episode_number}`)}>
             <h3>{episode.episode_number}</h3>
             <img src={`https://image.tmdb.org/t/p/original${episode?.still_path}`} alt={''} className="moviePoster"/>
 

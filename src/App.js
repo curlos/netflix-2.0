@@ -20,6 +20,7 @@ import Movies from './pages/browse/Movies'
 import TVShows from './pages/browse/TVShows'
 import Movie from './pages/Movie'
 import TVShow from './pages/TVShow'
+import TVEpisode from './pages/TVEpisode'
 
 
 const App = () => {
@@ -56,8 +57,9 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/tv-shows" element={<TVShows />} />
-        <Route path="/title/movie/:id" element={<Movie />} />
-        <Route path="/title/tv/:id" element={<TVShow />} />
+        <Route path="/title/movie/:id" element={<Movie />} exact/>
+        <Route path="/title/tv/:id" element={<TVShow />} exact/>
+        <Route path="/title/tv/:id/season/:seasonNum/episode/:episodeNum" element={<TVEpisode />} />
 
         <Route path="/" element={<Home />} />
       </Routes>

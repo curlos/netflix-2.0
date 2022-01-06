@@ -90,7 +90,7 @@ const Banner = ({ apiLink }) => {
 
   return (
     loading ? <div>Loading...</div> : (
-      <div>
+      <div className="bannerContainer">
         <div
           style={{
             backgroundSize: 'cover',

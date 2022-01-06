@@ -159,7 +159,7 @@ const TVShow = () => {
             </div>
           </div>
 
-          <Seasons seasons={seasons} />
+          <Seasons tvShowID={id} seasons={seasons} />
 
           <RecommendedMoviesList recommendedMovies={recommendedTVShows} />
         </div>

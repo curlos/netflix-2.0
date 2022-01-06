@@ -34,9 +34,9 @@ const Home = () => {
 
   const debounceMovieSearch = useCallback(
     debounce((searchQuery) => {
-      axios.get(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchQuery}`)
+      axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${searchQuery}`)
       .then((response) => {
-        console.log(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchQuery}`)
+        console.log(`https://api.themoviedb.org/3/multi/movie?api_key=${API_KEY}&query=${searchQuery}`)
         console.log(response.data.results)
         setMovies(response.data.results)
         setTotalResults(response.data)

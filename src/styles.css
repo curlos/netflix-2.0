@@ -26,6 +26,10 @@ a {
   height: 70px;
 }
 
+.bannerContainer {
+  margin-top: 70px;
+}
+
 .navLink {
   font-size: 14px;
 }
@@ -55,6 +59,12 @@ a {
 .fade-effect {
   height: 100vh;
   background-image: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,1) 100%);
+  margin-top: -100vh;
+}
+
+.fade-effect-less-harsh {
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
   margin-top: -100vh;
 }
 
@@ -419,4 +429,12 @@ a {
 .selectedPageNum {
   font-weight: bold;
   color: white;
+}
+
+.tvSmallEpisode {
+  cursor: pointer;
+}
+
+.tvEpisodePage {
+  margin-top: 70px;
 }

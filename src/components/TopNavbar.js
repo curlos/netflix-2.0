@@ -19,7 +19,7 @@ const TopNavbar = () => {
   }, [searchQuery])
 
   return (
-    <Navbar variant="dark" className="px-5 bg-black fixed-top">
+    <Navbar variant="dark" className="px-5 bg-black fixed-top topNavbar">
       <Nav.Link className="h-100 ps-0">
         <Link to="/" className="navLink">
           <img src="/assets/netflix_logo.png" alt="" className="navImage"/>
