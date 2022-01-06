@@ -49,7 +49,7 @@ const MovieModal = ({ movie, details, videos, credits, recommendedMovies, show, 
                 </div>
                 <div className="">
                   <div className="text-center fs-3">
-                    <span>{movie?.vote_average}</span>
+                    <span>{Math.round((movie?.vote_average + Number.EPSILON) * 100) / 100}</span>
                     <span className="text-secondary">/10</span> 
                   </div>
                   

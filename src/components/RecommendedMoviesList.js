@@ -10,7 +10,7 @@ const RecommendedMoviesList = ({ recommendedMovies }) => {
   return (
     recommendedMovies.results.length >= 1 ? 
     (
-      <div className="p-3">
+      <div className="py-3">
         <div className="fs-4">More Like This</div>
 
         <div className="d-flex flex-wrap gap-2">

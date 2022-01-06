@@ -44,7 +44,7 @@ const Movies = () => {
 
     const includedGenres = getIncludedGenresString()
     
-    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
+    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&first_air_date_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
       console.log(response.data)
       setMovies(response.data.results)
       setLoading(false)

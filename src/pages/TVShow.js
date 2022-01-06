@@ -10,6 +10,7 @@ import { Spinner } from 'react-bootstrap';
 import { getGenreNames } from '../utils/genres_v2'
 import { getAllDirectors, getAllActors } from '../utils/credits';
 import RecommendedMoviesList from '../components/RecommendedMoviesList'
+import Seasons from '../components/Seasons'
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
@@ -19,23 +20,39 @@ const TVShow = () => {
   const [details, setDetails] = useState()
   const [videos, setVideos] = useState()
   const [credits, setCredits] = useState()
-  const [recommendedMovies, setRecommendedMovies] = useState()
+  const [recommendedTVShows, setRecommendedTVShows] = useState()
+  const [seasons, setSeasons] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getAndSetAllMovieDetails()
+    getAndSetAllTVShowDetails()
   }, [id])
 
-  const getAndSetAllMovieDetails = async () => {
+  useEffect(() => {
+    const getAllSeasons = async () => {
+
+      let currSeasons = []
+      for (let seasonNum = 1; seasonNum <= details.number_of_seasons; seasonNum++) {
+        const response = await axios.get(`https://api.themoviedb.org/3/tv/${details.id}/season/${seasonNum}?api_key=${API_KEY}`)
+        currSeasons.push(response.data)
+      }
+
+      setSeasons(currSeasons)
+      setLoading(false)
+    }
+
+    getAllSeasons()
+  }, [details])
+
+  const getAndSetAllTVShowDetails = async () => {
     setLoading(true)
-    setDetails(await getMovieDetails())
+    setDetails(await getTVShowDetails())
     setVideos(await getVideos())
     setCredits(await getCredits())
-    setRecommendedMovies(await getRecommendedMovies())
-    setLoading(false)
+    setRecommendedTVShows(await getRecommendedTVShows())
   }
 
-  const getMovieDetails = async () => {
+  const getTVShowDetails = async () => {
     const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`)
     return response.data
   }
@@ -50,16 +67,11 @@ const TVShow = () => {
     return response.data
   }
 
-  const getRecommendedMovies = async () => {
+  const getRecommendedTVShows = async () => {
     const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`)
     return response.data
   }
-
-  console.log(details)
-  if (!loading) {
-    console.log(getAllActors(credits))
-  }
-
+ 
 
   return (
     <div className="bg-black">
@@ -83,9 +95,9 @@ const TVShow = () => {
 
             <div>
               <div className="d-flex justify-content-between">
-                {details.title ? (
+                {details.title || details.original_name ? (
                   <div>
-                    <h1>{details.title}</h1>
+                    <h1>{details.title || details.original_name}</h1>
                   </div>
                 ) : null}
 
@@ -96,7 +108,7 @@ const TVShow = () => {
                     </div>
                     <div className="">
                       <div className="text-center fs-3">
-                        <span>{details?.vote_average}</span>
+                        <span>{Math.round((details?.vote_average + Number.EPSILON) * 100) / 100}</span>
                         <span className="text-secondary">/10</span> 
                       </div>
                       
@@ -147,7 +159,9 @@ const TVShow = () => {
             </div>
           </div>
 
-          <RecommendedMoviesList recommendedMovies={recommendedMovies} />
+          <Seasons seasons={seasons} />
+
+          <RecommendedMoviesList recommendedMovies={recommendedTVShows} />
         </div>
       )}
     </div>

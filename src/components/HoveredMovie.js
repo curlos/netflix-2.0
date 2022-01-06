@@ -8,12 +8,6 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, det
   const genreNamesStr = genreNames.join(' • ')
   const navigate = useNavigate()
 
-  console.log(movie)
-  console.log(details)
-  console.log(videos)
-  console.log(recommendedMovies)
-  console.log(genreNames)
-
   const handleNavigation = () => {
     console.log('hello wrold')
     if (movie.first_air_date) {
@@ -57,7 +51,7 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, det
                   <i className="bi bi-star-fill fs-6 text-warning"></i>
                 </span>
                 <span>
-                  <span>{movie?.vote_average}</span>
+                  <span>{Math.round((movie?.vote_average + Number.EPSILON) * 100) / 100}</span>
                   <span className="text-secondary">/10</span>
                 </span>
               </div>
@@ -68,6 +62,9 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, det
                 ) : null} 
                 {details.runtime && details.runtime > 0 ? (
                   <div className="">{convertMinToHours(details?.runtime).minutes}M</div>
+                ) : null} 
+                {details.number_of_seasons && details.number_of_seasons > 0 ? (
+                  <div className="">{details.number_of_seasons} Season{(details.number_of_seasons > 1) ? 's' : ''}</div>
                 ) : null} 
                 <div className="smallMovieTag">HD</div>
               </div>
