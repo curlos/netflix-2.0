@@ -8,7 +8,7 @@ const MovieList = ({ movies, query, totalResults }) => {
   return (
     <div className="pt-5 text-white">
       <div className="px-5 py-3 fw-bold fs-4 flex align-items-center">{query} ({totalResults.total_results})</div>
-      <div className="d-flex justify-content-between flex-wrap rounded px-5">
+      <div className="d-flex gap-2 flex-wrap rounded px-5">
         {movies.map((movie) => {
           return <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
         })}

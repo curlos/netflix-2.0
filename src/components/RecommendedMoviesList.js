@@ -8,19 +8,22 @@ const RecommendedMoviesList = ({ recommendedMovies }) => {
   console.log(recommendedMovies)
 
   return (
-    <div className="p-3">
-      <div className="fs-4">More Like This</div>
+    recommendedMovies.results.length >= 1 ? 
+    (
+      <div className="p-3">
+        <div className="fs-4">More Like This</div>
 
-      <div className="d-flex flex-wrap recommendedList">
-        {recommendedMovies.results.map((movie) => {
-          return (
-            <div className="" key={movie.id}>
-              <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
-            </div>
-          )
-        })}
+        <div className="d-flex flex-wrap gap-2">
+          {recommendedMovies.results.map((movie) => {
+            return (
+              <div className="" key={movie.id}>
+                <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
+              </div>
+            )
+          })}
+        </div>
       </div>
-    </div>
+    ) : null
   )
 }
 

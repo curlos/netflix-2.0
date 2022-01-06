@@ -15,7 +15,6 @@ const TopNavbar = () => {
   useEffect(() => {
     if (searchQuery) {
       navigate(`/?query=${searchQuery}`)
-      // window.location.href = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchQuery}`
     }
   }, [searchQuery])
 

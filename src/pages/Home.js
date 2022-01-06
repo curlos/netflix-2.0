@@ -47,7 +47,7 @@ const Home = () => {
   
 
   return (
-    <div className="bg-black vw-100">
+    <div className="bg-black vw-100 mw-100">
       <TopNavbar />
       {!searchParams.get('query') ? (
         <div>

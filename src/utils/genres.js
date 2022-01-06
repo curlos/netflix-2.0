@@ -320,6 +320,15 @@ export const YEARS = [
   '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015','2014', '2013','2012', '2011','2010', '2009','2008', '2007','2006', '2005','2004', '2003','2002', '2001','2000', '1990s','1980s', '1970s','1960s', '1950s','1940s', '1930s','1920s', '1910s','1900s'
 ]
 
-export const SORT_TYPES = [
-  'Default', 'Most Popular', 'Most Recent', 'Most Revenue', 'Highest Vote Average', 'Highest Vote Count', 'Least Popular', 'Least Recent', 'Least Revenue', 'Lowest Vote Average', 'Lowest Vote Count'
-]
+export const SORT_TYPES = {
+  'Most Popular': 'popularity.desc', 
+  'Most Recent': 'primary_release_date.desc', 
+  'Highest Grossing': 'revenue.desc', 
+  'Highest Vote Average': 'vote_average.desc', 
+  'Highest Vote Count': 'vote_count.desc', 
+  'Least Popular': 'popularity.asc', 
+  'Least Recent': 'primary_release_date.asc', 
+  'Lowest Grossing': 'revenue.asc', 
+  'Lowest Vote Average': 'vote_average.asc', 
+  'Lowest Vote Count': 'vote_count.asc'
+}

@@ -87,7 +87,7 @@ const Banner = ({ apiLink }) => {
             backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
             backgroundPosition: 'center center'
           }}
-          className="vw-100 vh-100 d-flex align-items-center"
+          className="vw-100 vh-100 mw-100 d-flex align-items-center"
         >
           <div className="px-5 w-50">
             <div className="fs-1 fw-bold mb-2">{movie?.title || movie?.name}</div>

@@ -47,7 +47,7 @@ const App = () => {
   }, [])
 
   return (
-    <div className="bg-black text-white vw-100 vh-100">    
+    <div className="bg-black text-white vw-100 vh-100 mw-100">    
           
       <Routes>
         <Route path="/profile" element={<Profile />} />

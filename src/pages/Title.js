@@ -110,7 +110,7 @@ const Title = () => {
 
               <div className="space-between-y-1">
 
-                {details.genres ? (
+                {details.genres && details.genres.length > 0 ? (
                   <div><span className="text-lightgray" style={{width: '100px'}}>Genre:</span> {getGenreNames(details?.genres)}</div>
                 ) : null}
 
@@ -127,17 +127,21 @@ const Title = () => {
                   </div>
                 ) : null}   
 
-                {details.production_companies ? (
+                {details.production_companies && details.production_companies.length > 0 ? (
                   <div>
-                    <span className="text-lightgray me-1 span">
+                    <span className="text-light=gray me-1 span">
                       Production:
                     </span> 
                     {details.production_companies.map((company, i) => <span>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}  
                   </div>
                 ) : null}
 
-                {credits.cast ? (
+                {credits.cast && credits.cast.length > 0 ? (
                   <div><span className="text-lightgray">Cast:</span> {getAllActors(credits)}</div>
+                ) : null}
+
+                {details.release_date ? (
+                  <div><span className="text-lightgray">Box Office:</span> ${Number(details?.revenue).toLocaleString()}</div>
                 ) : null}
               </div>
             </div>

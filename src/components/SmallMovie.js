@@ -38,7 +38,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
       await getAndSetAllMovieDetails()
       setLoading(false)
     }, 500),
-  [hoveredValue])
+  [hoveredValue, movie])
 
 
   const handleClose = () => {
