@@ -23,28 +23,15 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   const [credits, setCredits] = useState()
   const [recommendedMovies, setRecommendedMovies] = useState()
 
-  useEffect(() => {
-    // getMovieDetails().then((result) => {
-    //   setDetails(result)
-    //   setLoading(false)
-    // })
-  }, [])
+  let timeoutId;
 
-  const debounceHoveredMovie = useCallback(
-    debounce(async (newHoveredMovie) => {
-      setLoading(true)
-      setHoveredValue(newHoveredMovie)
-      setHoveredMovie(newHoveredMovie)
-      await getAndSetAllMovieDetails()
-      setLoading(false)
-    }, 500),
-  [hoveredValue, movie])
-
-
-  const handleClose = () => {
-    setVideos(null)
-    setShow(false)
-  };
+  const showHoveredMovie = async (newHoveredMovie) => {
+    setLoading(true)
+    setHoveredValue(newHoveredMovie)
+    setHoveredMovie(newHoveredMovie)
+    await getAndSetAllMovieDetails()
+    setLoading(false)
+  }
 
   const handleShow = async () => {
     setLoading(false)
@@ -53,8 +40,21 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   };
 
   const handleHover = async () => {
-    debounceHoveredMovie(movie)
+    
+    if (!timeoutId) {
+      timeoutId = window.setTimeout(() => {
+        timeoutId = null
+        showHoveredMovie(movie)
+      }, 1000)
+    }
   };
+
+  const handleHoverLeave = () => {
+    if (timeoutId) {
+      window.clearTimeout(timeoutId)
+      timeoutId = null
+    }
+  }
 
   const getAndSetAllMovieDetails = async () => {
     setLoading(true)
@@ -140,7 +140,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
         </div>
         
         ) : (
-          <div className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} >
+          <div className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} onMouseLeave={handleHoverLeave}>
             <div>
               <img src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`} alt="" className={`movieImage m-1 rounded`}
               />
