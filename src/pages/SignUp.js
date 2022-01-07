@@ -27,7 +27,9 @@ const SignUp = () => {
   return (
     <div className="authPage d-flex justify-content-center align-items-center">
       <div className="d-flex justify-content-between fixed-top p-4">
-        <img src="/assets/netflix_logo.png" alt="" className="authLogo"/>
+        <Link to="/">
+          <img src="/assets/netflix_logo.png" alt="" className="authLogo"/>
+        </Link>
         <button className="netflixRedButton">Sign Up</button>
       </div>
 

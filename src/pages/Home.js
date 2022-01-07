@@ -8,8 +8,6 @@ import {
   useParams,
   useNavigate
 } from "react-router-dom";
-import { useSelector } from 'react-redux'
-import { selectUser } from '../features/userSlice'
 import axios from 'axios'
 import { debounce } from 'lodash'
 import MovieList from '../components/MovieList'
@@ -23,8 +21,6 @@ const Home = () => {
   const [searchParams] = useSearchParams()
 
   const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
-
-  console.log(id)
 
   useEffect(() => {
     if (searchParams.get('query')) {

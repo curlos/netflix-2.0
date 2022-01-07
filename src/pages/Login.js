@@ -1,8 +1,7 @@
 import React, { useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux'
 import { login } from '../features/userSlice'
 
@@ -10,6 +9,7 @@ const Login = () => {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const dispatch = useDispatch()
+
   const navigate = useNavigate()
 
   const handleSignIn = (e) => {
@@ -39,7 +39,9 @@ const Login = () => {
   return (
     <div className="authPage d-flex justify-content-center align-items-center">
       <div className="d-flex justify-content-between fixed-top p-4">
-        <img src="/assets/netflix_logo.png" alt="" className="authLogo"/>
+        <Link to="/">
+          <img src="/assets/netflix_logo.png" alt="" className="authLogo" />
+        </Link>
         <button className="netflixRedButton">Sign In</button>
       </div>
 
