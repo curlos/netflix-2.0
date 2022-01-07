@@ -23,39 +23,43 @@ const Seasons = ({ tvShowID, seasons }) => {
         </Dropdown.Menu>
       </Dropdown>
 
-      <h3 className="">Episodes</h3>
+      <div>{seasons[selectedSeason - 1].overview}</div>
 
-      <img src={`https://image.tmdb.org/t/p/original${seasons[selectedSeason - 1]?.poster_path}`} alt={''} className="moviePoster"/>
+      <h3 className="my-3">Episodes</h3>
 
-      {seasons[selectedSeason - 1].episodes.map((episode) => {
-        return (
-          <div className="p-3 d-flex align-items-center gap-4 border-bottom border-secondary tvSmallEpisode" onClick={() => navigate(`/title/tv/${tvShowID}/season/${selectedSeason}/episode/${episode.episode_number}`)}>
-            <h3>{episode.episode_number}</h3>
-            <img src={`https://image.tmdb.org/t/p/original${episode?.still_path}`} alt={''} className="moviePoster"/>
+      <div>
+        {seasons[selectedSeason - 1].episodes.map((episode) => {
+          return (
+            <div className="p-3 d-flex justify-content-between align-items-center gap-4 border-bottom border-secondary tvSmallEpisode" onClick={() => navigate(`/title/tv/${tvShowID}/season/${selectedSeason}/episode/${episode.episode_number}`)}>
+              <div className="d-flex align-items-center gap-4">
+                <h3>{episode.episode_number}</h3>
+                <img src={`https://image.tmdb.org/t/p/original${episode?.still_path}`} alt={''} className="moviePoster"/>
 
-            <div>
-              <h4 className="fw-bold">{episode.name}</h4>
-              <div>{episode.overview}</div>
-            </div>
-
-            {episode?.vote_count > 0 ? (
-              <div className="d-flex align-items-center gap-2">
                 <div>
-                  <i className="bi bi-star-fill fs-3 text-warning"></i>
-                </div>
-                <div className="">
-                  <div className="text-center fs-3">
-                    <span>{Math.round((episode?.vote_average + Number.EPSILON) * 100) / 100}</span>
-                    <span className="text-secondary">/10</span> 
-                  </div>
-                  
-                  <div className="fs-6 text-secondary text-center">{Number(episode?.vote_count).toLocaleString()}</div>
+                  <h4 className="fw-bold">{episode.name}</h4>
+                  <div>{episode.overview}</div>
                 </div>
               </div>
-            ) : null}
-          </div>
-        )
-      })}
+
+              {episode?.vote_count > 0 ? (
+                <div className="d-flex align-items-center gap-2">
+                  <div>
+                    <i className="bi bi-star-fill fs-3 text-warning"></i>
+                  </div>
+                  <div className="">
+                    <div className="text-center fs-3">
+                      <span>{Math.round((episode?.vote_average + Number.EPSILON) * 100) / 100}</span>
+                      <span className="text-secondary">/10</span> 
+                    </div>
+                    
+                    <div className="fs-6 text-secondary text-center">{Number(episode?.vote_count).toLocaleString()}</div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

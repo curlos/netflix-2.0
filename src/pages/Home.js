@@ -44,6 +44,8 @@ const Home = () => {
     })
     }, 1000),
   [])
+
+  console.log(movies)
   
 
   return (

@@ -1,10 +1,12 @@
 export const getGenreNames = (genreIDs, mediaType) => {
   const genreNames = []
 
-  for (let genreID of genreIDs) {
-    const genreName = getGenreName(genreID, mediaType)
-    if (genreName) {
-      genreNames.push(genreName)
+  if (genreIDs) {
+    for (let genreID of genreIDs) {
+      const genreName = getGenreName(genreID, mediaType)
+      if (genreName) {
+        genreNames.push(genreName)
+      }
     }
   }
   

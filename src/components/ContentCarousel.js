@@ -32,7 +32,7 @@ const ContentCarousel = ({ apiUrl, name, hoveredValue, setHoveredValue }) => {
         <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
           <Carousel.Item>
             <Col>
-              <div className="d-flex justify-content-between">
+              <div className="d-flex gap-2 justify-content-between">
                 {movies.slice(0,5).map((movie) => (
                   <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
                 ))}

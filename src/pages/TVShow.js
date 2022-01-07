@@ -28,28 +28,15 @@ const TVShow = () => {
     getAndSetAllTVShowDetails()
   }, [id])
 
-  useEffect(() => {
-    const getAllSeasons = async () => {
-
-      let currSeasons = []
-      for (let seasonNum = 1; seasonNum <= details.number_of_seasons; seasonNum++) {
-        const response = await axios.get(`https://api.themoviedb.org/3/tv/${details.id}/season/${seasonNum}?api_key=${API_KEY}`)
-        currSeasons.push(response.data)
-      }
-
-      setSeasons(currSeasons)
-      setLoading(false)
-    }
-
-    getAllSeasons()
-  }, [details])
-
   const getAndSetAllTVShowDetails = async () => {
     setLoading(true)
-    setDetails(await getTVShowDetails())
+    const newDetails = await getTVShowDetails()
+    setDetails(newDetails)
     setVideos(await getVideos())
     setCredits(await getCredits())
     setRecommendedTVShows(await getRecommendedTVShows())
+    setSeasons(await getAllSeasons(newDetails))
+    setLoading(false)
   }
 
   const getTVShowDetails = async () => {
@@ -71,6 +58,22 @@ const TVShow = () => {
     const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`)
     return response.data
   }
+
+  const getAllSeasons = async (newDetails) => {
+
+    console.log(newDetails)
+
+    let currSeasons = []
+    for (let seasonNum = 1; seasonNum <= newDetails.number_of_seasons; seasonNum++) {
+      const response = await axios.get(`https://api.themoviedb.org/3/tv/${newDetails.id}/season/${seasonNum}?api_key=${API_KEY}`)
+      currSeasons.push(response.data)
+    }
+
+    return currSeasons
+  }
+
+  console.log(loading)
+  console.log(seasons)
  
 
   return (
@@ -79,14 +82,14 @@ const TVShow = () => {
 
       {loading ? <Spinner /> : (
         <div className="p-5 mt-4">
-          {/* {videos.results.length >= 1 ? 
+          {videos.results.length >= 1 ? 
           (<div className="videoWrapper" style={{}}>
-            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1&start=10`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
+            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
           </div>) : (
             <div>
               <img src={`https://image.tmdb.org/t/p/original${details?.backdrop_path || details?.poster_path}`} alt="" className="w-100"/>
             </div>
-          )} */}
+          )}
 
           <div className="d-flex gap-4 my-4">
             <div>
