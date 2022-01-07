@@ -5,6 +5,9 @@ import axios from 'axios'
 import Banner from '../../components/Banner'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Pagination from 'react-bootstrap/Pagination'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import { MOVIE_GENRES, YEARS, SORT_TYPES } from '../../utils/genres'
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY
@@ -141,7 +144,7 @@ const Movies = () => {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          <div className="d-flex flex-wrap gap-2 rounded px-5">
+          <div className="smallMoviesGrid px-5">
             {movies.map((movie) => {
               return <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
             })}
@@ -171,8 +174,6 @@ const Movies = () => {
           <Pagination.Next onClick={() => setPageNum(pageNum + 1)} />
           <Pagination.Last onClick={() => setPageNum(1000)}/>
         </Pagination>
-
-        <div className="py-5">{pageNum}</div>
       </div>
     )
   )

@@ -13,7 +13,7 @@ const RecommendedMoviesList = ({ recommendedMovies }) => {
       <div className="py-3">
         <div className="fs-4">More Like This</div>
 
-        <div className="d-flex flex-wrap gap-2">
+        <div className="smallMoviesGrid">
           {recommendedMovies.results.map((movie) => {
             return (
               <div className="" key={movie.id}>

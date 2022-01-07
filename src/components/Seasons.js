@@ -30,7 +30,7 @@ const Seasons = ({ tvShowID, seasons }) => {
       <div>
         {seasons[selectedSeason - 1].episodes.map((episode) => {
           return (
-            <div className="p-3 d-flex justify-content-between align-items-center gap-4 border-bottom border-secondary tvSmallEpisode" onClick={() => navigate(`/title/tv/${tvShowID}/season/${selectedSeason}/episode/${episode.episode_number}`)}>
+            <div className="py-2 p-md-3 d-flex justify-content-between align-items-center gap-4 border-bottom border-secondary tvSmallEpisode" onClick={() => navigate(`/title/tv/${tvShowID}/season/${selectedSeason}/episode/${episode.episode_number}`)}>
               <div className="d-flex align-items-center gap-4">
                 <h3>{episode.episode_number}</h3>
                 <img src={`https://image.tmdb.org/t/p/original${episode?.still_path}`} alt={''} className="moviePoster"/>
@@ -42,7 +42,7 @@ const Seasons = ({ tvShowID, seasons }) => {
               </div>
 
               {episode?.vote_count > 0 ? (
-                <div className="d-flex align-items-center gap-2">
+                <div className="d-none d-lg-flex align-items-center gap-2">
                   <div>
                     <i className="bi bi-star-fill fs-3 text-warning"></i>
                   </div>

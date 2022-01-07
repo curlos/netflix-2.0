@@ -27,7 +27,7 @@ const Banner = ({ apiLink }) => {
     }
 
     fetchFromAPI()
-  }, [])
+  }, [apiLink])
 
   console.log(movie)
 
@@ -50,32 +50,6 @@ const Banner = ({ apiLink }) => {
 
   }, [loading, movie])
 
-  const handleClose = () => {
-    setShow(false)
-  };
-
-  const handleShow = async () => {
-    setLoading(false)
-    setShow(true)
-
-  };
-
-  const convertMinToHours = (n) => {
-      var num = Number(n);
-      var hours = (num / 60);
-      var rhours = Math.floor(hours);
-      var minutes = (hours - rhours) * 60;
-      var rminutes = Math.round(minutes);
-      
-      return {
-        hours: rhours,
-        minutes: rminutes
-      }
-  }
-
-  if(show) {
-    console.log(videos)
-  }
 
   const handleNavigation = () => {
     console.log('hello wrold')
@@ -99,11 +73,11 @@ const Banner = ({ apiLink }) => {
           }}
           className="vw-100 vh-100 mw-100 d-flex align-items-center"
         >
-          <div className="px-5 w-50">
+          <div className="px-5 w-75">
             <div className="fs-1 fw-bold mb-2">{movie?.title || movie?.name}</div>
             <div className="fs-5 fw-light mb-2" ref={overviewRef}></div>
             <div className="d-flex">
-              <div className="btn btn-light me-2 fw-bold d-flex align-items-center" onClick={handleShow}>
+              <div className="btn btn-light me-2 fw-bold d-flex align-items-center">
                 <div className="bi-play-fill me-2 fs-4" />
                 <div className="fs-6" onClick={handleNavigation}>Play</div>
               </div>
@@ -115,10 +89,6 @@ const Banner = ({ apiLink }) => {
           </div>
         </div>
         <div className="fade-effect" />
-
-        {/* {show && !loading ? (
-          <MovieModal movie={movie} show={show} handleClose={handleClose} convertMinToHours={convertMinToHours} OMDBMovieInfo={OMDBMovieInfo} videos={videos}/>
-        ) : null} */}
         
       </div>
     )

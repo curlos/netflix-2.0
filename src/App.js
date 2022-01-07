@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import './styles.css'
 import {
   Routes,
   Route
@@ -6,8 +7,6 @@ import {
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import Genres from './pages/browse/Genres';
-import './styles.css'
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase'
 import { useDispatch } from 'react-redux';

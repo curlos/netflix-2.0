@@ -60,13 +60,12 @@ const Movie = () => {
     console.log(getAllActors(credits))
   }
 
-
   return (
-    <div className="bg-black">
+    <div className="bg-black navbarMargin">
       <TopNavbar />
 
       {loading ? <Spinner /> : (
-        <div className="p-5 mt-4">
+        <div className="p-3 p-md-5">
           {videos.results.length >= 1 ? 
           (<div className="videoWrapper" style={{}}>
             <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
@@ -76,16 +75,16 @@ const Movie = () => {
             </div>
           )}
 
-          <div className="d-flex gap-4 my-4">
+          <div className="d-flex gap-md-4 my-4">
             <div>
               <img src={`https://image.tmdb.org/t/p/original${details?.poster_path || details?.backdrop_path}`} alt="" className="moviePoster"/>
             </div>
 
             <div>
-              <div className="d-flex justify-content-between">
+              <div className="d-flex justify-content-between align-items-center">
                 {details.title ? (
                   <div>
-                    <h1>{details.title}</h1>
+                    <h1 className="fw-bold">{details.title || details.name || details.original_name}</h1>
                   </div>
                 ) : null}
 
