@@ -1,11 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser } from '../features/userSlice'
 import { login, logout } from '../features/userSlice'
 
-const SideNavbar = ({ open, setOpen, user }) => {
+const SideNavbar = ({ open, setOpen }) => {
 
+  const user = useSelector(selectUser)
   const dispatch = useDispatch()
+
+  console.log(user)
 
   return (
     <div id="mySidenav" class={`sidenav ${open ? 'sidenavOpen' : ''}`}>
@@ -15,7 +19,11 @@ const SideNavbar = ({ open, setOpen, user }) => {
       {user && user.email ? (
         <span>
           <Link to="/profile">My Account</Link>
-          <Link to="/logout" onClick={() => dispatch(logout)}>Logout</Link>
+          <div onClick={() => {
+            console.log(user)
+            dispatch(logout)
+            console.log(user)
+          }}>Logout</div>
         </span>
       ) : (
         <span>

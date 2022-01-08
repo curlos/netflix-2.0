@@ -51,7 +51,7 @@ const TopNavbar = () => {
         <div className="d-flex align-items-center gap-3">
           <div className="border border-white px-2 py-1">
             <i className="bi bi-search mediumIcon"></i>
-            <input autoFocus={true} className="bg-black border-0 text-white p-1 px-2" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onSubmit={(e) => setSearchQuery(e.target.value)} />
+            <input className="bg-black border-0 text-white p-1 px-2" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onSubmit={(e) => setSearchQuery(e.target.value)} />
           </div>
 
           {user && user.email ? (
@@ -85,7 +85,7 @@ const TopNavbar = () => {
 
       </Nav>
 
-      <SideNavbar open={open} setOpen={setOpen} user={user}/>
+      <SideNavbar open={open} setOpen={setOpen} />
     </Navbar>
   )
 }

@@ -467,6 +467,10 @@ a:hover {
   margin-top: 70px;
 }
 
+.navbarMarginTwo {
+  margin-top: 83px;
+}
+
 .topNavbarLink {
   display: flex;
 }
@@ -509,6 +513,11 @@ a:hover {
   width: 250px;
 }
 
+.profileContainer {
+  width: 75vw;
+  height: 75vh;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .smallMoviesGrid {
@@ -530,6 +539,7 @@ a:hover {
   .smallMoviesGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+  
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -537,6 +547,7 @@ a:hover {
   .smallMoviesGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
