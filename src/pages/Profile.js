@@ -2,14 +2,29 @@ import React, { useState, useEffect } from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { Link, useNavigate } from 'react-router-dom'
 import Plans from '../components/Plans'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { selectUser } from '../features/userSlice'
+import { auth } from '../firebase'
+import { signOut } from 'firebase/auth'
+import { logout } from '../features/userSlice'
 
 const Profile = () => {
   const user = useSelector(selectUser)
   const [currentEmail, setCurrentEmail] = useState(user && user.email)
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleLogout = async () => {
+    try {
+      console.log(auth)
+      await signOut(auth)
+      dispatch(logout)
+      window.location.reload()
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     if (!user || !currentEmail) {
@@ -17,7 +32,7 @@ const Profile = () => {
     }
 
     window.scrollTo(0,0)
-  }, [])
+  }, [currentEmail, navigate, user])
   
   return (
     user ? (
@@ -47,7 +62,7 @@ const Profile = () => {
           <hr />
 
           <div className="d-flex flex-column flex-lg-row justify-content-center gap-2">
-            <button type="button" className="profileBottomButton">Sign Out</button>
+            <button type="button" className="profileBottomButton" onClick={handleLogout}>Sign Out</button>
           </div>
         </div>
       </div>

@@ -55,6 +55,7 @@ const Plans = () => {
     fetchFromDB()
   }, [])
 
+  console.log(products)
   console.log(subscription)
 
   const loadCheckout = async (priceID) => {
@@ -89,17 +90,26 @@ const Plans = () => {
     return strArr.join(' ')
   }
 
-  console.log(user)
-
   return (
     loading ? <div className=""><Spinner animation="border" variant="danger" /></div>: (
       <div className="space-between-y-2">
-        <div>Plans (Current Plan: {getTitleCase(subscription?.role)})</div>
-        <div className="fs-md">Renewal date: {new Date(subscription.current_period_end * 1000).toLocaleDateString()}</div>
+        {!subscription ? 
+          <div>
+            Plans (Current Plan: None)
+          </div> : null}
+        {subscription ? 
+          (
+            <div>
+              <div>Plans (Current Plan: {getTitleCase(subscription?.role)})</div>
+              <div className="fs-md">
+                Renewal date: {new Date(subscription.current_period_end * 1000).toLocaleDateString()}
+              </div>
+            </div>
+          ) : null}
 
         <div className="fs-md space-between-y-4">
           {Object.entries(products).map(([productId, productData]) => {
-            const isCurrentPackage = productData?.name.toLowerCase().includes(subscription?.role)
+            const isCurrentPackage = subscription ? (productData?.name.toLowerCase().includes(subscription?.role)) : false
 
             return (
               <div key={productId} className="d-flex justify-content-between gap-2 w-100">
