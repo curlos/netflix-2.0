@@ -1,29 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser } from '../features/userSlice'
 import { login, logout } from '../features/userSlice'
+import { auth } from '../firebase'
+import { signOut } from 'firebase/auth';
 
 const SideNavbar = ({ open, setOpen }) => {
 
   const user = useSelector(selectUser)
   const dispatch = useDispatch()
 
-  console.log(user)
+  const handleLogout = async () => {
+    try {
+      console.log(auth)
+      await signOut(auth)
+      dispatch(logout)
+      console.log(user)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div id="mySidenav" class={`sidenav ${open ? 'sidenavOpen' : ''}`}>
-      <Link to="/" class="closebtn" onClick={() => setOpen(false)}>&times;</Link>
+      <button class="closebtn" onClick={() => setOpen(false)}>&times;</button>
       <Link to="/movies">Movies</Link>
       <Link to="/tv-shows">TV Shows</Link>
       {user && user.email ? (
         <span>
           <Link to="/profile">My Account</Link>
-          <div onClick={() => {
-            console.log(user)
-            dispatch(logout)
-            console.log(user)
-          }}>Logout</div>
+          <div className="sidenavLogout" onClick={handleLogout}>Logout</div>
         </span>
       ) : (
         <span>

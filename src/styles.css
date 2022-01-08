@@ -262,6 +262,9 @@ a {
 .authForm {
   border-radius: 10px;
   width: 70%;
+  margin-top: 70px;
+  background-color: black;
+  padding: 35px;
 }
 
 .authInput {
@@ -488,7 +491,7 @@ a:hover {
   padding-top: 60px;
 }
 
-.sidenav a {
+.sidenav a, .sidenavLogout {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
@@ -497,7 +500,7 @@ a:hover {
   transition: 0.3s;
 }
 
-.sidenav a:hover {
+.sidenav a:hover, .sidenav .sidenavLogout:hover {
   color: #f1f1f1;
 }
 
@@ -507,6 +510,9 @@ a:hover {
   right: 25px;
   font-size: 36px;
   margin-left: 50px;
+  color: white;
+  background-color: transparent;
+  border: none;
 }
 
 .sidenavOpen {
@@ -516,6 +522,23 @@ a:hover {
 .profileContainer {
   width: 75vw;
   height: 75vh;
+}
+
+.spinnerContainer {
+  height: 100vh;
+  width: 100vw;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdown-item {
+  color: rgb(150, 150, 150) !important;
+}
+
+.dropdown-item:active {
+  background-color: transparent !important;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -539,6 +562,12 @@ a:hover {
   .profileContainer {
     min-width: 90vw;
     min-height: 75vh;
+  }
+
+  .authForm {
+    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
   }
 }
 

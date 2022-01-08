@@ -29,6 +29,7 @@ const App = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (userAuth) => {
+      console.log(userAuth)
       if (userAuth) {
         // Logged in
         console.log(userAuth)

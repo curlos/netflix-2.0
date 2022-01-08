@@ -8,9 +8,6 @@ import { useWindowSize } from '../hooks/useWindowSize'
 
 const getNumOfMoviesShown = (windowSize) => {
   if (windowSize && windowSize.width) {
-    console.log(windowSize.width)
-    console.log(windowSize.width < 576)
-    
     if (windowSize.width <= 576) {
       return 2
     } else if (windowSize.width < 768) {

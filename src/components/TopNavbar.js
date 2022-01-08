@@ -6,17 +6,33 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { login, logout } from '../features/userSlice'
 import { useSelector } from 'react-redux'
+import { auth } from '../firebase'
+import { signOut } from 'firebase/auth'
 import { selectUser } from '../features/userSlice'
 import SideNavbar from './SideNavbar'
 
 const TopNavbar = () => {
 
   const user = useSelector(selectUser)
+  const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
 
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
+
+  const handleLogout = async () => {
+    try {
+      console.log(auth)
+      await signOut(auth)
+      dispatch(logout)
+      window.reload()
+      console.log(user)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  console.log(user)
 
   return (
     <Navbar variant="dark" className="px-2 px-md-5 bg-black fixed-top topNavbar">
@@ -43,7 +59,14 @@ const TopNavbar = () => {
         <div className="d-flex align-items-center gap-3">
           <div className="border border-white px-2 py-1">
             <i className="bi bi-search mediumIcon"></i>
-            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className="bg-black border-0 text-white p-1 px-2 w-75" placeholder="Titles, people, genres" value={searchParams.get('query') || ''} onChange={(e) => navigate(`/?query=${e.target.value}`)} onSubmit={(e) => navigate(`/?query=${e.target.value}`)} />
+            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className="bg-black border-0 text-white p-1 px-2 w-75" placeholder="Titles, people, genres" value={searchParams.get('query') || ''} onChange={(e) => {
+              console.log([e.target.value])
+              if (e.target.value[e.target.value.length - 1] === ' ') {
+                navigate(`/?query=${e.target.value} `)
+              } else {
+                navigate(`/?query=${e.target.value}`)
+              }
+            }} onSubmit={(e) => navigate(`/?query=${e.target.value}`)} />
           </div>
 
           {user && user.email ? (
@@ -56,7 +79,7 @@ const TopNavbar = () => {
                 <Dropdown.Item>
                   <Link to="/profile">My Account</Link>
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => dispatch(logout)}><Link to="/login">Sign Out</Link></Dropdown.Item>
+                <Dropdown.Item onClick={handleLogout}><span>Sign Out</span></Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           ) : (

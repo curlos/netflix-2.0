@@ -58,7 +58,7 @@ const TVEpisode = () => {
   }, [id])
 
   return (
-    loading ? <div>Loading...</div> : (
+    loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
       <div>
         <TopNavbar />
         <TVEpisodeBanner tvShow={tvShow} episode={episode}/>

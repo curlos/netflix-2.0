@@ -2,10 +2,12 @@ import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { useNavigate } from 'react-router'
 
 const SignUp = () => {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
+  const navigate = useNavigate()
 
   const handleRegister = (e) => {
     e.preventDefault()
@@ -17,6 +19,7 @@ const SignUp = () => {
       )
       .then((authUser) => {
         console.log(authUser)
+        navigate('/login')
       })
       .catch((error) => {
         alert(error.message)
@@ -36,7 +39,7 @@ const SignUp = () => {
         <button className="netflixRedButton">Sign Up</button>
       </div>
 
-      <form className="bg-black authForm p-5">
+      <form className="authForm" onSubmit={handleRegister}>
         <div className="fs-2 fw-bold">Sign Up</div>
 
         <div className="my-3">
@@ -44,7 +47,7 @@ const SignUp = () => {
           <input ref={passwordRef} type="password" className="w-100 authInput" placeholder="Password"/>
         </div>
 
-        <div className="w-100 my-4 netflixRedButton" onClick={handleRegister}>Sign Up</div>
+        <button className="w-100 my-4 netflixRedButton" type="submit">Sign Up</button>
 
         <div>
           <span className="text-lightgray">Have an account?</span> 

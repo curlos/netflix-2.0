@@ -15,8 +15,6 @@ const Login = () => {
   const handleSignIn = (e) => {
     e.preventDefault()
 
-    console.log('clicked bitch')
-
     signInWithEmailAndPassword(
         auth,
         emailRef.current.value,
@@ -48,10 +46,10 @@ const Login = () => {
         <button className="netflixRedButton">Sign In</button>
       </div>
 
-      <form className="bg-black authForm p-5" onSubmit={handleSignIn}>
+      <form className="authForm" onSubmit={handleSignIn}>
         <div className="fs-2 fw-bold">Sign In</div>
 
-        <input ref={emailRef} type="text" className="w-100 mb-3 authInput" placeholder="Email"/>
+        <input ref={emailRef} type="text" className="w-100 my-3 authInput" placeholder="Email"/>
         <input ref={passwordRef} type="password" className="w-100 authInput" placeholder="Password"/>
 
         <button type="submit" className="w-100 my-4 netflixRedButton" onClick={handleSignIn}>Sign In</button>

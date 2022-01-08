@@ -4,6 +4,7 @@ import requests, { API_BASE_URL } from '../requests';
 import { Link, useNavigate } from 'react-router-dom';
 import MovieModal from './MovieModal';
 import Typed from 'typed.js'
+import { Spinner } from 'react-bootstrap';
 
 const Banner = ({ apiLink }) => {
 
@@ -28,8 +29,6 @@ const Banner = ({ apiLink }) => {
 
     fetchFromAPI()
   }, [apiLink])
-
-  console.log(movie)
 
   useEffect(() => {
     console.log(movie)
@@ -63,7 +62,7 @@ const Banner = ({ apiLink }) => {
 
 
   return (
-    loading ? <div>Loading...</div> : (
+    loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
       <div className="bannerContainer">
         <div
           style={{

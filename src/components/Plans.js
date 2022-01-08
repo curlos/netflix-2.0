@@ -4,6 +4,7 @@ import { db } from '../firebase'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../features/userSlice'
 import { loadStripe } from '@stripe/stripe-js'
+import Spinner from 'react-bootstrap/Spinner'
 
 const Plans = () => {
   const [products, setProducts] = useState({})
@@ -16,6 +17,8 @@ const Plans = () => {
     const fetchFromDB = async () => {
       const customerDoc = doc(db, 'customers', user.uid)
       const querySnapshot = await getDocs(collection(customerDoc, 'subscriptions'))
+
+      
 
       querySnapshot.forEach((subscription) => {
         setSubscription({
@@ -96,7 +99,7 @@ const Plans = () => {
   console.log(user)
 
   return (
-    loading ? <div>Loading...</div> : (
+    loading ? <div className=""><Spinner animation="border" variant="danger" /></div>: (
       <div className="space-between-y-2">
         <div>Plans (Current Plan: {getTitleCase(subscription?.role)})</div>
         <div className="fs-md">Renewal date: {new Date(subscription.current_period_end * 1000).toLocaleDateString()}</div>

@@ -6,6 +6,7 @@ import Banner from '../../components/Banner'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Pagination from 'react-bootstrap/Pagination'
 import { MOVIE_GENRES, YEARS, SORT_TYPES } from '../../utils/genres'
+import { Spinner } from 'react-bootstrap';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
@@ -70,7 +71,7 @@ const Movies = () => {
   
 
   return (
-    loading ? <div>Loading...</div> : (
+    loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
       <div className="bg-black">
         <TopNavbar />
         <Banner apiLink={`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&page=1`}/>
