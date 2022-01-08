@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { login, logout } from '../features/userSlice'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../features/userSlice'
+import SideNavbar from './SideNavbar'
 
 const TopNavbar = () => {
 
@@ -15,6 +16,7 @@ const TopNavbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchQuery, setSearchQuery] = useState('')
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (searchQuery) {
@@ -25,14 +27,14 @@ const TopNavbar = () => {
   console.log(user)
 
   return (
-    <Navbar variant="dark" className="px-5 bg-black fixed-top topNavbar">
-      <Nav.Link className="h-100 ps-0">
+    <Navbar variant="dark" className="px-2 px-md-5 bg-black fixed-top topNavbar">
+      <Nav.Link className="h-100 ps-0 d-flex align-items-center">
         <Link to="/" className="navLink">
           <img src="/assets/netflix_logo.png" alt="" className="navImage"/>
         </Link>
       </Nav.Link>
       <Nav className="w-100 text-white navLink d-flex justify-content-between align-items-center">
-        <div className="d-flex">
+        <div className="d-none d-md-flex">
           <Nav.Link>
             <Link to="/" className="navLink">Home</Link>
           </Nav.Link>
@@ -44,6 +46,8 @@ const TopNavbar = () => {
           </Nav.Link>
         </div>
 
+        <div className="d-block d-sm-none" />
+
         <div className="d-flex align-items-center gap-3">
           <div className="border border-white px-2 py-1">
             <i className="bi bi-search mediumIcon"></i>
@@ -51,7 +55,7 @@ const TopNavbar = () => {
           </div>
 
           {user && user.email ? (
-            <Dropdown>
+            <Dropdown className="d-none d-sm-block">
               <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0" id="dropdown-basic" className="p-0 ">
                 <img src="/assets/netflix_avatar.png" alt="" className="navImage"/>
               </Dropdown.Toggle>
@@ -64,7 +68,7 @@ const TopNavbar = () => {
               </Dropdown.Menu>
             </Dropdown>
           ) : (
-            <span className="d-flex">
+            <span className="d-none d-sm-flex">
               <Nav.Link>
                 <Link to="/login" className="navLink">Login</Link>
               </Nav.Link>
@@ -73,9 +77,15 @@ const TopNavbar = () => {
               </Nav.Link>
             </span>
           )}
+
+          <div className="d-sm-none" onClick={() => setOpen(true)}>
+            <i class="bi bi-list fs-3"></i>
+          </div>
         </div>
 
       </Nav>
+
+      <SideNavbar open={open} setOpen={setOpen} user={user}/>
     </Navbar>
   )
 }

@@ -78,11 +78,11 @@ const Movies = () => {
         <Banner apiLink={`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&page=1`}/>
 
         <div className="pt-5 text-white">
-          <div id="pageTitle" className="px-5 py-3 fw-bold fs-4 flex align-items-center">
+          <div id="pageTitle" className="px-2 px-md-5 py-3 fw-bold fs-4 flex align-items-center">
             TV Shows
           </div>
 
-          <div className="px-5 py-2 d-flex gap-2 dropdownsContainer">
+          <div className="px-2 px-md-5 py-2 d-flex gap-2 dropdownsContainer">
             <Dropdown>
               <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 bg-secondary" id="dropdown-basic" className="p-0">
                 <div className="">Genre</div>
@@ -144,14 +144,14 @@ const Movies = () => {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          <div className="smallMoviesGrid px-5">
+          <div className="smallMoviesGrid px-2 px-md-5">
             {movies.map((movie) => {
               return <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue}/>
             })}
           </div>
         </div>
 
-        <Pagination className="px-5 py-4 d-flex justify-content-center">
+        <Pagination className="px-2 px-md-5 py-4 d-flex justify-content-center">
           <Pagination.First onClick={() => setPageNum(1)}/>
           <Pagination.Prev onClick={() => setPageNum(pageNum - 1)}/>
           {getArrayOfNums(500).slice(pageNum - 1, (pageNum - 1) + 5).map((num) => {
