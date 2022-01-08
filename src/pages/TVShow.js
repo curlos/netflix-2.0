@@ -76,7 +76,7 @@ const TVShow = () => {
 
   const getYears = (details) => {
     const startYear = new Date(details.first_air_date).getFullYear()
-    const endYear = new Date(details.last_air_date).getFullYear()
+    const endYear = details.next_episode_to_air === null ? new Date(details.last_air_date).getFullYear() : ''
     return (
       <span>
         <span className="text-lightgray">Year{startYear !== endYear ? 's': ''}: </span>

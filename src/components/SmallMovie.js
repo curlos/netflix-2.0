@@ -45,7 +45,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
       timeoutId = window.setTimeout(() => {
         timeoutId = null
         showHoveredMovie(movie)
-      }, 1000)
+      }, 700)
     }
   };
 
