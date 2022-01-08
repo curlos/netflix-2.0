@@ -16,9 +16,22 @@ const TopNavbar = () => {
   const user = useSelector(selectUser)
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
+  const [searchQuery, setSearchQuery] = useState('')
 
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (searchQuery) {
+      navigate(`/?query=${searchQuery}`)
+    }
+  }, [navigate, searchQuery])
+
+  useEffect(() => {
+    if (searchParams && searchParams.get('query') && searchParams.get('query').length === 1) {
+      setSearchQuery(searchParams.get('query'))
+    }
+  }, [searchParams])
 
   const handleLogout = async () => {
     try {
@@ -31,8 +44,6 @@ const TopNavbar = () => {
       console.log(err)
     }
   }
-
-  console.log(user)
 
   return (
     <Navbar variant="dark" className="px-2 px-md-5 bg-black fixed-top topNavbar">
@@ -59,13 +70,14 @@ const TopNavbar = () => {
         <div className="d-flex align-items-center gap-3">
           <div className="border border-white px-2 py-1">
             <i className="bi bi-search mediumIcon"></i>
-            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className="bg-black border-0 text-white p-1 px-2 w-75" placeholder="Titles, people, genres" value={searchParams.get('query') || ''} onChange={(e) => {
+            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className="bg-black border-0 text-white p-1 px-2 w-75" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
               console.log([e.target.value])
-              if (e.target.value[e.target.value.length - 1] === ' ') {
-                navigate(`/?query=${e.target.value} `)
-              } else {
-                navigate(`/?query=${e.target.value}`)
-              }
+              setSearchQuery(e.target.value)
+              // if (e.target.value[e.target.value.length - 1] === ' ') {
+              //   navigate(`/?query=${e.target.value} `)
+              // } else {
+              //   navigate(`/?query=${e.target.value}`)
+              // }
             }} onSubmit={(e) => navigate(`/?query=${e.target.value}`)} />
           </div>
 
