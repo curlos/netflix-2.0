@@ -1,44 +1,72 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+<!--
 
-## Available Scripts
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/Curlos/Rock-Paper-Scissors">
+    <img src="/client/public/icon.png" alt="Logo" width="80" height="80">
+  </a>
 
-In the project directory, you can run:
+  <h3 align="center">Netflix 2.0</h3>
 
-### `yarn start`
+  <p align="center">
+    <a href="https://netflix-clone-e0edc.web.app/">View Demo</a>
+    ·
+    <a href="https://github.com/curlos/netflix-clone/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/curlos/netflix-clone/issues">Request Feature</a>
+  </p>
+</p>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
-### `yarn test`
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Netflix 2.0 a responsive Netflix clone which improves upon the original by having a collection of thousands of movies and TV shows using the TMDB API which would include movies that even Netflix doesn't have. Movies and TV Shows can be filtered by genres and years. They can also be sorted by several options like popularity, revenue and release date. There is also three subscription plans (basic, standard, and premium) which users can subscribe to using the Stripe API.
+### Built With
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* React
+* Javascript
+* Bootstrap
+* Redux
+* Firebase
+* TMDB API
+* Stripe
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<!-- USAGE EXAMPLES -->
+## Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<div style={{"display": "flex"}}>
+  <div style={{"display": "flex"}}>
+    <img src="https://user-images.githubusercontent.com/41396365/148654247-e40f8c14-9ff0-436f-a329-943aab929701.png" height="250" />
+    <img src="https://user-images.githubusercontent.com/41396365/148654251-b4fe9b87-0190-400d-900b-b600eb736cb0.png" height="250" />
+  </div>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+</div>
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
