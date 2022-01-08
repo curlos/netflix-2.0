@@ -106,7 +106,7 @@ const Plans = () => {
             const isCurrentPackage = productData?.name.toLowerCase().includes(subscription?.role)
 
             return (
-              <div key={productId} className="d-flex justify-content-between ms-4">
+              <div key={productId} className="d-flex justify-content-between gap-2 w-100">
                 <div>
                   <div>{productData.name}</div>
                   <div>{productData.description}</div>

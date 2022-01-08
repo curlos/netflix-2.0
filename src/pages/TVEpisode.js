@@ -53,11 +53,9 @@ const TVEpisode = () => {
     return response.data
   }
 
-
-
-  console.log(tvShow)
-  console.log(episode)
-  console.log(images)
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [id])
 
   return (
     loading ? <div>Loading...</div> : (

@@ -15,6 +15,8 @@ const Profile = () => {
     if (!user || !currentEmail) {
       navigate('/')
     }
+
+    window.scrollTo(0,0)
   }, [])
   
   return (
@@ -26,7 +28,7 @@ const Profile = () => {
           </Link>
         </div>
 
-        <div className="profileContainer border p-4 overflow-auto navbarMarginTwo">
+        <div className="profileContainer p-2 p-lg-4 overflow-auto navbarMarginTwo">
           <h1>Edit Profile</h1>
           <div className="d-lg-flex gap-4">
             <div className="mb-4 mb-lg-0">

@@ -26,6 +26,7 @@ const Home = () => {
     if (searchParams.get('query')) {
       debounceMovieSearch(searchParams.get('query'))
     }
+    window.scrollTo(0,0)
   }, [searchParams.get('query')])
 
   const debounceMovieSearch = useCallback(
@@ -40,9 +41,6 @@ const Home = () => {
     })
     }, 1000),
   [])
-
-  console.log(movies)
-  
 
   return (
     <div className="bg-black vw-100 mw-100">

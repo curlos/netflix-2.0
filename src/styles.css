@@ -531,6 +531,15 @@ a:hover {
     height: 20px;
     border-radius: 7px;
   }
+
+  .netflixRedButton, .netflixGrayButton {
+    padding: 10px;
+  }
+
+  .profileContainer {
+    min-width: 90vw;
+    min-height: 75vh;
+  }
 }
 
 

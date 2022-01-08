@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Dropdown from 'react-bootstrap/Dropdown'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { login, logout } from '../features/userSlice'
 import { useSelector } from 'react-redux'
@@ -12,19 +12,11 @@ import SideNavbar from './SideNavbar'
 const TopNavbar = () => {
 
   const user = useSelector(selectUser)
+  const [searchParams] = useSearchParams()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [searchQuery, setSearchQuery] = useState('')
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    if (searchQuery) {
-      navigate(`/?query=${searchQuery}`)
-    }
-  }, [searchQuery])
-
-  console.log(user)
 
   return (
     <Navbar variant="dark" className="px-2 px-md-5 bg-black fixed-top topNavbar">
@@ -46,12 +38,12 @@ const TopNavbar = () => {
           </Nav.Link>
         </div>
 
-        <div className="d-block d-sm-none" />
+        <div className="d-block d-lg-none" />
 
         <div className="d-flex align-items-center gap-3">
           <div className="border border-white px-2 py-1">
             <i className="bi bi-search mediumIcon"></i>
-            <input className="bg-black border-0 text-white p-1 px-2" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onSubmit={(e) => setSearchQuery(e.target.value)} />
+            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className="bg-black border-0 text-white p-1 px-2 w-75" placeholder="Titles, people, genres" value={searchParams.get('query') || ''} onChange={(e) => navigate(`/?query=${e.target.value}`)} onSubmit={(e) => navigate(`/?query=${e.target.value}`)} />
           </div>
 
           {user && user.email ? (

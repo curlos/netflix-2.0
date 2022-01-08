@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
@@ -33,8 +33,11 @@ const Login = () => {
       .catch((error) => {
         alert(error.message)
       })
-    
   }
+
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
 
   return (
     <div className="authPage d-flex justify-content-center align-items-center">
