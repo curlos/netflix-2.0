@@ -23,7 +23,7 @@ const getNumOfMoviesShown = (windowSize) => {
     } else if (windowSize.width <= 1800) {
       return 7
     } else if (windowSize.width <= 1920) {
-      return 7
+      return 8
     } else {
       return 5
     }
