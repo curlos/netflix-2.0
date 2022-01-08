@@ -16,6 +16,7 @@ const SideNavbar = ({ open, setOpen }) => {
       console.log(auth)
       await signOut(auth)
       dispatch(logout)
+      window.location.reload()
       console.log(user)
     } catch (err) {
       console.log(err)

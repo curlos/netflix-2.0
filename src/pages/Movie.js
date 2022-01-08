@@ -65,7 +65,7 @@ const Movie = () => {
     <div className="bg-black navbarMargin">
       <TopNavbar />
 
-      {loading ? <Spinner /> : (
+      {loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
         <div className="p-3 p-md-5">
           {videos.results.length >= 1 ? 
           (<div className="videoWrapper" style={{}}>

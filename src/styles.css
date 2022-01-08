@@ -24,10 +24,20 @@ a {
 
 .topNavbar {
   height: 70px;
+  width: 100vw;
+  max-width: 100%;
 }
 
 .bannerContainer {
   margin-top: 70px;
+}
+
+.bannerContainerInner {
+  min-height: 100vh;
+  width: 100vw;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .navLink {
@@ -63,9 +73,9 @@ a {
 }
 
 .fade-effect-less-harsh {
-  height: 100vh;
+  min-height: 200vh;
   background-color: rgba(0, 0, 0, 0.7);
-  margin-top: -100vh;
+  margin-top: -200vh;
 }
 
 .bg-black {
@@ -94,7 +104,7 @@ a {
 }
 
 .hoveredMovie img {
-  width: 200px;
+  width: 100%;
 }
 
 .hoveredMovie:hover {
@@ -426,7 +436,6 @@ a {
 
 .tvEpisodeBannerInfo {
   width: 90%;
-  margin-top: 100px;
 }
 
 a:hover {

@@ -25,7 +25,7 @@ const TopNavbar = () => {
       console.log(auth)
       await signOut(auth)
       dispatch(logout)
-      window.reload()
+      window.location.reload()
       console.log(user)
     } catch (err) {
       console.log(err)

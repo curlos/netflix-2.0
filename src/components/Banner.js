@@ -33,8 +33,10 @@ const Banner = ({ apiLink }) => {
   useEffect(() => {
     console.log(movie)
     if (!loading && movie && movie.overview) {
+      const movieOverview = movie.overview.length > 280 ? movie.overview.slice(0, 280) + '...' : movie.overview
+
       const options = {
-        strings: [movie.overview],
+        strings: [movieOverview],
         typeSpeed: 20,
         startDelay: 300,
         showCursor: false

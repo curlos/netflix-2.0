@@ -36,7 +36,7 @@ const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, det
         )}
 
         
-        <Card.Body className="bg-dark cardBody">
+        <Card.Body className="bg-dark cardBody w-100">
           <Card.Title className="d-flex justify-content-between">
             <div className="d-flex">
               <i class="bi bi-play-fill circleIcon me-2 bg-white text-dark border-dark"></i>

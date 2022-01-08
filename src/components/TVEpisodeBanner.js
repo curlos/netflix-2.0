@@ -14,8 +14,6 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
   
   const navigate = useNavigate()
 
-  console.log(episode)
-
   useEffect(() => {
     const options = {
       strings: [episode.overview],
@@ -42,9 +40,9 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
           backgroundImage: `url("https://image.tmdb.org/t/p/original/${episode?.still_path}")`,
           backgroundPosition: 'center center'
         }}
-        className="vw-100 vh-100 mw-100 d-flex justify-content-center"
+        className="bannerContainerInner d-flex justify-content-center"
       >
-        <div className="px-5 tvEpisodeBannerInfo">
+        <div className="px-1 px-lg-5 tvEpisodeBannerInfo">
           <Link to={`/title/tv/${tvShow.id}`}>
             <i class="bi bi-chevron-left"></i> 
             <span className="ms-2">{tvShow.name || tvShow.original_name}</span>

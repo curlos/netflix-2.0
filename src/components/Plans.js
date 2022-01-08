@@ -17,9 +17,7 @@ const Plans = () => {
     const fetchFromDB = async () => {
       const customerDoc = doc(db, 'customers', user.uid)
       const querySnapshot = await getDocs(collection(customerDoc, 'subscriptions'))
-
       
-
       querySnapshot.forEach((subscription) => {
         setSubscription({
           role: subscription.data().role,
@@ -62,11 +60,6 @@ const Plans = () => {
   const loadCheckout = async (priceID) => {
     const customerDoc = doc(db, 'customers', user.uid)
     const customerCollection = collection(customerDoc, 'checkout_sessions')
-    console.log({
-      price: priceID,
-      success_url: window.location.origin,
-      cancel_url: window.location.origin
-    })
 
     const docRef = await addDoc(customerCollection, {
       price: priceID,
