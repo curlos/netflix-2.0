@@ -10,6 +10,7 @@ import { Spinner } from 'react-bootstrap';
 import { getGenreNames } from '../utils/genres_v2'
 import { getAllDirectors, getAllActors } from '../utils/credits';
 import RecommendedMoviesList from '../components/RecommendedMoviesList'
+import moment from 'moment';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
@@ -115,7 +116,7 @@ const Movie = () => {
                 ) : null}
 
                 {details.release_date ? (
-                  <div><span className="text-lightgray">Release:</span> {details?.release_date}</div>
+                  <div><span className="text-lightgray">Release:</span> {moment(details?.release_date).format('MMMM Do, YYYY')}</div>
                 ) : null}
 
                 {credits && credits.crew && credits.crew.filter(  (member) => member.job === 'Director').length >= 1 ? (

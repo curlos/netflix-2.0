@@ -11,6 +11,7 @@ import { getGenreNames } from '../utils/genres_v2'
 import { getAllDirectors, getAllActors } from '../utils/credits';
 import RecommendedMoviesList from '../components/RecommendedMoviesList'
 import Seasons from '../components/Seasons'
+import moment from 'moment';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
@@ -72,6 +73,17 @@ const TVShow = () => {
 
     return currSeasons
   }
+
+  const getYears = (details) => {
+    const startYear = new Date(details.first_air_date).getFullYear()
+    const endYear = new Date(details.last_air_date).getFullYear()
+    return (
+      <span>
+        <span className="text-lightgray">Year{startYear !== endYear ? 's': ''}: </span>
+        <span>{startYear !== endYear ? `${startYear} - ${endYear}` : startYear}</span>
+      </span>
+    )
+  }
  
 
   return (
@@ -128,7 +140,11 @@ const TVShow = () => {
                 ) : null}
 
                 {details.release_date ? (
-                  <div><span className="text-lightgray">Release:</span> {details?.release_date}</div>
+                  <div><span className="text-lightgray">Release Date:</span> {moment(details?.air_date).format('MMMM Do, YYYY')}</div>
+                ) : null}
+
+                {!details.release_date && details.first_air_date && details.last_air_date ? (
+                  <div>{getYears(details)}</div>
                 ) : null}
 
                 {credits && credits.crew && credits.crew.filter(  (member) => member.job === 'Director').length >= 1 ? (
@@ -142,7 +158,7 @@ const TVShow = () => {
 
                 {details.production_companies && details.production_companies.length > 0 ? (
                   <div>
-                    <span className="text-light=gray me-1 span">
+                    <span className="text-lightgray me-1 span">
                       Production:
                     </span> 
                     {details.production_companies.map((company, i) => <span>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}  
