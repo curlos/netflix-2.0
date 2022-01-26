@@ -17,6 +17,7 @@ const TopNavbar = () => {
   const dispatch = useDispatch()
   const [searchParams] = useSearchParams()
   const [searchQuery, setSearchQuery] = useState('')
+  const [showInput, setShowInput] = useState(false)
 
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -68,9 +69,9 @@ const TopNavbar = () => {
         <div className="d-block d-lg-none" />
 
         <div className="d-flex align-items-center gap-3">
-          <div className="border border-white px-2 py-1">
-            <i className="bi bi-search mediumIcon"></i>
-            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className="bg-black border-0 text-white p-1 px-2 w-75" placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
+          <div className="px-2 py-1">
+            <i className="bi bi-search mediumIcon cursor-pointer" onClick={() => setShowInput(!showInput)}></i>
+            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className={`bg-black border-0 text-white p-1 px-2 searchInput ${showInput ? 'fullInput' : ''}`} placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
               console.log([e.target.value])
               setSearchQuery(e.target.value)
               // if (e.target.value[e.target.value.length - 1] === ' ') {

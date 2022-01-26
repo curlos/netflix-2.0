@@ -67,7 +67,7 @@ const Movie = () => {
       <TopNavbar />
 
       {loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
-        <div className="p-3 p-md-5">
+        <div className="moviePageContainer">
           {videos.results.length >= 1 ? 
           (<div className="videoWrapper" style={{}}>
             <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>

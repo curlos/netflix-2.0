@@ -5,7 +5,8 @@
   font-family: sans-serif;
 }
 
-textarea:focus, input:focus{
+textarea:focus,
+input:focus {
   outline: none;
 }
 
@@ -57,7 +58,8 @@ a {
   border-radius: 7px;
 }
 
-.btn:focus,.btn:active {
+.btn:focus,
+.btn:active {
   outline: none !important;
   box-shadow: none;
 }
@@ -68,7 +70,7 @@ a {
 
 .fade-effect {
   height: 100vh;
-  background-image: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,1) 100%);
+  background-image: linear-gradient(360deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 1) 100%);
   margin-top: -100vh;
 }
 
@@ -96,7 +98,8 @@ a {
   width: 40px;
 }
 
-.carousel-control-prev-icon, .carousel-control-next-icon {
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
   background-color: black;
   height: 70px;
   width: 40px;
@@ -148,14 +151,15 @@ a {
   padding: 5px;
   border-radius: 50%;
   width: 40px;
-  
+
 }
 
 .closeButtonContainer .closeButtonModal {
   margin: 0;
 }
 
-.closeButtonModal:focus, .closeButtonModal:active {
+.closeButtonModal:focus,
+.closeButtonModal:active {
   outline: none !important;
   box-shadow: none;
 }
@@ -171,29 +175,40 @@ a {
   color: rgb(160, 160, 160)
 }
 
-.space-between-y-1 > div, .space-between-y-1 > span, .space-between-y-1 > button {
+.space-between-y-1>div,
+.space-between-y-1>span,
+.space-between-y-1>button {
   margin-bottom: 2px;
 }
 
-.space-between-y-2 > div, .space-between-y-2 > span, .space-between-2 > button {
+.space-between-y-2>div,
+.space-between-y-2>span,
+.space-between-2>button {
   margin-bottom: 6px;
 }
 
-.space-between-y-3 > div, .space-between-y-3 > span, .space-between-y-3 > button {
+.space-between-y-3>div,
+.space-between-y-3>span,
+.space-between-y-3>button {
   margin-bottom: 10px;
 }
 
-.space-between-y-4 > div, .space-between-y-4 > span, .space-between-y-4 > button {
+.space-between-y-4>div,
+.space-between-y-4>span,
+.space-between-y-4>button {
   margin-bottom: 25px;
 }
 
-.space-between-x-1 > div, .space-between-x-1 > span, .space-between-x-1 > button {
+.space-between-x-1>div,
+.space-between-x-1>span,
+.space-between-x-1>button {
   margin-right: 4px;
 }
 
 .videoWrapper {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 */
+  padding-bottom: 56.25%;
+  /* 16:9 */
   height: 0;
 }
 
@@ -211,15 +226,14 @@ a {
   z-index: 1;
   height: 100vh;
   background: rgba(0, 0, 0, 0.4);
-  background-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.8) 0,
-    rgba(0, 0, 0, 0) 60%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
+  background-image: linear-gradient(to top,
+      rgba(0, 0, 0, 0.8) 0,
+      rgba(0, 0, 0, 0) 60%,
+      rgba(0, 0, 0, 0.8) 100%);
 }
 
-.modal-content, .modal-body {
+.modal-content,
+.modal-body {
   border-radius: 10px;
   border: none;
 }
@@ -338,7 +352,11 @@ a {
 }
 
 
-.dropdownButton:focus, .dropdownButton:active, .dropdown-toggle, .show>.btn-primary.dropdown-toggle, .show>.btn-primary.dropdown-toggle:focus {
+.dropdownButton:focus,
+.dropdownButton:active,
+.dropdown-toggle,
+.show>.btn-primary.dropdown-toggle,
+.show>.btn-primary.dropdown-toggle:focus {
   background-color: black !important;
   border: 1px solid white;
   box-shadow: none;
@@ -409,7 +427,8 @@ a {
   border: 1px solid rgb(150, 150, 150);
 }
 
-.page-link:hover, .page-link:focus {
+.page-link:hover,
+.page-link:focus {
   background-color: black !important;
   color: white;
   border: 2px solid white;
@@ -500,7 +519,8 @@ a:hover {
   padding-top: 60px;
 }
 
-.sidenav a, .sidenavLogout {
+.sidenav a,
+.sidenavLogout {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
@@ -509,7 +529,8 @@ a:hover {
   transition: 0.3s;
 }
 
-.sidenav a:hover, .sidenav .sidenavLogout:hover {
+.sidenav a:hover,
+.sidenav .sidenavLogout:hover {
   color: #f1f1f1;
 }
 
@@ -550,11 +571,18 @@ a:hover {
   background-color: transparent !important;
 }
 
+.moviePageContainer {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 30px;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .smallMoviesGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
   .moviePoster {
     display: none;
   }
@@ -564,7 +592,8 @@ a:hover {
     border-radius: 7px;
   }
 
-  .netflixRedButton, .netflixGrayButton {
+  .netflixRedButton,
+  .netflixGrayButton {
     padding: 10px;
   }
 
@@ -580,13 +609,25 @@ a:hover {
   }
 }
 
+.searchInput {
+  width: 10px;
+  transition: 2s;
+}
+
+.fullInput {
+  width: 75%;
+  border: 1px solid white;
+}
+
+
+
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   .smallMoviesGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  
+
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -602,6 +643,11 @@ a:hover {
   .smallMoviesGrid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
+
+  .moviePageContainer {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -609,12 +655,22 @@ a:hover {
   .smallMoviesGrid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
+
+  .moviePageContainer {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1600px) {
   .smallMoviesGrid {
     grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .moviePageContainer {
+    padding-left: 200px;
+    padding-right: 200px;
   }
 }
 
