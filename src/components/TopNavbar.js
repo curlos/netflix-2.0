@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { login, logout } from '../features/userSlice'
+import { logout } from '../features/userSlice'
 import { useSelector } from 'react-redux'
 import { auth } from '../firebase'
 import { signOut } from 'firebase/auth'
@@ -47,7 +47,7 @@ const TopNavbar = () => {
   }
 
   return (
-    <Navbar variant="dark" className="px-2 px-md-5 bg-black fixed-top topNavbar">
+    <Navbar variant="dark" className="px-3 px-md-5 bg-black fixed-top topNavbar">
       <Nav.Link className="h-100 ps-0 d-flex align-items-center">
         <Link to="/" className="navLink">
           <img src="/assets/netflix_logo.png" alt="" className="navImage"/>
@@ -71,7 +71,7 @@ const TopNavbar = () => {
         <div className="d-flex align-items-center gap-3">
           <div className="px-2 py-1">
             <i className="bi bi-search mediumIcon cursor-pointer" onClick={() => setShowInput(!showInput)}></i>
-            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className={`bg-black border-0 text-white p-1 px-2 searchInput ${showInput ? 'fullInput' : ''}`} placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
+            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className={`bg-black border-0 text-white searchInput ${showInput ? 'fullInput p-1 px-2' : ''}`} placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
               console.log([e.target.value])
               setSearchQuery(e.target.value)
               // if (e.target.value[e.target.value.length - 1] === ' ') {

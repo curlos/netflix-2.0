@@ -588,7 +588,7 @@ a:hover {
   }
 
   .navImage {
-    height: 20px;
+    height: 30px;
     border-radius: 7px;
   }
 
@@ -610,13 +610,18 @@ a:hover {
 }
 
 .searchInput {
-  width: 10px;
-  transition: 2s;
+  width: 0px;
+
+  transition: 0.4s;
 }
 
 .fullInput {
   width: 75%;
   border: 1px solid white;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 

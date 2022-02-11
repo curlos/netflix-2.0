@@ -10,6 +10,8 @@ const getNumOfMoviesShown = (windowSize) => {
   if (windowSize && windowSize.width) {
     if (windowSize.width <= 576) {
       return 2
+    } else if (windowSize.width < 600) {
+      return 2
     } else if (windowSize.width < 768) {
       return 3
     } else if (windowSize.width <= 992) {
@@ -18,14 +20,16 @@ const getNumOfMoviesShown = (windowSize) => {
       return 5
     } else if (windowSize.width <= 1400) {
       return 5
-    } else if (windowSize.width <= 1700) {
+    } else if (windowSize.width <= 1600) {
       return 6
-    } else if (windowSize.width <= 1800) {
+    } else if (windowSize.width <= 1700) {
+      return 7
+    } else if (windowSize.width <= 1850) {
       return 7
     } else if (windowSize.width <= 1920) {
-      return 8
+      return 7
     } else {
-      return 5
+      return 8
     }
   }
 }
