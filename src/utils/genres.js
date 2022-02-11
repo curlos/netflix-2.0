@@ -21,14 +21,6 @@ const getGenreName = (genreID) => {
   }
 }
 
-const getGenreID = (genreName) => {
-  for (let genre of GENRES) {
-    if (genre.name === genreName) {
-      return genre.id
-    }
-  }
-}
-
 const GENRES = [
   {
     "id": 10759,

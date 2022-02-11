@@ -44,13 +44,23 @@ const Movies = () => {
     }
 
     const includedGenres = getIncludedGenresString()
-    console.log(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`)
+
+    console.log(selectedYear)
+
+    if (selectedYear && String(selectedYear).includes('s')) {
+      axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_date.gte=${selectedYear.slice(0,4)}&primary_release_date.lte=${Number(selectedYear.slice(0,4)) + 9}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
+        console.log(response.data)
+        setMovies(response.data.results)
+        setLoading(false)
+      })
+    } else {
+      axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
+        console.log(response.data)
+        setMovies(response.data.results)
+        setLoading(false)
+      })
+    }
     
-    axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
-      console.log(response.data)
-      setMovies(response.data.results)
-      setLoading(false)
-    })
   }, [genres, selectedYear, selectedSortType, pageNum])
 
   
@@ -71,8 +81,8 @@ const Movies = () => {
   
 
   return (
-    loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
-      <div className="bg-black">
+    loading ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
+      <div className="bg-black pb-3">
         <TopNavbar />
         <Banner apiLink={`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&page=1`}/>
 

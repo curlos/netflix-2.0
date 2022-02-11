@@ -5,9 +5,6 @@ import axios from 'axios'
 import Banner from '../../components/Banner'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Pagination from 'react-bootstrap/Pagination'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import { MOVIE_GENRES, YEARS, SORT_TYPES } from '../../utils/genres'
 import { Spinner } from 'react-bootstrap';
 
@@ -47,12 +44,20 @@ const Movies = () => {
     }
 
     const includedGenres = getIncludedGenresString()
-    
-    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&first_air_date_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
-      console.log(response.data)
-      setMovies(response.data.results)
-      setLoading(false)
-    })
+
+    if (selectedYear && String(selectedYear).includes('s')) {
+      axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&first_air_date.gte=${selectedYear.slice(0,4)}&first_air_date.lte=${Number(selectedYear.slice(0,4)) + 9}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
+        console.log(response.data)
+        setMovies(response.data.results)
+        setLoading(false)
+      })
+    } else {
+      axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&first_air_date_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : '' }`).then((response) => {
+        console.log(response.data)
+        setMovies(response.data.results)
+        setLoading(false)
+      })
+    }
   }, [genres, selectedYear, selectedSortType, pageNum])
 
   
@@ -74,7 +79,7 @@ const Movies = () => {
 
   return (
     loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
-      <div className="bg-black">
+      <div className="bg-black pb-3">
         <TopNavbar />
         <Banner apiLink={`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&page=1`}/>
 
@@ -160,7 +165,7 @@ const Movies = () => {
             if (num === 999) {
               return (
                 <span>
-                  <Pagination.Item onClick={() => setPageNum(num)} className={`${pageNum === num ? 'selectedPageNum' : null}`}>{num}</Pagination.Item>
+                  <Pagination.Item onClick={() => setPageNum(num)} className={``}>{num}</Pagination.Item>
                 </span>
               )
             }

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
-  useSearchParams,
-  useParams,
-  useNavigate
+  useParams
 } from "react-router-dom";
 import axios from 'axios'
 import TopNavbar from '../components/TopNavbar'
@@ -28,6 +26,7 @@ const TVShow = () => {
   useEffect(() => {
     window.scrollTo(0,0)
     getAndSetAllTVShowDetails()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
 
   const getAndSetAllTVShowDetails = async () => {
@@ -87,7 +86,7 @@ const TVShow = () => {
  
 
   return (
-    <div className="bg-black navbarMargin">
+    <div className="bg-black navbarMargin  pb-3">
       <TopNavbar />
 
       {loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
@@ -101,7 +100,7 @@ const TVShow = () => {
             </div>
           )}
 
-          <div className="d-flex gap-md-4 my-4">
+          <div className="d-flex gap-4 my-4">
             <div>
               <img src={`https://image.tmdb.org/t/p/original${details?.poster_path || details?.backdrop_path}`} alt="" className="moviePoster"/>
             </div>
