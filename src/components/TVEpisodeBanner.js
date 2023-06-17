@@ -1,18 +1,11 @@
-import axios from 'axios';
-import React, { useState, useEffect, useRef } from 'react'
-import requests, { API_BASE_URL } from '../requests';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import MovieModal from './MovieModal';
-import Typed from 'typed.js'
-import moment from 'moment'
+import Typed from 'typed.js';
+import moment from 'moment';
 
 const TVEpisodeBanner = ({ tvShow, episode }) => {
-
-  const [show, setShow] = useState(false)
-  const overviewRef = useRef(null)
-  const typedRef = useRef(null)
-  
-  const navigate = useNavigate()
+  const overviewRef = useRef(null);
+  const typedRef = useRef(null);
 
   useEffect(() => {
     const options = {
@@ -20,15 +13,15 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
       typeSpeed: 20,
       startDelay: 300,
       showCursor: false
-    }
+    };
 
-    typedRef.current = new Typed(overviewRef.current, options) 
+    typedRef.current = new Typed(overviewRef.current, options);
 
     return () => {
-      typedRef.current.destroy()
-    }
+      typedRef.current.destroy();
+    };
 
-  }, [episode])
+  }, [episode]);
 
 
 
@@ -44,7 +37,7 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
       >
         <div className="px-1 px-lg-5 tvEpisodeBannerInfo">
           <Link to={`/title/tv/${tvShow.id}`}>
-            <i class="bi bi-chevron-left"></i> 
+            <i class="bi bi-chevron-left"></i>
             <span className="ms-2">{tvShow.name || tvShow.original_name}</span>
           </Link>
           <div className="fs-1 fw-bold mb-2 d-flex justify-content-between">
@@ -74,9 +67,9 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
         </div>
       </div>
       <div className="fade-effect-less-harsh" />
-      
-    </div>
-  )
-}
 
-export default TVEpisodeBanner
+    </div>
+  );
+};
+
+export default TVEpisodeBanner;

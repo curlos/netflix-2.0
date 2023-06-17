@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import Plans from '../components/Plans';
 import { useSelector, useDispatch } from 'react-redux';

@@ -4,16 +4,13 @@ import Banner from '../components/Banner';
 import requests, { API_BASE_URL } from '../requests';
 import ContentCarousel from '../components/ContentCarousel';
 import {
-  useSearchParams,
-  useParams,
-  useNavigate
+  useSearchParams
 } from "react-router-dom";
 import axios from 'axios';
 import { debounce } from 'lodash';
 import MovieList from '../components/MovieList';
 
 const Home = () => {
-  const { id } = useParams();
   const [movies, setMovies] = useState([]);
   const [totalResults, setTotalResults] = useState(0);
   const [hoveredValue, setHoveredValue] = useState(null);

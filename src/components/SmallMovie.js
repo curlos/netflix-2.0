@@ -1,20 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { getGenreNames } from '../utils/genres';
-import {
-  Link,
-  useNavigate
-} from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import MovieModal from './MovieModal';
 import HoveredMovie from './HoveredMovie';
-import { debounce } from 'lodash';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
 const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
-  const [hoveredMovie, setHoveredMovie] = useState(false);
-  const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3);
-  const [show, setShow] = useState(false);
+  const [_hoveredMovie, setHoveredMovie] = useState(false);
+  const [_show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 

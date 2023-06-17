@@ -1,16 +1,13 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import requests, { API_BASE_URL } from '../requests';
-import { Link, useNavigate } from 'react-router-dom';
-import MovieModal from './MovieModal';
+import { useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
 import { Spinner } from 'react-bootstrap';
 
 const Banner = ({ apiLink }) => {
 
   const [movie, setMovie] = useState();
-  const [videos, setVideos] = useState(null);
-  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const overviewRef = useRef(null);
   const typedRef = useRef(null);

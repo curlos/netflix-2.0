@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import { getGenreNames } from '../utils/genres';
 import { useNavigate } from 'react-router';
 
-const HoveredMovie = ({ handleShow, setHoveredValue, setHoveredMovie, movie, details, videos, recommendedMovies, convertMinToHours }) => {
+const HoveredMovie = ({ setHoveredValue, setHoveredMovie, movie, details, videos, recommendedMovies, convertMinToHours }) => {
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3);
   const genreNamesStr = genreNames.join(' • ');
   const navigate = useNavigate();
