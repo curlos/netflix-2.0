@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser } from '../features/userSlice'
-import { login, logout } from '../features/userSlice'
-import { auth } from '../firebase'
+import { selectUser } from '../features/userSlice';
+import { login, logout } from '../features/userSlice';
+import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 
 const SideNavbar = ({ open, setOpen }) => {
 
-  const user = useSelector(selectUser)
-  const dispatch = useDispatch()
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
-      console.log(auth)
-      await signOut(auth)
-      dispatch(logout)
-      window.location.reload()
-      console.log(user)
+      await signOut(auth);
+      dispatch(logout);
+      window.location.reload();
     } catch (err) {
-      console.log(err)
+      console.error(err);
     }
-  }
+  };
 
   return (
     <div id="mySidenav" class={`sidenav ${open ? 'sidenavOpen' : ''}`}>
@@ -40,7 +38,7 @@ const SideNavbar = ({ open, setOpen }) => {
         </span>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SideNavbar
+export default SideNavbar;

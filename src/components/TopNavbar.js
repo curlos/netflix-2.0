@@ -1,56 +1,54 @@
-import React, { useState, useEffect} from 'react'
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
-import Dropdown from 'react-bootstrap/Dropdown'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logout } from '../features/userSlice'
-import { useSelector } from 'react-redux'
-import { auth } from '../firebase'
-import { signOut } from 'firebase/auth'
-import { selectUser } from '../features/userSlice'
-import SideNavbar from './SideNavbar'
+import { logout } from '../features/userSlice';
+import { useSelector } from 'react-redux';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
+import { selectUser } from '../features/userSlice';
+import SideNavbar from './SideNavbar';
 
 const TopNavbar = () => {
 
-  const user = useSelector(selectUser)
-  const dispatch = useDispatch()
-  const [searchParams] = useSearchParams()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [showInput, setShowInput] = useState(false)
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showInput, setShowInput] = useState(false);
 
-  const navigate = useNavigate()
-  const [open, setOpen] = useState(false)
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (searchQuery) {
-      navigate(`/?query=${searchQuery}`)
+      navigate(`/?query=${searchQuery}`);
     }
-  }, [navigate, searchQuery])
+  }, [navigate, searchQuery]);
 
   useEffect(() => {
     if (searchParams && searchParams.get('query') && searchParams.get('query').length === 1) {
-      setSearchQuery(searchParams.get('query'))
+      setSearchQuery(searchParams.get('query'));
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   const handleLogout = async () => {
     try {
-      console.log(auth)
-      await signOut(auth)
-      dispatch(logout)
-      window.location.reload()
-      console.log(user)
+      await signOut(auth);
+      dispatch(logout);
+      window.location.reload();
     } catch (err) {
-      console.log(err)
+      console.error(err);
     }
-  }
+  };
 
   return (
     <Navbar variant="dark" className="px-3 px-md-5 bg-black fixed-top topNavbar">
       <Nav.Link className="h-100 ps-0 d-flex align-items-center">
         <Link to="/" className="navLink">
-          <img src="/assets/netflix_logo.png" alt="" className="navImage"/>
+          <img src="/assets/netflix_logo.png" alt="" className="navImage" />
         </Link>
       </Nav.Link>
       <Nav className="w-100 text-white navLink d-flex justify-content-between align-items-center">
@@ -72,8 +70,7 @@ const TopNavbar = () => {
           <div className="px-2 py-1">
             <i className="bi bi-search mediumIcon cursor-pointer" onClick={() => setShowInput(!showInput)}></i>
             <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className={`bg-black border-0 text-white searchInput ${showInput ? 'fullInput p-1 px-2' : ''}`} placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
-              console.log([e.target.value])
-              setSearchQuery(e.target.value)
+              setSearchQuery(e.target.value);
               // if (e.target.value[e.target.value.length - 1] === ' ') {
               //   navigate(`/?query=${e.target.value} `)
               // } else {
@@ -85,7 +82,7 @@ const TopNavbar = () => {
           {user && user.email ? (
             <Dropdown className="d-none d-sm-block">
               <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0" id="dropdown-basic" className="p-0 ">
-                <img src="/assets/netflix_avatar.png" alt="" className="navImage"/>
+                <img src="/assets/netflix_avatar.png" alt="" className="navImage" />
               </Dropdown.Toggle>
 
               <Dropdown.Menu variant="dark" align="end">
@@ -115,7 +112,7 @@ const TopNavbar = () => {
 
       <SideNavbar open={open} setOpen={setOpen} />
     </Navbar>
-  )
-}
+  );
+};
 
-export default TopNavbar
+export default TopNavbar;

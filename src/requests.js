@@ -1,7 +1,8 @@
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
-export const API_BASE_URL = `https://api.themoviedb.org/3`
+export const API_BASE_URL = `https://api.themoviedb.org/3`;
 
+// Different API requests that can be made from the TMDB API
 const requests = {
   fetchTrending: {
     name: 'Trending',

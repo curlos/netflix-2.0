@@ -1,45 +1,44 @@
-import React, { useState, useEffect } from 'react'
-import Dropdown from 'react-bootstrap/Dropdown'
-import { Link, useNavigate } from 'react-router-dom'
-import Plans from '../components/Plans'
-import { useSelector, useDispatch } from 'react-redux'
-import { selectUser } from '../features/userSlice'
-import { auth } from '../firebase'
-import { signOut } from 'firebase/auth'
-import { logout } from '../features/userSlice'
+import React, { useState, useEffect } from 'react';
+import Dropdown from 'react-bootstrap/Dropdown';
+import { Link, useNavigate } from 'react-router-dom';
+import Plans from '../components/Plans';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser } from '../features/userSlice';
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
+import { logout } from '../features/userSlice';
 
 const Profile = () => {
-  const user = useSelector(selectUser)
-  const [currentEmail, setCurrentEmail] = useState(user && user.email)
+  const user = useSelector(selectUser);
+  const [currentEmail, setCurrentEmail] = useState(user && user.email);
 
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
-      console.log(auth)
-      await signOut(auth)
-      dispatch(logout)
-      window.location.reload()
+      await signOut(auth);
+      dispatch(logout);
+      window.location.reload();
     } catch (err) {
-      console.log(err)
+      console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
     if (!user || !currentEmail) {
-      navigate('/')
+      navigate('/');
     }
 
-    window.scrollTo(0,0)
-  }, [currentEmail, navigate, user])
-  
+    window.scrollTo(0, 0);
+  }, [currentEmail, navigate, user]);
+
   return (
     user ? (
       <div className="d-flex justify-content-center align-items-center profilePage">
         <div className="fixed-top p-4">
           <Link to="/">
-            <img src="/assets/netflix_logo.png" alt="" className="profileNetflixLogo"/>
+            <img src="/assets/netflix_logo.png" alt="" className="profileNetflixLogo" />
           </Link>
         </div>
 
@@ -51,14 +50,14 @@ const Profile = () => {
             </div>
 
             <div className="w-100">
-              <input className="profileInput mb-4 text-white" value={currentEmail} onChange={(e) => setCurrentEmail(e.target.value)}/>
+              <input className="profileInput mb-4 text-white" value={currentEmail} onChange={(e) => setCurrentEmail(e.target.value)} />
 
               <hr />
 
               <Plans />
             </div>
           </div>
-          
+
           <hr />
 
           <div className="d-flex flex-column flex-lg-row justify-content-center gap-2">
@@ -67,8 +66,8 @@ const Profile = () => {
         </div>
       </div>
     ) : null
-    
-  )
-}
 
-export default Profile
+  );
+};
+
+export default Profile;

@@ -1,65 +1,62 @@
 import axios from 'axios';
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 import requests, { API_BASE_URL } from '../requests';
 import { Link, useNavigate } from 'react-router-dom';
 import MovieModal from './MovieModal';
-import Typed from 'typed.js'
+import Typed from 'typed.js';
 import { Spinner } from 'react-bootstrap';
 
 const Banner = ({ apiLink }) => {
 
-  const [movie, setMovie] = useState()
-  const [videos, setVideos] = useState(null)
-  const [show, setShow] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const overviewRef = useRef(null)
-  const typedRef = useRef(null)
-  
-  const navigate = useNavigate()
+  const [movie, setMovie] = useState();
+  const [videos, setVideos] = useState(null);
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const overviewRef = useRef(null);
+  const typedRef = useRef(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFromAPI = async () => {
-      const response = await axios.get(apiLink ? apiLink : `${API_BASE_URL}${requests.fetchNetflixOriginals.url}`)
-      console.log(response)
+      const response = await axios.get(apiLink ? apiLink : `${API_BASE_URL}${requests.fetchNetflixOriginals.url}`);
       setMovie(response.data.results[
         Math.floor(Math.random() * response.data.results.length - 1)
-      ])
-      setLoading(false)
-    }
+      ]);
+      setLoading(false);
+    };
 
-    fetchFromAPI()
-  }, [apiLink])
+    fetchFromAPI();
+  }, [apiLink]);
 
   useEffect(() => {
-    console.log(movie)
     if (!loading && movie && movie.overview) {
-      const movieOverview = movie.overview.length > 280 ? movie.overview.slice(0, 280) + '...' : movie.overview
+      const movieOverview = movie.overview.length > 280 ? movie.overview.slice(0, 280) + '...' : movie.overview;
 
       const options = {
         strings: [movieOverview],
         typeSpeed: 20,
         startDelay: 300,
         showCursor: false
-      }
-  
-      typedRef.current = new Typed(overviewRef.current, options) 
+      };
+
+      typedRef.current = new Typed(overviewRef.current, options);
 
       return () => {
-        typedRef.current.destroy()
-      }
+        typedRef.current.destroy();
+      };
     }
 
-  }, [loading, movie])
+  }, [loading, movie]);
 
 
   const handleNavigation = () => {
-    console.log('hello wrold')
     if (movie.first_air_date) {
-      navigate(`/title/tv/${movie.id}`)
+      navigate(`/title/tv/${movie.id}`);
     } else {
-      navigate(`/title/movie/${movie.id}`)
+      navigate(`/title/movie/${movie.id}`);
     }
-  }
+  };
 
 
 
@@ -90,10 +87,10 @@ const Banner = ({ apiLink }) => {
           </div>
         </div>
         <div className="fade-effect" />
-        
+
       </div>
     )
-  )
-}
+  );
+};
 
-export default Banner
+export default Banner;
