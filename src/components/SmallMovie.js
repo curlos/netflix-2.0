@@ -5,6 +5,10 @@ import HoveredMovie from './HoveredMovie';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   const [_hoveredMovie, setHoveredMovie] = useState(false);
   const [_show, setShow] = useState(false);

@@ -34,6 +34,10 @@ const getNumOfMoviesShown = (windowSize) => {
   }
 };
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const ContentCarousel = ({ apiUrl, name, hoveredValue, setHoveredValue }) => {
   const [movies, setMovies] = useState([]);
   const [index, setIndex] = useState(0);

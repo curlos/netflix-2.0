@@ -1,25 +1,25 @@
 export const getGenreNames = (genreIDs, mediaType) => {
-  const genreNames = []
+  const genreNames = [];
 
   if (genreIDs) {
     for (let genreID of genreIDs) {
-      const genreName = getGenreName(genreID, mediaType)
+      const genreName = getGenreName(genreID, mediaType);
       if (genreName) {
-        genreNames.push(genreName)
+        genreNames.push(genreName);
       }
     }
   }
-  
-  return genreNames
-}
+
+  return genreNames;
+};
 
 const getGenreName = (genreID) => {
   for (let genre of GENRES) {
     if (genre.id === genreID) {
-      return genre.name
+      return genre.name;
     }
   }
-}
+};
 
 const GENRES = [
   {
@@ -162,7 +162,7 @@ const GENRES = [
     "id": 37,
     "name": "Western"
   }
-]
+];
 
 export const TV_GENRES = [
   {
@@ -229,7 +229,7 @@ export const TV_GENRES = [
     "id": 37,
     "name": "Western"
   }
-]
+];
 
 export const MOVIE_GENRES = [
   {
@@ -308,21 +308,36 @@ export const MOVIE_GENRES = [
     "id": 37,
     "name": "Western"
   }
-]
+];
 
 export const YEARS = [
-  'All', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015','2014', '2013','2012', '2011','2010', '2009','2008', '2007','2006', '2005','2004', '2003','2002', '2001','2000', '1990s','1980s', '1970s','1960s', '1950s','1940s', '1930s','1920s', '1910s','1900s'
-]
+  'All', ...getFullYearRange(), '1990s', '1980s', '1970s', '1960s', '1950s', '1940s', '1930s', '1920s', '1910s', '1900s'
+];
 
 export const SORT_TYPES = {
-  'Most Popular': 'popularity.desc', 
-  'Most Recent': 'primary_release_date.desc', 
-  'Highest Grossing': 'revenue.desc', 
-  'Highest Vote Average': 'vote_average.desc', 
-  'Highest Vote Count': 'vote_count.desc', 
-  'Least Popular': 'popularity.asc', 
-  'Least Recent': 'primary_release_date.asc', 
-  'Lowest Grossing': 'revenue.asc', 
-  'Lowest Vote Average': 'vote_average.asc', 
+  'Most Popular': 'popularity.desc',
+  'Most Recent': 'primary_release_date.desc',
+  'Highest Grossing': 'revenue.desc',
+  'Highest Vote Average': 'vote_average.desc',
+  'Highest Vote Count': 'vote_count.desc',
+  'Least Popular': 'popularity.asc',
+  'Least Recent': 'primary_release_date.asc',
+  'Lowest Grossing': 'revenue.asc',
+  'Lowest Vote Average': 'vote_average.asc',
   'Lowest Vote Count': 'vote_count.asc'
+};
+
+/**
+ * @description - Get full years from the current year to 2000
+ * @returns {Array}
+ */
+function getFullYearRange() {
+  const currentYear = new Date().getFullYear(); // Get the current year
+  const years = [];
+
+  for (let year = currentYear; year >= 2000; year--) {
+    years.push(year);
+  }
+
+  return years;
 }

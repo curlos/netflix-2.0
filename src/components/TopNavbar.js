@@ -11,8 +11,11 @@ import { signOut } from 'firebase/auth';
 import { selectUser } from '../features/userSlice';
 import SideNavbar from './SideNavbar';
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const TopNavbar = () => {
-
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();

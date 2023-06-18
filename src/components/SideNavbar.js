@@ -6,8 +6,11 @@ import { logout } from '../features/userSlice';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const SideNavbar = ({ open, setOpen }) => {
-
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 

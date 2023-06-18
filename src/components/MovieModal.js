@@ -3,6 +3,10 @@ import CloseButton from 'react-bootstrap/CloseButton';
 import { getGenreNames } from '../utils/genres';
 import RecommendedMoviesList from './RecommendedMoviesList';
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const MovieModal = ({ movie, details, videos, credits, recommendedMovies, show, handleClose, convertMinToHours, hoveredValue, setHoveredValue }) => {
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3);
   const genreNamesStr = genreNames.join(', ');

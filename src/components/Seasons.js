@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
-import { Dropdown } from 'react-bootstrap'
-import { useNavigate } from 'react-router'
+import React, { useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const Seasons = ({ tvShowID, seasons }) => {
-  const navigate = useNavigate()
-  const [selectedSeason, setSelectedSeason] = useState(1)
+  const navigate = useNavigate();
+  const [selectedSeason, setSelectedSeason] = useState(1);
 
   return (
     <div>
@@ -19,7 +23,7 @@ const Seasons = ({ tvShowID, seasons }) => {
             <Dropdown.Item onClick={() => setSelectedSeason(season.season_number)}>
               Season {season.season_number}
             </Dropdown.Item>
-          ))} 
+          ))}
         </Dropdown.Menu>
       </Dropdown>
 
@@ -33,7 +37,7 @@ const Seasons = ({ tvShowID, seasons }) => {
             <div className="py-2 p-md-3 d-flex justify-content-between align-items-center gap-4 border-bottom border-secondary tvSmallEpisode" onClick={() => navigate(`/title/tv/${tvShowID}/season/${selectedSeason}/episode/${episode.episode_number}`)}>
               <div className="d-flex align-items-center gap-4">
                 <h3>{episode.episode_number}</h3>
-                <img src={`https://image.tmdb.org/t/p/original${episode?.still_path}`} alt={''} className="moviePoster"/>
+                <img src={`https://image.tmdb.org/t/p/original${episode?.still_path}`} alt={''} className="moviePoster" />
 
                 <div>
                   <h4 className="fw-bold">{episode.name}</h4>
@@ -49,19 +53,19 @@ const Seasons = ({ tvShowID, seasons }) => {
                   <div className="">
                     <div className="text-center fs-3">
                       <span>{Math.round((episode?.vote_average + Number.EPSILON) * 100) / 100}</span>
-                      <span className="text-secondary">/10</span> 
+                      <span className="text-secondary">/10</span>
                     </div>
-                    
+
                     <div className="fs-6 text-secondary text-center">{Number(episode?.vote_count).toLocaleString()}</div>
                   </div>
                 </div>
               ) : null}
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Seasons
+export default Seasons;

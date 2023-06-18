@@ -4,6 +4,10 @@ import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router';
 
+/**
+ * @description - Page where the user can sign up with new credentials.
+ * @returns {React.FC}
+ */
 const SignUp = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -18,6 +22,7 @@ const SignUp = () => {
       passwordRef.current.value
     )
       .then((authUser) => {
+        // If the user signed up successfully and now has an account with us, then redirect them to the login page where they can login with new account.
         navigate('/login');
       })
       .catch((error) => {

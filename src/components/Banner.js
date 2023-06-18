@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
 import { Spinner } from 'react-bootstrap';
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const Banner = ({ apiLink }) => {
 
   const [movie, setMovie] = useState();

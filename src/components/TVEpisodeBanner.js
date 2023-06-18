@@ -3,6 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
 import moment from 'moment';
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const TVEpisodeBanner = ({ tvShow, episode }) => {
   const overviewRef = useRef(null);
   const typedRef = useRef(null);
@@ -22,8 +26,6 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
     };
 
   }, [episode]);
-
-
 
   return (
     <div className="bannerContainer">

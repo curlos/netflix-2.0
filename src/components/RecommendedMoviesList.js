@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import SmallMovie from '../components/SmallMovie';
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const RecommendedMoviesList = ({ recommendedMovies }) => {
-
   const [hoveredValue, setHoveredValue] = useState(null);
 
   return (

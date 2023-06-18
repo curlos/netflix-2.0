@@ -5,6 +5,10 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/userSlice';
 
+/**
+ * @description - Page where the user can login with their existing credentials.
+ * @returns {React.FC}
+ */
 const Login = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -15,12 +19,14 @@ const Login = () => {
   const handleSignIn = (e) => {
     e.preventDefault();
 
+    // Call the firebase function to sign them in with email and password.
     signInWithEmailAndPassword(
       auth,
       emailRef.current.value,
       passwordRef.current.value
     )
       .then((authUser) => {
+        // If we get to this point, this must mean that the login with the user was successful, meaning we can put their credentials into the redux user reducer and go to the home page.
         dispatch(login({
           uid: authUser.user.uid,
           email: authUser.user.email,

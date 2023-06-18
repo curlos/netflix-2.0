@@ -7,13 +7,20 @@ import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { logout } from '../features/userSlice';
 
+/**
+ * @description - Page where the user can view their profile and their plans. They can subscribe to a different plan and also sign out.
+ * @returns {React.FC}
+ */
 const Profile = () => {
   const user = useSelector(selectUser);
-  const [currentEmail, setCurrentEmail] = useState(user && user.email);
+  const email = user && user.email;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  /**
+   * @description - Logout the user.
+   */
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -25,12 +32,12 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (!user || !currentEmail) {
+    if (!user || !email) {
       navigate('/');
     }
 
     window.scrollTo(0, 0);
-  }, [currentEmail, navigate, user]);
+  }, [email, navigate, user]);
 
   return (
     user ? (
@@ -49,7 +56,7 @@ const Profile = () => {
             </div>
 
             <div className="w-100">
-              <input className="profileInput mb-4 text-white" value={currentEmail} onChange={(e) => setCurrentEmail(e.target.value)} />
+              <input className="profileInput mb-4 text-white" value={email} readonly="readonly" />
 
               <hr />
 

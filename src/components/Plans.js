@@ -6,6 +6,10 @@ import { selectUser } from '../features/userSlice';
 import { loadStripe } from '@stripe/stripe-js';
 import Spinner from 'react-bootstrap/Spinner';
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const Plans = () => {
   const [products, setProducts] = useState({});
   const user = useSelector(selectUser);

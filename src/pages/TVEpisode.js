@@ -7,9 +7,12 @@ import TopNavbar from '../components/TopNavbar';
 import TVEpisodeBanner from '../components/TVEpisodeBanner';
 import { Spinner } from 'react-bootstrap';
 
-
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
+/**
+ * @description - 
+ * @returns {React.FC}
+ */
 const TVEpisode = () => {
 
   const { id, seasonNum, episodeNum } = useParams();
@@ -39,8 +42,8 @@ const TVEpisode = () => {
   };
 
   const getVideos = async () => {
-    const response = axios.get(`https://api.themoviedb.org/3/tv/${id}/season/${seasonNum}/episode/${episodeNum}/videos?api_key=${API_KEY}`);
-
+    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/season/${seasonNum}/episode/${episodeNum}/videos?api_key=${API_KEY}`);
+    debugger;
     return response.data;
   };
 
@@ -53,6 +56,8 @@ const TVEpisode = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
+
+  getVideos();
 
   return (
     loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
