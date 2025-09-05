@@ -31,8 +31,6 @@ const TopNavbar = () => {
     debounce((query) => {
       if (query) {
         navigate(`/?query=${query}`);
-      } else {
-        navigate('/');
       }
     }, 1000),
     [navigate]

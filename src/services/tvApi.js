@@ -15,6 +15,9 @@ export const tvApi = createApi({
     getNetflixOriginals: builder.query({
       query: () => `/discover/tv?api_key=${API_KEY}&with_networks=213`,
     }),
+    getDiscoverTV: builder.query({
+      query: () => `/discover/tv?api_key=${API_KEY}&language=en-US&page=1`,
+    }),
     getTVShowDetails: builder.query({
       query: (tvId) => `/tv/${tvId}?api_key=${API_KEY}&language=en-US`,
     }),
@@ -30,8 +33,7 @@ export const tvApi = createApi({
 export const {
   useGetTrendingQuery,
   useGetNetflixOriginalsQuery,
-  useGetPopularTVShowsQuery,
-  useGetTopRatedTVShowsQuery,
+  useGetDiscoverTVQuery,
   useGetTVShowDetailsQuery,
   useGetTVShowSeasonsQuery,
   useGetTVShowEpisodeQuery,

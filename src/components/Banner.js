@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
 import { Spinner } from 'react-bootstrap';
@@ -8,33 +7,26 @@ import { Spinner } from 'react-bootstrap';
  * @description - 
  * @returns {React.FC}
  */
-const Banner = ({ apiLink }) => {
+const Banner = ({ data, isLoading }) => {
 
-  const [movie, setMovie] = useState();
-  const [loading, setLoading] = useState(true);
   const overviewRef = useRef(null);
   const typedRef = useRef(null);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchFromAPI = async () => {
-      const response = await axios.get(apiLink ? apiLink : `${`https://api.themoviedb.org/3`}${`/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&with_networks=213`}`);
-      setMovie(response.data.results[
-        Math.floor(Math.random() * response.data.results.length - 1)
-      ]);
-      setLoading(false);
-    };
-
-    fetchFromAPI();
-  }, [apiLink]);
+  // Select most popular movie from provided data
+  const movieOrTvShow = (!isLoading && data?.results?.length > 0) 
+    ? data.results.reduce((prev, current) => 
+        (prev.popularity > current.popularity) ? prev : current
+      )
+    : null;
 
   useEffect(() => {
-    if (!loading && movie && movie.overview) {
-      const movieOverview = movie.overview.length > 280 ? movie.overview.slice(0, 280) + '...' : movie.overview;
+    if (!isLoading && movieOrTvShow && movieOrTvShow.overview) {
+      const overview = movieOrTvShow.overview.length > 280 ? movieOrTvShow.overview.slice(0, 280) + '...' : movieOrTvShow.overview;
 
       const options = {
-        strings: [movieOverview],
+        strings: [overview],
         typeSpeed: 20,
         startDelay: 300,
         showCursor: false
@@ -47,32 +39,29 @@ const Banner = ({ apiLink }) => {
       };
     }
 
-  }, [loading, movie]);
-
+  }, [isLoading, movieOrTvShow]);
 
   const handleNavigation = () => {
-    if (movie.first_air_date) {
-      navigate(`/title/tv/${movie.id}`);
+    if (movieOrTvShow.first_air_date) {
+      navigate(`/title/tv/${movieOrTvShow.id}`);
     } else {
-      navigate(`/title/movie/${movie.id}`);
+      navigate(`/title/movie/${movieOrTvShow.id}`);
     }
   };
 
-
-
   return (
-    loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
+    isLoading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
       <div className="bannerContainer">
         <div
           style={{
             backgroundSize: 'cover',
-            backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.backdrop_path}")`,
+            backgroundImage: `url("https://image.tmdb.org/t/p/original/${movieOrTvShow?.backdrop_path}")`,
             backgroundPosition: 'center center'
           }}
           className="vw-100 vh-100 mw-100 d-flex align-items-center"
         >
           <div className="px-3 px-lg-5 w-100">
-            <div className="fs-1 fw-bold mb-2">{movie?.title || movie?.name}</div>
+            <div className="fs-1 fw-bold mb-2">{movieOrTvShow?.title || movieOrTvShow?.name}</div>
             <div className="fs-5 fw-light mb-2" ref={overviewRef}></div>
             <div className="d-flex">
               <div className="btn btn-light me-2 fw-bold d-flex align-items-center">

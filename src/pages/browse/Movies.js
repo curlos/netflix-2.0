@@ -7,6 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Pagination from 'react-bootstrap/Pagination';
 import { MOVIE_GENRES, YEARS, SORT_TYPES } from '../../utils/genres';
 import { Spinner } from 'react-bootstrap';
+import { useGetPopularMoviesQuery } from '../../services/movieApi';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
@@ -19,6 +20,9 @@ const Movies = () => {
   const [movies, setMovies] = useState();
   const [hoveredValue, setHoveredValue] = useState();
   const [loading, setLoading] = useState(true);
+  
+  // RTK Query for Banner data
+  const popularMoviesQuery = useGetPopularMoviesQuery();
 
   const [genres, setGenres] = useState(Object.fromEntries(
     MOVIE_GENRES.map(genre => [genre.name, false])
@@ -78,12 +82,11 @@ const Movies = () => {
     return arrayOfNums;
   };
 
-
   return (
     loading ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
       <div className="bg-black pb-3">
         <TopNavbar />
-        <Banner apiLink={`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&page=1`} />
+        <Banner data={popularMoviesQuery.data} isLoading={popularMoviesQuery.isLoading} />
 
         <div className="pt-5 text-white">
           <div id="pageTitle" className="px-2 px-md-5 py-3 fw-bold fs-4 flex align-items-center">

@@ -99,7 +99,7 @@ const Home = () => {
       {!searchParams.get('query') ? (
         // If the user did not search for anything, then just show the default home page where we show the banner (with a random movie or tv show) OR show different movies and tv shows by the default categories in the form of a carousel for each category.
         <div>
-          <Banner />
+          <Banner data={netflixOriginalsQuery.data} isLoading={netflixOriginalsQuery.isLoading} />
           <div className="p-1 p-md-3">
             {categoryNames.map((categoryName) => {
               const { data, isLoading } = getQueryDataForCategory(categoryName);

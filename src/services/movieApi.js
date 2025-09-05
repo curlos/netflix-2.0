@@ -9,6 +9,9 @@ export const movieApi = createApi({
     baseUrl: API_BASE_URL,
   }),
   endpoints: (builder) => ({
+    getPopularMovies: builder.query({
+      query: () => `/movie/popular?api_key=${API_KEY}&language=en-US&page=1`,
+    }),
     getTopRatedMovies: builder.query({
       query: () => `/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`,
     }),
@@ -35,9 +38,7 @@ export const movieApi = createApi({
 
 export const {
   useGetPopularMoviesQuery,
-  useGetLatestMovieQuery,
   useGetTopRatedMoviesQuery,
-  useGetUpcomingMoviesQuery,
   useGetActionMoviesQuery,
   useGetComedyMoviesQuery,
   useGetHorrorMoviesQuery,
