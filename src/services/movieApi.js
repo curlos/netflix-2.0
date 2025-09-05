@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { MOVIE_GENRES_BY_NAME } from '../utils/genres';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const API_BASE_URL = 'https://api.themoviedb.org/3';
@@ -45,6 +46,34 @@ export const movieApi = createApi({
     getSearchResults: builder.query({
       query: (searchQuery) => `/search/multi?api_key=${API_KEY}&query=${searchQuery}`,
     }),
+    getFilteredMovies: builder.query({
+      query: ({ genres, selectedYear, selectedSortType, pageNum }) => {
+        const getIncludedGenresString = (genres) => {
+          const genresArr = [];
+
+          Object.keys(genres).forEach((genreName) => {
+            if (genres[genreName]) {
+              const movieGenreObj = MOVIE_GENRES_BY_NAME[genreName];
+              if (movieGenreObj) {
+                genresArr.push(movieGenreObj.id);
+              }
+            }
+          });
+
+          return genresArr.join(',');
+        };
+
+        const includedGenres = getIncludedGenresString(genres);
+        
+        if (selectedYear && String(selectedYear).includes('s')) {
+          // If the selected year contains an 's', it's a decade (like 1980s which would span from 1980 - 1989).
+          return `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_date.gte=${selectedYear.slice(0, 4)}&primary_release_date.lte=${Number(selectedYear.slice(0, 4)) + 9}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : ''}`;
+        } else {
+          // If not, then this is a single year, like 2012
+          return `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : ''}`;
+        }
+      },
+    }),
   }),
 });
 
@@ -61,4 +90,5 @@ export const {
   useGetMovieCreditsQuery,
   useGetMovieRecommendationsQuery,
   useGetSearchResultsQuery,
+  useGetFilteredMoviesQuery,
 } = movieApi;

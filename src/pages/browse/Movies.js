@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SmallMovie from '../../components/SmallMovie';
 import TopNavbar from '../../components/TopNavbar';
-import axios from 'axios';
 import Banner from '../../components/Banner';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Pagination from 'react-bootstrap/Pagination';
 import { MOVIE_GENRES, YEARS, SORT_TYPES } from '../../utils/genres';
 import { Spinner } from 'react-bootstrap';
-import { useGetPopularMoviesQuery } from '../../services/movieApi';
-
-const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+import { useGetPopularMoviesQuery, useGetFilteredMoviesQuery } from '../../services/movieApi';
 
 /**
  * @description - Page that shows a list of movies and several, several pages of them. There are options to filter and sort the movies.
@@ -17,13 +14,8 @@ const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
  */
 const Movies = () => {
 
-  const [movies, setMovies] = useState();
   const [hoveredValue, setHoveredValue] = useState();
-  const [loading, setLoading] = useState(true);
   
-  // RTK Query for Banner data
-  const popularMoviesQuery = useGetPopularMoviesQuery();
-
   const [genres, setGenres] = useState(Object.fromEntries(
     MOVIE_GENRES.map(genre => [genre.name, false])
   ));
@@ -31,42 +23,31 @@ const Movies = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedSortType, setSelectedSortType] = useState('popularity.desc');
   const [pageNum, setPageNum] = useState(1);
-
+  
+  const isInitialRender = useRef(true);
+  
+  // RTK Query for Banner data
+  const popularMoviesQuery = useGetPopularMoviesQuery();
+  
+  // RTK Query for filtered movies
+  const { data: moviesData, isLoading } = useGetFilteredMoviesQuery({
+    genres,
+    selectedYear,
+    selectedSortType,
+    pageNum
+  });
+  
+  const movies = moviesData?.results || [];
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    
     if (document.getElementById("pageTitle")) {
       document.getElementById("pageTitle").scrollIntoView();
     }
-
-    const getIncludedGenresString = () => {
-      const genresArr = [];
-
-      Object.keys(genres).forEach((genreName) => {
-        if (genres[genreName]) {
-          const movieGenreObj = MOVIE_GENRES.find(genre => genre.name === genreName);
-          genresArr.push(movieGenreObj.id);
-        }
-      });
-
-      return genresArr.join(',');
-    };
-
-    const includedGenres = getIncludedGenresString();
-
-    // If the selected year contains an 's', it's a decade (like 1980s which would span from 1980 - 1989)
-    if (selectedYear && String(selectedYear).includes('s')) {
-      axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_date.gte=${selectedYear.slice(0, 4)}&primary_release_date.lte=${Number(selectedYear.slice(0, 4)) + 9}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : ''}`).then((response) => {
-        setMovies(response.data.results);
-        setLoading(false);
-      });
-    } else {
-      // If not, then this is a single year, like 2012
-      axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : ''}`).then((response) => {
-        setMovies(response.data.results);
-        setLoading(false);
-      });
-    }
-
   }, [genres, selectedYear, selectedSortType, pageNum]);
 
   /**
@@ -83,7 +64,7 @@ const Movies = () => {
   };
 
   return (
-    loading ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
+    isLoading || !movies.length ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
       <div className="bg-black pb-3">
         <TopNavbar />
         <Banner data={popularMoviesQuery.data} isLoading={popularMoviesQuery.isLoading} />
