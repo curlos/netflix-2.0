@@ -50,12 +50,12 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
               </span>
               <span>
                 <span>{Math.round((episode?.vote_average + Number.EPSILON) * 100) / 100}</span>
-                <span className="text-secondary">/10</span>
+                <span className="ms-2 text-secondary fs-3">/10</span>
               </span>
             </div>
           </div>
           <div className=" fw-light mb-2">Episode aired {moment(episode?.air_date).format('MMMM Do, YYYY')}</div>
-          <div className="fs-5 fw-light mb-2" ref={overviewRef}></div>
+          <div className="fs-5 fw-light mb-2" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }} ref={overviewRef}></div>
           <div className="d-flex">
             <div className="btn btn-light me-2 fw-bold d-flex align-items-center">
               <div className="bi-play-fill me-2 fs-4" />

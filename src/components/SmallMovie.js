@@ -132,7 +132,6 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
     }
   };
 
-
   return (
     <div className="flex-1" onClick={handleNavigation}>
       {hoveredValue && hoveredValue === movie && !loading ? (
@@ -147,12 +146,6 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
             <img src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`} alt="" className={`movieImage m-1 rounded`}
             />
           </div>
-
-          {/* <div>{movie.title || movie.name}</div>
-
-            <div>
-              <span>{new Date(movie.release_date).getFullYear()} • {details.runtime}</span>
-            </div> */}
         </div>
       )}
     </div>
