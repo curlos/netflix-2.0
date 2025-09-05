@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import TopNavbar from '../components/TopNavbar';
 import Banner from '../components/Banner';
 import ContentCarousel from '../components/ContentCarousel';
 import {
   useSearchParams
 } from "react-router-dom";
-import axios from 'axios';
-import { debounce } from 'lodash';
 import MovieList from '../components/MovieList';
 import { 
   useGetTopRatedMoviesQuery,
@@ -14,7 +12,8 @@ import {
   useGetComedyMoviesQuery,
   useGetHorrorMoviesQuery,
   useGetRomanceMoviesQuery,
-  useGetDocumentariesQuery
+  useGetDocumentariesQuery,
+  useGetSearchResultsQuery
 } from '../services/movieApi';
 import { 
   useGetTrendingQuery,
@@ -30,11 +29,16 @@ const categoryNames = ['Trending', 'Netflix Originals', 'Top Rated', 'Action', '
  * @returns {React.FC}
  */
 const Home = () => {
-  const [movies, setMovies] = useState([]);
-  const [totalResults, setTotalResults] = useState(0);
   const [hoveredValue, setHoveredValue] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
+
+  // Get search query from URL params
+  const searchQuery = searchParams.get('query');
+  
+  // RTK Query for search results (only when there's a search query)
+  const searchResults = useGetSearchResultsQuery(searchQuery, { 
+    skip: !searchQuery 
+  });
 
   // RTK Query hooks for different categories
   const trendingQuery = useGetTrendingQuery();
@@ -70,33 +74,15 @@ const Home = () => {
     }
   };
 
-  const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
-
   useEffect(() => {
-    // If the URL contains a query, then the user must have searched for something to filter movies by so we'll want to search for movies by that include or are related to the query the user entered.
-    if (searchParams.get('query')) {
-      debounceMovieSearch(searchParams.get('query'));
-    }
-    // Each time the query in the URL changes, scroll to the top. This is important as the most relevant results will probably be at the top and the user can search for movies on any of the pages in the site. So, they could be on a TV Shows page with a list of episodes so they had to scroll to the bottom to see all of this. If they were to type in a query in the search bar, it would go up.
+    // Each time the query in the URL changes, scroll to the top. This is important as the most relevant results will probably be at the top and the user can search for movies on any of the pages in the site.
     window.scrollTo(0, 0);
-  }, [searchParams.get('query')]);
-
-  const debounceMovieSearch = useCallback(
-    // Waits for the user to stop typing for a full second. Once that happens, will then make an API call with the query the user searched for get movies that match it or are most relevant.
-    debounce((searchQuery) => {
-      axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&query=${searchQuery}`)
-        .then((response) => {
-          setMovies(response.data.results);
-          setTotalResults(response.data);
-          setLoading(false);
-        });
-    }, 1000),
-    []);
+  }, [searchQuery]);
 
   return (
     <div className="bg-black vw-100 mw-100">
       <TopNavbar />
-      {!searchParams.get('query') ? (
+      {!searchQuery ? (
         // If the user did not search for anything, then just show the default home page where we show the banner (with a random movie or tv show) OR show different movies and tv shows by the default categories in the form of a carousel for each category.
         <div>
           <Banner data={netflixOriginalsQuery.data} isLoading={netflixOriginalsQuery.isLoading} />
@@ -118,11 +104,11 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        loading ? (
+        searchResults.isLoading ? (
           <div>Loader...</div>
         ) : (
           // If the user DID search for something, then we'd show them a list of movies filtered by the query they entered.
-          <MovieList movies={movies} query={searchParams.get('query')} totalResults={totalResults} />
+          <MovieList movies={searchResults.data?.results || []} query={searchQuery} totalResults={searchResults.data} />
         )
       )}
     </div>
