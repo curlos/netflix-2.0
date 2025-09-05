@@ -39,16 +39,15 @@ const HoveredMovie = ({ setHoveredValue, setHoveredMovie, movie, details, videos
         <Card.Body className="bg-dark cardBody w-100">
           <Card.Title className="d-flex justify-content-between">
             <div className="d-flex">
-              <i class="bi bi-play-fill circleIcon me-2 bg-white text-dark border-dark"></i>
-              <i class="bi bi-plus circleIcon"></i>
+              <i className="bi bi-play-fill circleIcon me-2 bg-white text-dark border-dark"></i>
+              <i className="bi bi-plus circleIcon"></i>
             </div>
 
             <div>
-              <i class="bi bi-chevron-down circleIcon"></i>
+              <i className="bi bi-chevron-down circleIcon"></i>
             </div>
           </Card.Title>
-          <Card.Text>
-            <div className="">
+          <div className="">
               <div className="space-between-x-1">
                 <span className="me-1">
                   <i className="bi bi-star-fill fs-6 text-warning"></i>
@@ -75,9 +74,7 @@ const HoveredMovie = ({ setHoveredValue, setHoveredMovie, movie, details, videos
               {genreNames ? (
                 <div>{genreNamesStr}</div>
               ) : null}
-            </div>
-
-          </Card.Text>
+          </div>
         </Card.Body>
       </Card>
     </div>

@@ -25,8 +25,8 @@ const SideNavbar = ({ open, setOpen }) => {
   };
 
   return (
-    <div id="mySidenav" class={`sidenav ${open ? 'sidenavOpen' : ''}`}>
-      <button class="closebtn" onClick={() => setOpen(false)}>&times;</button>
+    <div id="mySidenav" className={`sidenav ${open ? 'sidenavOpen' : ''}`}>
+      <button className="closebtn" onClick={() => setOpen(false)}>&times;</button>
       <Link to="/movies">Movies</Link>
       <Link to="/tv-shows">TV Shows</Link>
       {user && user.email ? (

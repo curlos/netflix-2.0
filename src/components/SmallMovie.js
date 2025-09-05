@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import HoveredMovie from './HoveredMovie';
@@ -20,7 +20,17 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
   const [credits, setCredits] = useState();
   const [recommendedMovies, setRecommendedMovies] = useState();
 
-  let timeoutId;
+  const timeoutIdRef = useRef(null);
+
+  // Cleanup timeout on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (timeoutIdRef.current) {
+        window.clearTimeout(timeoutIdRef.current);
+        timeoutIdRef.current = null;
+      }
+    };
+  }, []);
 
   const showHoveredMovie = async (newHoveredMovie) => {
     setLoading(true);
@@ -38,18 +48,18 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
 
   const handleHover = async () => {
 
-    if (!timeoutId) {
-      timeoutId = window.setTimeout(() => {
-        timeoutId = null;
+    if (!timeoutIdRef.current) {
+      timeoutIdRef.current = window.setTimeout(() => {
+        timeoutIdRef.current = null;
         showHoveredMovie(movie);
       }, 700);
     }
   };
 
   const handleHoverLeave = () => {
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
-      timeoutId = null;
+    if (timeoutIdRef.current) {
+      window.clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = null;
     }
   };
 

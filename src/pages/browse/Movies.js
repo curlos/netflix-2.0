@@ -102,8 +102,8 @@ const Movies = () => {
 
                   {Object.keys(genres).map((genre) => {
                     return (
-                      <div>
-                        <input type="checkbox" className="me-1" checked={genres[genre]} onClick={() => setGenres({ ...genres, [genre]: !genres[genre] })} />
+                      <div key={genre}>
+                        <input type="checkbox" className="me-1" checked={genres[genre]} onChange={() => setGenres({ ...genres, [genre]: !genres[genre] })} />
                         <span>{genre}</span>
                       </div>
                     );
@@ -123,8 +123,8 @@ const Movies = () => {
 
                   {YEARS.map((year) => {
                     return (
-                      <div className="">
-                        <input type="radio" name="year-option" className="me-1" onClick={() => setSelectedYear(year)} />
+                      <div key={year} className="">
+                        <input type="radio" name="year-option" className="me-1" checked={selectedYear === year} onChange={() => setSelectedYear(year)} />
                         <span>{year}</span>
                       </div>
                     );
@@ -144,8 +144,8 @@ const Movies = () => {
 
                   {Object.keys(SORT_TYPES).map((sortType) => {
                     return (
-                      <div className="">
-                        <input type="radio" name="sort-option" className="me-1" checked={SORT_TYPES[sortType] === selectedSortType} onClick={() => setSelectedSortType(SORT_TYPES[sortType])} />
+                      <div key={sortType} className="">
+                        <input type="radio" name="sort-option" className="me-1" checked={SORT_TYPES[sortType] === selectedSortType} onChange={() => setSelectedSortType(SORT_TYPES[sortType])} />
                         <span>{sortType}</span>
                       </div>
                     );
@@ -157,7 +157,7 @@ const Movies = () => {
           </div>
           <div className="smallMoviesGrid px-2 px-md-5">
             {movies.map((movie) => {
-              return <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
+              return <SmallMovie key={movie.id} movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
             })}
           </div>
         </div>
@@ -169,14 +169,14 @@ const Movies = () => {
 
             if (num === 999) {
               return (
-                <span>
+                <span key={num}>
                   <Pagination.Item onClick={() => setPageNum(num)} className={`${pageNum === num ? 'selectedPageNum' : null}`}>{num}</Pagination.Item>
                 </span>
               );
             }
 
             return (
-              <Pagination.Item onClick={() => setPageNum(num)}>{num}</Pagination.Item>
+              <Pagination.Item key={num} onClick={() => setPageNum(num)}>{num}</Pagination.Item>
             );
           })}
 

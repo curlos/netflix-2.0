@@ -49,22 +49,14 @@ const TopNavbar = () => {
 
   return (
     <Navbar variant="dark" className="px-3 px-md-5 bg-black fixed-top topNavbar">
-      <Nav.Link className="h-100 ps-0 d-flex align-items-center">
-        <Link to="/" className="navLink">
-          <img src="/assets/netflix_logo.png" alt="" className="navImage" />
-        </Link>
-      </Nav.Link>
+      <Link to="/" className="navLink h-100 ps-0 d-flex align-items-center me-2">
+        <img src="/assets/netflix_logo.png" alt="" className="navImage" />
+      </Link>
       <Nav className="w-100 text-white navLink d-flex justify-content-between align-items-center">
         <div className="d-none d-md-flex">
-          <Nav.Link>
-            <Link to="/" className="navLink">Home</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to="/tv-shows" className="navLink">TV Shows</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to="/movies" className="navLink">Movies</Link>
-          </Nav.Link>
+          <Link to="/" className="navLink nav-link">Home</Link>
+          <Link to="/tv-shows" className="navLink nav-link">TV Shows</Link>
+          <Link to="/movies" className="navLink nav-link">Movies</Link>
         </div>
 
         <div className="d-block d-lg-none" />
@@ -97,17 +89,13 @@ const TopNavbar = () => {
             </Dropdown>
           ) : (
             <span className="d-none d-sm-flex">
-              <Nav.Link>
-                <Link to="/login" className="navLink">Login</Link>
-              </Nav.Link>
-              <Nav.Link>
-                <Link to="/signup" className="navLink">Sign Up</Link>
-              </Nav.Link>
+              <Link to="/login" className="navLink nav-link">Login</Link>
+              <Link to="/signup" className="navLink nav-link">Sign Up</Link>
             </span>
           )}
 
           <div className="d-sm-none" onClick={() => setOpen(true)}>
-            <i class="bi bi-list fs-3"></i>
+            <i className="bi bi-list fs-3"></i>
           </div>
         </div>
 

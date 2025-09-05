@@ -39,7 +39,7 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
       >
         <div className="px-1 px-lg-5 tvEpisodeBannerInfo">
           <Link to={`/title/tv/${tvShow.id}`}>
-            <i class="bi bi-chevron-left"></i>
+            <i className="bi bi-chevron-left"></i>
             <span className="ms-2">{tvShow.name || tvShow.original_name}</span>
           </Link>
           <div className="fs-1 fw-bold mb-2 d-flex justify-content-between">

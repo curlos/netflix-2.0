@@ -188,7 +188,7 @@ const TVShow = () => {
                     <span className="text-lightgray me-1 span">
                       Production:
                     </span>
-                    {details.production_companies.map((company, i) => <span>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}
+                    {details.production_companies.map((company, i) => <span key={company.id || i}>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}
                   </div>
                 ) : null}
 

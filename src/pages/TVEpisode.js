@@ -43,7 +43,6 @@ const TVEpisode = () => {
 
   const getVideos = async () => {
     const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/season/${seasonNum}/episode/${episodeNum}/videos?api_key=${API_KEY}`);
-    debugger;
     return response.data;
   };
 

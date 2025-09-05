@@ -95,7 +95,7 @@ const MovieModal = ({ movie, details, videos, credits, recommendedMovies, show, 
                 <span className="text-lightgray me-1 span">
                   Director:
                 </span>
-                {credits.crew.filter((member) => member.job === 'Director').map((member) => <span>{member.name}</span>)}
+                {credits.crew.filter((member) => member.job === 'Director').map((member) => <span key={member.credit_id || member.id}>{member.name}</span>)}
               </div>
             ) : null}
 
@@ -104,7 +104,7 @@ const MovieModal = ({ movie, details, videos, credits, recommendedMovies, show, 
                 <span className="text-lightgray me-1 span">
                   Cast:
                 </span>
-                {credits.cast.slice(0, 3).map((actor, i) => <span>{actor.name}{i !== 2 ? ', ' : null}</span>)}
+                {credits.cast.slice(0, 3).map((actor, i) => <span key={actor.id || i}>{actor.name}{i !== 2 ? ', ' : null}</span>)}
               </div>
             ) : null}
 
@@ -113,7 +113,7 @@ const MovieModal = ({ movie, details, videos, credits, recommendedMovies, show, 
                 <span className="text-lightgray me-1 span">
                   Production:
                 </span>
-                {details.production_companies.map((company, i) => <span>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}
+                {details.production_companies.map((company, i) => <span key={company.id || i}>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}
               </div>
             ) : null}
           </div>

@@ -54,7 +54,7 @@ const Home = () => {
           <Banner />
           <div className="p-1 p-md-3">
             {Object.values(requests).map((request) => (
-              <ContentCarousel apiUrl={API_BASE_URL + request.url} name={request.name} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
+              <ContentCarousel key={request.name} apiUrl={API_BASE_URL + request.url} name={request.name} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
             ))}
           </div>
         </div>

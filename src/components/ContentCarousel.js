@@ -86,11 +86,11 @@ const ContentCarousel = ({ apiUrl, name, hoveredValue, setHoveredValue }) => {
               const currEndIndex = currStartIndex + numOfMoviesShown;
 
               return (
-                <Carousel.Item>
+                <Carousel.Item key={currNum}>
                   <Col>
                     <div className="smallMoviesGrid">
                       {movies.slice(currStartIndex, currEndIndex).map((movie) => (
-                        <SmallMovie movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
+                        <SmallMovie key={movie.id} movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
                       ))}
                     </div>
                   </Col>

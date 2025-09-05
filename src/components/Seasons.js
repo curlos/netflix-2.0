@@ -20,7 +20,7 @@ const Seasons = ({ tvShowID, seasons }) => {
 
         <Dropdown.Menu variant="dark" align="end">
           {seasons.map((season) => (
-            <Dropdown.Item onClick={() => setSelectedSeason(season.season_number)}>
+            <Dropdown.Item key={season.season_number} onClick={() => setSelectedSeason(season.season_number)}>
               Season {season.season_number}
             </Dropdown.Item>
           ))}
@@ -34,7 +34,7 @@ const Seasons = ({ tvShowID, seasons }) => {
       <div>
         {seasons[selectedSeason - 1].episodes.map((episode) => {
           return (
-            <div className="py-2 p-md-3 d-flex justify-content-between align-items-center gap-4 border-bottom border-secondary tvSmallEpisode" onClick={() => navigate(`/title/tv/${tvShowID}/season/${selectedSeason}/episode/${episode.episode_number}`)}>
+            <div key={episode.id || episode.episode_number} className="py-2 p-md-3 d-flex justify-content-between align-items-center gap-4 border-bottom border-secondary tvSmallEpisode" onClick={() => navigate(`/title/tv/${tvShowID}/season/${selectedSeason}/episode/${episode.episode_number}`)}>
               <div className="d-flex align-items-center gap-4">
                 <h3>{episode.episode_number}</h3>
                 <img src={`https://image.tmdb.org/t/p/original${episode?.still_path}`} alt={''} className="moviePoster" />
