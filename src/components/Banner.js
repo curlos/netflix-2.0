@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
-import requests, { API_BASE_URL } from '../requests';
 import { useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
 import { Spinner } from 'react-bootstrap';
@@ -20,7 +19,7 @@ const Banner = ({ apiLink }) => {
 
   useEffect(() => {
     const fetchFromAPI = async () => {
-      const response = await axios.get(apiLink ? apiLink : `${API_BASE_URL}${requests.fetchNetflixOriginals.url}`);
+      const response = await axios.get(apiLink ? apiLink : `${`https://api.themoviedb.org/3`}${`/discover/tv?api_key=${process.env.REACT_APP_TMDB_API_KEY}&with_networks=213`}`);
       setMovie(response.data.results[
         Math.floor(Math.random() * response.data.results.length - 1)
       ]);

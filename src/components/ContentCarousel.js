@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import SmallMovie from './SmallMovie';
 import Carousel from 'react-bootstrap/Carousel';
@@ -38,10 +37,8 @@ const getNumOfMoviesShown = (windowSize) => {
  * @description - 
  * @returns {React.FC}
  */
-const ContentCarousel = ({ apiUrl, name, hoveredValue, setHoveredValue }) => {
-  const [movies, setMovies] = useState([]);
+const ContentCarousel = ({ name, movies, isLoading, hoveredValue, setHoveredValue }) => {
   const [index, setIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
   const windowSize = useWindowSize();
   const [numOfMoviesShown, setNumOfMoviesShown] = useState(getNumOfMoviesShown(windowSize));
 
@@ -49,20 +46,8 @@ const ContentCarousel = ({ apiUrl, name, hoveredValue, setHoveredValue }) => {
     setIndex(selectedIndex);
   };
 
-
   useEffect(() => {
-    const fetchFromAPI = async () => {
-      const response = await axios.get(apiUrl);
-      setMovies(response.data.results);
-      setLoading(false);
-    };
-    fetchFromAPI();
-  }, [apiUrl]);
-
-  useEffect(() => {
-    setLoading(true);
     setNumOfMoviesShown(getNumOfMoviesShown(windowSize));
-    setLoading(false);
   }, [windowSize]);
 
   const getArrayOfNums = (num) => {
@@ -75,7 +60,7 @@ const ContentCarousel = ({ apiUrl, name, hoveredValue, setHoveredValue }) => {
 
 
   return (
-    !loading && (
+    !isLoading && (
       <div className="bg-black my-4 px-2 px-lg-4">
         <div className="fs-4">{name} {!['Netflix Originals', 'Documentaries', 'Trending'].includes(name) && 'Movies'}</div>
         <Row>

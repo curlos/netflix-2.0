@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import TopNavbar from '../components/TopNavbar';
 import Banner from '../components/Banner';
-import requests, { API_BASE_URL } from '../requests';
 import ContentCarousel from '../components/ContentCarousel';
 import {
   useSearchParams
@@ -9,6 +8,21 @@ import {
 import axios from 'axios';
 import { debounce } from 'lodash';
 import MovieList from '../components/MovieList';
+import { 
+  useGetTopRatedMoviesQuery,
+  useGetActionMoviesQuery,
+  useGetComedyMoviesQuery,
+  useGetHorrorMoviesQuery,
+  useGetRomanceMoviesQuery,
+  useGetDocumentariesQuery
+} from '../services/movieApi';
+import { 
+  useGetTrendingQuery,
+  useGetNetflixOriginalsQuery
+} from '../services/tvApi';
+
+// Category names for content carousels
+const categoryNames = ['Trending', 'Netflix Originals', 'Top Rated', 'Action', 'Comedy', 'Horror', 'Romance', 'Documentaries'];
 
 /**
  * @description - The home page, the first page the user will land on by default. The user will see a banner (with a random movie or TV show)
@@ -21,6 +35,40 @@ const Home = () => {
   const [hoveredValue, setHoveredValue] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
+
+  // RTK Query hooks for different categories
+  const trendingQuery = useGetTrendingQuery();
+  const netflixOriginalsQuery = useGetNetflixOriginalsQuery();
+  const topRatedQuery = useGetTopRatedMoviesQuery();
+  const actionQuery = useGetActionMoviesQuery();
+  const comedyQuery = useGetComedyMoviesQuery();
+  const horrorQuery = useGetHorrorMoviesQuery();
+  const romanceQuery = useGetRomanceMoviesQuery();
+  const documentariesQuery = useGetDocumentariesQuery();
+
+  // Data mapping function to get the right query result for each category
+  const getQueryDataForCategory = (categoryName) => {
+    switch(categoryName) {
+      case 'Trending':
+        return trendingQuery;
+      case 'Netflix Originals':
+        return netflixOriginalsQuery;
+      case 'Top Rated':
+        return topRatedQuery;
+      case 'Action':
+        return actionQuery;
+      case 'Comedy':
+        return comedyQuery;
+      case 'Horror':
+        return horrorQuery;
+      case 'Romance':
+        return romanceQuery;
+      case 'Documentaries':
+        return documentariesQuery;
+      default:
+        return { data: null, isLoading: false, error: null };
+    }
+  };
 
   const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 
@@ -53,9 +101,20 @@ const Home = () => {
         <div>
           <Banner />
           <div className="p-1 p-md-3">
-            {Object.values(requests).map((request) => (
-              <ContentCarousel key={request.name} apiUrl={API_BASE_URL + request.url} name={request.name} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />
-            ))}
+            {categoryNames.map((categoryName) => {
+              const { data, isLoading } = getQueryDataForCategory(categoryName);
+              const movies = data?.results || [];
+              return (
+                <ContentCarousel 
+                  key={categoryName} 
+                  name={categoryName} 
+                  movies={movies}
+                  isLoading={isLoading}
+                  hoveredValue={hoveredValue} 
+                  setHoveredValue={setHoveredValue} 
+                />
+              );
+            })}
           </div>
         </div>
       ) : (

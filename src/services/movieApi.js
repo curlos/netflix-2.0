@@ -10,22 +10,22 @@ export const movieApi = createApi({
   }),
   endpoints: (builder) => ({
     getTopRatedMovies: builder.query({
-      query: (page = 1) => `/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`,
+      query: () => `/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`,
     }),
     getActionMovies: builder.query({
-      query: (page = 1) => `/discover/movie?api_key=${API_KEY}&with_genres=28&page=${page}`,
+      query: () => `/discover/movie?api_key=${API_KEY}&with_genres=28&page=1`,
     }),
     getComedyMovies: builder.query({
-      query: (page = 1) => `/discover/movie?api_key=${API_KEY}&with_genres=35&page=${page}`,
+      query: () => `/discover/movie?api_key=${API_KEY}&with_genres=35&page=1`,
     }),
     getHorrorMovies: builder.query({
-      query: (page = 1) => `/discover/movie?api_key=${API_KEY}&with_genres=27&page=${page}`,
+      query: () => `/discover/movie?api_key=${API_KEY}&with_genres=27&page=1`,
     }),
     getRomanceMovies: builder.query({
-      query: (page = 1) => `/discover/movie?api_key=${API_KEY}&with_genres=10749&page=${page}`,
+      query: () => `/discover/movie?api_key=${API_KEY}&with_genres=10749&page=1`,
     }),
     getDocumentaries: builder.query({
-      query: (page = 1) => `/discover/movie?api_key=${API_KEY}&with_genres=99&page=${page}`,
+      query: () => `/discover/movie?api_key=${API_KEY}&with_genres=99&page=1`,
     }),
     getMovieDetails: builder.query({
       query: (movieId) => `/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
