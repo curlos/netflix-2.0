@@ -38,23 +38,4 @@ const requests = {
   }
 };
 
-const movieRequests = {
-  fetchPopular: {
-    name: 'Popular',
-    url: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
-  },
-  fetchLatest: {
-    name: 'Latest',
-    url: `https://api.themoviedb.org/3/movie/latest?api_key=${API_KEY}&language=en-US`
-  },
-  fetchTopRated: {
-    name: 'Top Rated',
-    url: `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`
-  },
-  fetchUpcoming: {
-    name: 'Action',
-    url: `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
-  }
-};
-
 export default requests;
