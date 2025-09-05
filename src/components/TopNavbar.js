@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { debounce } from 'lodash';
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/userSlice';
 import { useSelector } from 'react-redux';
@@ -25,11 +26,21 @@ const TopNavbar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
+  const debouncedNavigate = useCallback(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    debounce((query) => {
+      if (query) {
+        navigate(`/?query=${query}`);
+      } else {
+        navigate('/');
+      }
+    }, 1000),
+    [navigate]
+  );
+
   useEffect(() => {
-    if (searchQuery) {
-      navigate(`/?query=${searchQuery}`);
-    }
-  }, [navigate, searchQuery]);
+    debouncedNavigate(searchQuery);
+  }, [searchQuery, debouncedNavigate]);
 
   useEffect(() => {
     if (searchParams && searchParams.get('query') && searchParams.get('query').length === 1) {
