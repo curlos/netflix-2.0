@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   useParams
 } from "react-router-dom";
-import axios from 'axios';
 import TopNavbar from '../components/TopNavbar';
 import { Spinner } from 'react-bootstrap';
 import { getGenreNames } from '../utils/genres_v2';
@@ -10,8 +9,7 @@ import { getAllDirectors, getAllActors } from '../utils/credits';
 import RecommendedMoviesList from '../components/RecommendedMoviesList';
 import Seasons from '../components/Seasons';
 import moment from 'moment';
-
-const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+import { useGetTVShowDetailsQuery, useGetTVVideosQuery, useGetTVCreditsQuery, useGetTVRecommendationsQuery } from '../services/tvApi';
 
 /**
  * @description - 
@@ -20,83 +18,17 @@ const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
 const TVShow = () => {
   const { id } = useParams();
 
-  const [details, setDetails] = useState();
-  const [videos, setVideos] = useState();
-  const [credits, setCredits] = useState();
-  const [recommendedTVShows, setRecommendedTVShows] = useState();
-  const [seasons, setSeasons] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // RTK Query hooks
+  const { data: details, isLoading: detailsLoading } = useGetTVShowDetailsQuery(id);
+  const { data: videos, isLoading: videosLoading } = useGetTVVideosQuery(id);
+  const { data: credits, isLoading: creditsLoading } = useGetTVCreditsQuery(id);
+  const { data: recommendedTVShows, isLoading: recommendedLoading } = useGetTVRecommendationsQuery(id);
+  
+  const loading = detailsLoading || videosLoading || creditsLoading || recommendedLoading;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    getAndSetAllTVShowDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
-  /**
-   * @description - Get and set all the details about the TV show. We'll need separate API calls because of how the TMDB API works and because specific stuff like videos related to the TV Show and the team behind it are NOT in the same API endpoint as the basic TV Show details.
-   */
-  const getAndSetAllTVShowDetails = async () => {
-    setLoading(true);
-    const newDetails = await getTVShowDetails();
-    setDetails(newDetails);
-    setVideos(await getVideos());
-    setCredits(await getCredits());
-    setRecommendedTVShows(await getRecommendedTVShows());
-    setSeasons(await getAllSeasons(newDetails));
-    setLoading(false);
-  };
-
-  /**
-   * @description - Get the TV Show's details.
-   * @returns {Object}
-   */
-  const getTVShowDetails = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`);
-    return response.data;
-  };
-
-  /**
-   * @description - Get videos related to the TV Show. These can be about anything as long as it's related to the TV Show but it'll include links to videos on both YouTube and Vimeo. We'll be using YouTube as that makes the embed video process easier.
-   * @returns {Object}
-   */
-  const getVideos = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=${API_KEY}&language=en-US`);
-    return response.data;
-  };
-
-  /**
-   * @description - Get information about the crew and cast behind this TV Show.
-   * @returns {Object}
-   */
-  const getCredits = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/credits?api_key=${API_KEY}&language=en-US`);
-    return response.data;
-  };
-
-  /**
-   * @description - Get other TV Shows that people who like this current TV Show would enjoy.
-   * @returns {Object}
-   */
-  const getRecommendedTVShows = async () => {
-    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`);
-    return response.data;
-  };
-
-  /**
-   * @description - Get information about the crew and cast behind this TV Show.
-   * @returns {Object}
-   */
-  const getAllSeasons = async (newDetails) => {
-
-    let currSeasons = [];
-    for (let seasonNum = 1; seasonNum <= newDetails.number_of_seasons; seasonNum++) {
-      const response = await axios.get(`https://api.themoviedb.org/3/tv/${newDetails.id}/season/${seasonNum}?api_key=${API_KEY}`);
-      currSeasons.push(response.data);
-    }
-
-    return currSeasons;
-  };
 
   // Get the year the TV show started and the year it ended (or if it hasn't ended, then just the current year) and format it.
   const getYears = (details) => {
@@ -117,9 +49,9 @@ const TVShow = () => {
       {loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
         <div className="moviePageContainer">
           {/* If there's at least one video, then take the first video and show that. We'll be using YouTube as that's the most mainstream option plus most people already use it. */}
-          {videos.results.length >= 1 ?
+          {videos?.results?.length >= 1 ?
             (<div className="videoWrapper" style={{}}>
-              <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1&loop=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
+              <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos?.results?.[0]?.key}?&autoplay=1&loop=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
             </div>) : (
               // If there's NO videos, then show an image of the TV show. Get the horizontal poster if possible BUT if not just use the normal poster.
               <div>
@@ -135,9 +67,9 @@ const TVShow = () => {
 
             <div>
               <div className="d-flex justify-content-between align-items-center">
-                {details.title || details.original_name ? (
+                {details?.title || details?.original_name ? (
                   <div>
-                    <h1 className="fw-bold">{details.title || details.name || details.original_name}</h1>
+                    <h1 className="fw-bold">{details?.title || details?.name || details?.original_name}</h1>
                   </div>
                 ) : null}
 
@@ -158,23 +90,23 @@ const TVShow = () => {
                 ) : null}
               </div>
 
-              <div className="mb-4">{details.overview}</div>
+              <div className="mb-4">{details?.overview}</div>
 
               <div className="space-between-y-1">
 
-                {details.genres && details.genres.length > 0 ? (
+                {details?.genres && details?.genres?.length > 0 ? (
                   <div><span className="text-lightgray" style={{ width: '100px' }}>Genre:</span> {getGenreNames(details?.genres)}</div>
                 ) : null}
 
-                {details.release_date ? (
+                {details?.release_date ? (
                   <div><span className="text-lightgray">Release Date:</span> {moment(details?.air_date).format('MMMM Do, YYYY')}</div>
                 ) : null}
 
-                {!details.release_date && details.first_air_date && details.last_air_date ? (
+                {!details?.release_date && details?.first_air_date && details?.last_air_date ? (
                   <div>{getYears(details)}</div>
                 ) : null}
 
-                {credits && credits.crew && credits.crew.filter((member) => member.job === 'Director').length >= 1 ? (
+                {credits && credits?.crew && credits?.crew?.filter((member) => member.job === 'Director').length >= 1 ? (
                   <div>
                     <span className="text-lightgray me-1 span">
                       Director:
@@ -183,27 +115,27 @@ const TVShow = () => {
                   </div>
                 ) : null}
 
-                {details.production_companies && details.production_companies.length > 0 ? (
+                {details?.production_companies && details?.production_companies?.length > 0 ? (
                   <div>
                     <span className="text-lightgray me-1 span">
                       Production:
                     </span>
-                    {details.production_companies.map((company, i) => <span key={company.id || i}>{company.name}{i !== details.production_companies.length - 1 ? ', ' : null}</span>)}
+                    {details?.production_companies?.map((company, i) => <span key={company.id || i}>{company.name}{i !== details?.production_companies?.length - 1 ? ', ' : null}</span>)}
                   </div>
                 ) : null}
 
-                {credits.cast && credits.cast.length > 0 ? (
+                {credits?.cast && credits?.cast?.length > 0 ? (
                   <div><span className="text-lightgray">Cast:</span> {getAllActors(credits)}</div>
                 ) : null}
 
-                {details.release_date ? (
+                {details?.release_date ? (
                   <div><span className="text-lightgray">Box Office:</span> ${Number(details?.revenue).toLocaleString()}</div>
                 ) : null}
               </div>
             </div>
           </div>
 
-          <Seasons tvShowID={id} seasons={seasons} />
+          <Seasons tvShowID={id} tvShowDetails={details} />
 
           <RecommendedMoviesList recommendedMovies={recommendedTVShows} />
         </div>
