@@ -314,6 +314,10 @@ export const MOVIE_GENRES_BY_NAME = Object.fromEntries(
   MOVIE_GENRES.map(genre => [genre.name, genre])
 );
 
+export const TV_GENRES_BY_NAME = Object.fromEntries(
+  TV_GENRES.map(genre => [genre.name, genre])
+);
+
 export const YEARS = [
   'All', ...getFullYearRange(), '1990s', '1980s', '1970s', '1960s', '1950s', '1940s', '1930s', '1920s', '1910s', '1900s'
 ];

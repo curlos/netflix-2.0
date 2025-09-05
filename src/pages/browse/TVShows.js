@@ -1,64 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SmallMovie from '../../components/SmallMovie';
 import TopNavbar from '../../components/TopNavbar';
-import axios from 'axios';
 import Banner from '../../components/Banner';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Pagination from 'react-bootstrap/Pagination';
-import { MOVIE_GENRES, YEARS, SORT_TYPES } from '../../utils/genres';
+import { TV_GENRES, YEARS, SORT_TYPES } from '../../utils/genres';
 import { Spinner } from 'react-bootstrap';
-import { useGetDiscoverTVQuery } from '../../services/tvApi';
+import { useGetDiscoverTVQuery, useGetFilteredTVShowsQuery } from '../../services/tvApi';
 
-const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+const TVShows = () => {
 
-const Movies = () => {
-
-  const [movies, setMovies] = useState();
   const [hoveredValue, setHoveredValue] = useState();
-  const [loading, setLoading] = useState(true);
+  
+  const [genres, setGenres] = useState(Object.fromEntries(
+    TV_GENRES.map(genre => [genre.name, false])
+  ));
+
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedSortType, setSelectedSortType] = useState('popularity.desc');
+  const [pageNum, setPageNum] = useState(1);
+  
+  const isInitialRender = useRef(true);
   
   // RTK Query for Banner data
   const discoverTVQuery = useGetDiscoverTVQuery();
-
-  const [genres, setGenres] = useState(Object.fromEntries(
-    MOVIE_GENRES.map(genre => [genre.name, false])
-  ));
-
-  const [selectedYear, setSelectedYear] = useState(2021);
-  const [selectedSortType, setSelectedSortType] = useState('popularity.desc');
-  const [pageNum, setPageNum] = useState(1);
+  
+  // RTK Query for filtered TV shows
+  const { data: tvShowsData, isLoading } = useGetFilteredTVShowsQuery({
+    genres,
+    selectedYear,
+    selectedSortType,
+    pageNum
+  });
+  
+  const movies = tvShowsData?.results || [];
 
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    
     if (document.getElementById("pageTitle")) {
       document.getElementById("pageTitle").scrollIntoView();
-    }
-
-    const getIncludedGenresString = () => {
-      const genresArr = [];
-
-      Object.keys(genres).forEach((genreName) => {
-        if (genres[genreName]) {
-          const movieGenreObj = MOVIE_GENRES.find(genre => genre.name === genreName);
-          genresArr.push(movieGenreObj.id);
-        }
-      });
-
-      return genresArr.join(',');
-    };
-
-    const includedGenres = getIncludedGenresString();
-
-    if (selectedYear && String(selectedYear).includes('s')) {
-      axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&first_air_date.gte=${selectedYear.slice(0, 4)}&first_air_date.lte=${Number(selectedYear.slice(0, 4)) + 9}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : ''}`).then((response) => {
-        setMovies(response.data.results);
-        setLoading(false);
-      });
-    } else {
-      axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&first_air_date_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : ''}`).then((response) => {
-        setMovies(response.data.results);
-        setLoading(false);
-      });
     }
   }, [genres, selectedYear, selectedSortType, pageNum]);
 
@@ -72,13 +57,10 @@ const Movies = () => {
     return arrayOfNums;
   };
 
-  const handleGenreClick = (genreName) => {
-    setGenres({ ...genres, [genreName]: !genres[genreName] });
-  };
 
 
   return (
-    loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
+    isLoading || !movies.length ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
       <div className="bg-black pb-3">
         <TopNavbar />
         <Banner data={discoverTVQuery.data} isLoading={discoverTVQuery.isLoading} />
@@ -100,7 +82,7 @@ const Movies = () => {
                   {Object.keys(genres).map((genre) => {
                     return (
                       <div key={genre}>
-                        <input type="checkbox" className="me-1" checked={genres[genre]} onChange={() => handleGenreClick(genre)} />
+                        <input type="checkbox" className="me-1" checked={genres[genre]} onChange={() => setGenres({ ...genres, [genre]: !genres[genre] })} />
                         <span>{genre}</span>
                       </div>
                     );
@@ -185,4 +167,4 @@ const Movies = () => {
   );
 };
 
-export default Movies;
+export default TVShows;
