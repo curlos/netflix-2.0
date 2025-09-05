@@ -2,15 +2,50 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import { getGenreNames } from '../utils/genres';
 import { useNavigate } from 'react-router';
+import { 
+  useGetMovieDetailsQuery,
+  useGetMovieVideosQuery
+} from '../services/movieApi';
+import { 
+  useGetTVShowDetailsQuery,
+  useGetTVVideosQuery
+} from '../services/tvApi';
 
 /**
  * @description - 
  * @returns {React.FC}
  */
-const HoveredMovie = ({ setHoveredValue, setHoveredMovie, movie, details, videos, recommendedMovies, convertMinToHours }) => {
+const HoveredMovie = ({ setHoveredValue, movie }) => {
   const genreNames = getGenreNames(movie?.genre_ids, movie.media_type).slice(0, 3);
   const genreNamesStr = genreNames.join(' • ');
   const navigate = useNavigate();
+
+  // Determine if this is a TV show or movie
+  const isTV = !!movie.first_air_date;
+  
+  // Call all hooks (required by React hooks rules)
+  const movieDetails = useGetMovieDetailsQuery(movie.id, { skip: isTV });
+  const movieVideos = useGetMovieVideosQuery(movie.id, { skip: isTV });
+  const tvDetails = useGetTVShowDetailsQuery(movie.id, { skip: !isTV });
+  const tvVideos = useGetTVVideosQuery(movie.id, { skip: !isTV });
+  
+  // Use appropriate data based on content type
+  const details = isTV ? tvDetails.data : movieDetails.data;
+  const videos = isTV ? tvVideos.data : movieVideos.data;
+
+  // Helper function to convert minutes to hours and minutes
+  const convertMinToHours = (n) => {
+    const num = Number(n);
+    const hours = (num / 60);
+    const rhours = Math.floor(hours);
+    const minutes = (hours - rhours) * 60;
+    const rminutes = Math.round(minutes);
+
+    return {
+      hours: rhours,
+      minutes: rminutes
+    };
+  };
 
   const handleNavigation = () => {
     if (movie.first_air_date) {
@@ -23,7 +58,6 @@ const HoveredMovie = ({ setHoveredValue, setHoveredMovie, movie, details, videos
   return (
     <div className="hoveredMovie m-2" onClick={handleNavigation} onMouseLeave={() => {
       setHoveredValue(null);
-      setHoveredMovie(false);
     }}>
 
       <Card className="p-0 m-0 h-100 border-0 rounded">
@@ -59,13 +93,13 @@ const HoveredMovie = ({ setHoveredValue, setHoveredMovie, movie, details, videos
               </div>
 
               <div className="d-flex gap-1 align-items-center">
-                {details.runtime && details.runtime > 0 ? (
+                {details?.runtime && details.runtime > 0 ? (
                   <div className="">{convertMinToHours(details?.runtime).hours}H</div>
                 ) : null}
-                {details.runtime && details.runtime > 0 ? (
+                {details?.runtime && details.runtime > 0 ? (
                   <div className="">{convertMinToHours(details?.runtime).minutes}M</div>
                 ) : null}
-                {details.number_of_seasons && details.number_of_seasons > 0 ? (
+                {details?.number_of_seasons && details.number_of_seasons > 0 ? (
                   <div className="">{details.number_of_seasons} Season{(details.number_of_seasons > 1) ? 's' : ''}</div>
                 ) : null}
                 <div className="smallMovieTag">HD</div>

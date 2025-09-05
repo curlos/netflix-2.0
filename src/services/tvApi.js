@@ -27,6 +27,15 @@ export const tvApi = createApi({
     getTVShowEpisode: builder.query({
       query: ({ tvId, seasonNumber, episodeNumber }) => `/tv/${tvId}/season/${seasonNumber}/episode/${episodeNumber}?api_key=${API_KEY}&language=en-US`,
     }),
+    getTVVideos: builder.query({
+      query: (tvId) => `/tv/${tvId}/videos?api_key=${API_KEY}&language=en-US`,
+    }),
+    getTVCredits: builder.query({
+      query: (tvId) => `/tv/${tvId}/credits?api_key=${API_KEY}&language=en-US`,
+    }),
+    getTVRecommendations: builder.query({
+      query: (tvId) => `/tv/${tvId}/recommendations?api_key=${API_KEY}&language=en-US&page=1`,
+    }),
   }),
 });
 
@@ -37,4 +46,7 @@ export const {
   useGetTVShowDetailsQuery,
   useGetTVShowSeasonsQuery,
   useGetTVShowEpisodeQuery,
+  useGetTVVideosQuery,
+  useGetTVCreditsQuery,
+  useGetTVRecommendationsQuery,
 } = tvApi;

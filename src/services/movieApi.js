@@ -33,6 +33,15 @@ export const movieApi = createApi({
     getMovieDetails: builder.query({
       query: (movieId) => `/movie/${movieId}?api_key=${API_KEY}&language=en-US`,
     }),
+    getMovieVideos: builder.query({
+      query: (movieId) => `/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`,
+    }),
+    getMovieCredits: builder.query({
+      query: (movieId) => `/movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`,
+    }),
+    getMovieRecommendations: builder.query({
+      query: (movieId) => `/movie/${movieId}/recommendations?api_key=${API_KEY}&language=en-US&page=1`,
+    }),
   }),
 });
 
@@ -45,4 +54,7 @@ export const {
   useGetRomanceMoviesQuery,
   useGetDocumentariesQuery,
   useGetMovieDetailsQuery,
+  useGetMovieVideosQuery,
+  useGetMovieCreditsQuery,
+  useGetMovieRecommendationsQuery,
 } = movieApi;
