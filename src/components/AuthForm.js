@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -25,15 +25,11 @@ const AuthForm = ({ mode }) => {
     
     authMethod(auth, emailRef.current.value, passwordRef.current.value)
       .then((authUser) => {
-        if (isLogin) {
-          dispatch(login({
-            uid: authUser.user.uid,
-            email: authUser.user.email,
-          }));
-          navigate('/');
-        } else {
-          navigate('/login');
-        }
+        dispatch(login({
+          uid: authUser.user.uid,
+          email: authUser.user.email,
+        }));
+        navigate('/');
       })
       .catch((error) => {
         alert(error.message);
