@@ -54,7 +54,12 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
               </span>
             </div>
           </div>
-          <div className=" fw-light mb-2">Episode aired {moment(episode?.air_date).format('MMMM Do, YYYY')}</div>
+          <div className=" fw-light mb-2">
+            {episode?.air_date && moment(episode.air_date).isValid() && moment(episode.air_date).isSameOrBefore(moment()) 
+              ? `Episode aired ${moment(episode.air_date).format('MMMM Do, YYYY')}`
+              : 'Episode not aired yet'
+            }
+          </div>
           <div className="fs-5 fw-light mb-2" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }} ref={overviewRef}></div>
           <div className="d-flex">
             <div className="btn btn-light me-2 fw-bold d-flex align-items-center">
