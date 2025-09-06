@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import SmallMovie from './SmallMovie';
 import TopNavbar from './TopNavbar';
 import Banner from './Banner';
@@ -17,15 +18,21 @@ import { Spinner } from 'react-bootstrap';
  * @returns {React.FC}
  */
 const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery, paginationClassName = "" }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [hoveredValue, setHoveredValue] = useState();
   
-  const [genres, setGenres] = useState(Object.fromEntries(
-    genreOptions.map(genre => [genre.name, false])
-  ));
+  // Parse genres from URL params
+  const genreParams = searchParams.get('genres');
+  const genres = Object.fromEntries(
+    genreOptions.map(genre => [
+      genre.name, 
+      genreParams ? genreParams.split(',').includes(genre.name) : false
+    ])
+  );
 
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedSortType, setSelectedSortType] = useState('popularity.desc');
-  const [pageNum, setPageNum] = useState(1);
+  const selectedYear = parseInt(searchParams.get('year')) || new Date().getFullYear();
+  const selectedSortType = searchParams.get('sort') || 'popularity.desc';
+  const pageNum = parseInt(searchParams.get('page')) || 1;
   
   const isInitialRender = useRef(true);
   
@@ -50,13 +57,36 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
+      // If there are filters in URL on initial load, scroll to page title
+      const hasFilters = searchParams.get('genres') || 
+                        searchParams.get('year') || 
+                        searchParams.get('sort') || 
+                        searchParams.get('page');
+      
+      if (hasFilters) {
+        const pageTitleElement = document.getElementById("pageTitle");
+        if (pageTitleElement) {
+          const offsetPosition = pageTitleElement.offsetTop;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }
       return;
     }
     
-    if (document.getElementById("pageTitle")) {
-      document.getElementById("pageTitle").scrollIntoView();
+    const pageTitleElement = document.getElementById("pageTitle");
+    if (pageTitleElement) {
+      const offsetPosition = pageTitleElement.offsetTop;
+      
+      pageTitleElement.scrollTo({
+        block: 'end',
+        behavior: 'smooth'
+      });
     }
-  }, [genres, selectedYear, selectedSortType, pageNum]);
+  }, [genres, selectedYear, selectedSortType, pageNum, searchParams]);
 
 
   return (
@@ -78,9 +108,31 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
             <Dropdown.Menu variant="dark" align="end">
               <div className="p-2 dropdown-scrollable">
                 {Object.keys(genres).map((genre) => {
+                  const handleGenreChange = () => {
+                    const newSearchParams = new URLSearchParams(searchParams);
+                    const currentGenres = genreParams ? genreParams.split(',') : [];
+                    
+                    if (genres[genre]) {
+                      // Remove genre
+                      const updatedGenres = currentGenres.filter(g => g !== genre);
+                      if (updatedGenres.length === 0) {
+                        newSearchParams.delete('genres');
+                      } else {
+                        newSearchParams.set('genres', updatedGenres.join(','));
+                      }
+                    } else {
+                      // Add genre
+                      const updatedGenres = [...currentGenres, genre];
+                      newSearchParams.set('genres', updatedGenres.join(','));
+                    }
+                    
+                    newSearchParams.delete('page');
+                    setSearchParams(newSearchParams);
+                  };
+
                   return (
-                    <div key={genre} className="cursor-pointer" onClick={() => setGenres({ ...genres, [genre]: !genres[genre] })}>
-                      <input type="checkbox" className="me-1" checked={genres[genre]} onChange={() => setGenres({ ...genres, [genre]: !genres[genre] })} />
+                    <div key={genre} className="cursor-pointer" onClick={handleGenreChange}>
+                      <input type="checkbox" className="me-1" checked={genres[genre]} onChange={handleGenreChange} />
                       <span>{genre}</span>
                     </div>
                   );
@@ -97,9 +149,20 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
             <Dropdown.Menu variant="dark" align="end">
               <div className="p-2 dropdown-scrollable">
                 {YEARS.map((year) => {
+                  const handleYearChange = () => {
+                    const newSearchParams = new URLSearchParams(searchParams);
+                    if (year === new Date().getFullYear()) {
+                      newSearchParams.delete('year');
+                    } else {
+                      newSearchParams.set('year', year.toString());
+                    }
+                    newSearchParams.delete('page');
+                    setSearchParams(newSearchParams);
+                  };
+
                   return (
-                    <div key={year} className="cursor-pointer" onClick={() => setSelectedYear(year)}>
-                      <input type="radio" name="year-option" className="me-1" checked={selectedYear === year} onChange={() => setSelectedYear(year)} />
+                    <div key={year} className="cursor-pointer" onClick={handleYearChange}>
+                      <input type="radio" name="year-option" className="me-1" checked={selectedYear === year} onChange={handleYearChange} />
                       <span>{year}</span>
                     </div>
                   );
@@ -116,9 +179,20 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
             <Dropdown.Menu variant="dark" align="end">
               <div className="p-2 dropdown-scrollable">
                 {Object.keys(SORT_TYPES).map((sortType) => {
+                  const handleSortChange = () => {
+                    const newSearchParams = new URLSearchParams(searchParams);
+                    if (SORT_TYPES[sortType] === 'popularity.desc') {
+                      newSearchParams.delete('sort');
+                    } else {
+                      newSearchParams.set('sort', SORT_TYPES[sortType]);
+                    }
+                    newSearchParams.delete('page');
+                    setSearchParams(newSearchParams);
+                  };
+
                   return (
-                    <div key={sortType} className="cursor-pointer" onClick={() => setSelectedSortType(SORT_TYPES[sortType])}>
-                      <input type="radio" name="sort-option" className="me-1" checked={SORT_TYPES[sortType] === selectedSortType} onChange={() => setSelectedSortType(SORT_TYPES[sortType])} />
+                    <div key={sortType} className="cursor-pointer" onClick={handleSortChange}>
+                      <input type="radio" name="sort-option" className="me-1" checked={SORT_TYPES[sortType] === selectedSortType} onChange={handleSortChange} />
                       <span>{sortType}</span>
                     </div>
                   );
@@ -150,7 +224,15 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
         currentPage={pageNum}
         totalPages={totalPages}
         totalResults={totalResults}
-        onPageChange={setPageNum}
+        onPageChange={(newPage) => {
+          const newSearchParams = new URLSearchParams(searchParams);
+          if (newPage === 1) {
+            newSearchParams.delete('page');
+          } else {
+            newSearchParams.set('page', newPage.toString());
+          }
+          setSearchParams(newSearchParams);
+        }}
         className={paginationClassName}
       />
     </div>
