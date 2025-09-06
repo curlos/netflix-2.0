@@ -60,7 +60,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
 
 
   return (
-    isLoading || !moviesOrTvShows.length ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
+    isLoading  ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
       <div className="bg-black pb-3">
         <TopNavbar />
         <Banner data={bannerQuery.data} isLoading={bannerQuery.isLoading} />

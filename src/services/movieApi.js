@@ -65,12 +65,17 @@ export const movieApi = createApi({
 
         const includedGenres = getIncludedGenresString(genres);
         
-        if (selectedYear && String(selectedYear).includes('s')) {
-          // If the selected year contains an 's', it's a decade (like 1980s which would span from 1980 - 1989).
-          return `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_date.gte=${selectedYear.slice(0, 4)}&primary_release_date.lte=${Number(selectedYear.slice(0, 4)) + 9}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : ''}`;
+        if (selectedYear === 'All') {
+          // If "All" is selected, don't apply any year filtering
+          return `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=${selectedSortType}&page=${pageNum}${includedGenres ? `&with_genres=${includedGenres}` : ''}`;
+        } else if (selectedYear && String(selectedYear).includes('s')) {
+          // If the selected year contains an 's', it's a decade (like 1980s which would span from 1980-01-01 to 1989-12-31).
+          const startYear = selectedYear.slice(0, 4);
+          const endYear = Number(startYear) + 9;
+          return `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=${selectedSortType}&page=${pageNum}&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31${includedGenres ? `&with_genres=${includedGenres}` : ''}`;
         } else {
           // If not, then this is a single year, like 2012
-          return `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pageNum}&primary_release_year=${selectedYear}&sort_by=${selectedSortType}${includedGenres ? `&with_genres=${includedGenres}` : ''}`;
+          return `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=${selectedSortType}&page=${pageNum}&primary_release_year=${selectedYear}${includedGenres ? `&with_genres=${includedGenres}` : ''}`;
         }
       },
     }),

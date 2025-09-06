@@ -319,8 +319,7 @@ export const TV_GENRES_BY_NAME = Object.fromEntries(
 );
 
 export const YEARS = [
-  'All', ...getFullYearRange(), '1990s', '1980s', '1970s', '1960s', '1950s', '1940s', '1930s', '1920s', '1910s', '1900s'
-];
+  'All', ...getFullYearRange()];
 
 export const SORT_TYPES_TV = {
   'Most Popular': 'popularity.desc',
