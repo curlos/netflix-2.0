@@ -94,8 +94,8 @@ const TopNavbar = () => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu variant="dark" align="end">
-                <Dropdown.Item>
-                  <Link to="/profile">My Account</Link>
+                <Dropdown.Item as={Link} to="/profile">
+                  My Account
                 </Dropdown.Item>
                 <Dropdown.Item onClick={handleLogout}><span>Sign Out</span></Dropdown.Item>
               </Dropdown.Menu>

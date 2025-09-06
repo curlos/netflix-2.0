@@ -56,7 +56,7 @@ const Profile = () => {
             </div>
 
             <div className="w-100">
-              <input className="profileInput mb-4 text-white" value={email} readonly="readonly" />
+              <input className="profileInput mb-4 text-white" value={email} readOnly />
 
               <hr />
 
