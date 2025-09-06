@@ -28,7 +28,6 @@ const App = () => {
      * It also returns a function (which we're calling 'unsubscribe') that can be used to unregister the listener.
      */
     const unsubscribe = onAuthStateChanged(auth, (userAuth) => {
-
       // If the 'userAuth' object exists, it means the user is currently logged in.
       if (userAuth) {
         // Dispatch the 'login' action to the Redux store with the user's ID and email as the payload.
@@ -39,7 +38,7 @@ const App = () => {
       } else {
         // If 'userAuth' is null or undefined, it means the user is not currently logged in.
         // In this case, dispatch the 'logout' action to the Redux store.
-        dispatch(logout);
+        dispatch(logout());
       }
     });
 

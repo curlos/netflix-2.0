@@ -9,7 +9,7 @@ import { tvApi } from '../services/tvApi';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [movieApi.reducerPath, tvApi.reducerPath],
+  whitelist: ['user', movieApi.reducerPath, tvApi.reducerPath],
 };
 
 const rootReducer = combineReducers({
