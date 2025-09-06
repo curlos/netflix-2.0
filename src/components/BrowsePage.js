@@ -79,7 +79,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
                 <div className="p-2">
                   {Object.keys(genres).map((genre) => {
                     return (
-                      <div key={genre}>
+                      <div key={genre} className="cursor-pointer" onClick={() => setGenres({ ...genres, [genre]: !genres[genre] })}>
                         <input type="checkbox" className="me-1" checked={genres[genre]} onChange={() => setGenres({ ...genres, [genre]: !genres[genre] })} />
                         <span>{genre}</span>
                       </div>
@@ -98,7 +98,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
                 <div className="p-2">
                   {YEARS.map((year) => {
                     return (
-                      <div key={year} className="">
+                      <div key={year} className="cursor-pointer" onClick={() => setSelectedYear(year)}>
                         <input type="radio" name="year-option" className="me-1" checked={selectedYear === year} onChange={() => setSelectedYear(year)} />
                         <span>{year}</span>
                       </div>
@@ -117,7 +117,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
                 <div className="p-2">
                   {Object.keys(SORT_TYPES).map((sortType) => {
                     return (
-                      <div key={sortType} className="">
+                      <div key={sortType} className="cursor-pointer" onClick={() => setSelectedSortType(SORT_TYPES[sortType])}>
                         <input type="radio" name="sort-option" className="me-1" checked={SORT_TYPES[sortType] === selectedSortType} onChange={() => setSelectedSortType(SORT_TYPES[sortType])} />
                         <span>{sortType}</span>
                       </div>
