@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Dropdown, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { useGetTVShowSeasonsQuery } from '../services/tvApi';
 
 /**
@@ -8,18 +9,24 @@ import { useGetTVShowSeasonsQuery } from '../services/tvApi';
  * @returns {React.FC}
  */
 const Seasons = ({ tvShowID, tvShowDetails }) => {
-  const [selectedSeason, setSelectedSeason] = useState(1);
-
-  // Reset selected season to 1 when TV show changes
-  useEffect(() => {
-    setSelectedSeason(1);
-  }, [tvShowID]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Get selected season from URL query params, default to 1
+  const selectedSeason = parseInt(searchParams.get('season')) || 1;
 
   if (!tvShowDetails?.number_of_seasons) {
     return null;
   }
 
   const seasonNumbers = Array.from({ length: tvShowDetails.number_of_seasons }, (_, i) => i + 1);
+
+  const handleSeasonChange = (seasonNum) => {
+    if (seasonNum === 1) {
+      // Remove season param for season 1 (default)
+      setSearchParams({});
+    } else {
+      setSearchParams({ season: seasonNum.toString() });
+    }
+  };
 
   return (
     <div>
@@ -30,7 +37,7 @@ const Seasons = ({ tvShowID, tvShowDetails }) => {
 
         <Dropdown.Menu variant="dark" align="end">
           {seasonNumbers.map((seasonNum) => (
-            <Dropdown.Item key={seasonNum} onClick={() => setSelectedSeason(seasonNum)}>
+            <Dropdown.Item key={seasonNum} onClick={() => handleSeasonChange(seasonNum)}>
               Season {seasonNum}
             </Dropdown.Item>
           ))}
