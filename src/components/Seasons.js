@@ -31,7 +31,7 @@ const Seasons = ({ tvShowID, tvShowDetails }) => {
   return (
     <div>
       <Dropdown className="fs-6">
-        <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0" id="dropdown-basic" className="p-0 ">
+        <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 fs-3 fw-bold" id="dropdown-basic" className="p-0 ">
           Season {selectedSeason}
         </Dropdown.Toggle>
 
@@ -67,10 +67,7 @@ const Season = ({ tvShowID, seasonNumber }) => {
 
   return (
     <div>
-      <div>{season.overview}</div>
-
-      <h3 className="my-3">Episodes</h3>
-
+      {season.overview && <div>{season.overview}</div>}
       <div>
         {season.episodes?.map((episode) => {
           return (
