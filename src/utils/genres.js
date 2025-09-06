@@ -347,15 +347,21 @@ export const SORT_TYPES_MOVIE = {
 };
 
 /**
- * @description - Get full years from the current year to 2000
+ * @description - Get full years from the current year to 2010, then group older years by decades
  * @returns {Array}
  */
 function getFullYearRange() {
   const currentYear = new Date().getFullYear(); // Get the current year
   const years = [];
 
-  for (let year = currentYear; year >= 2000; year--) {
+  // Add individual years from current year down to 2010
+  for (let year = currentYear; year >= 2010; year--) {
     years.push(year);
+  }
+
+  // Add decades from 2000s down to 1900s
+  for (let decade = 2000; decade >= 1900; decade -= 10) {
+    years.push(`${decade}s`);
   }
 
   return years;
