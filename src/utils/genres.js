@@ -322,7 +322,18 @@ export const YEARS = [
   'All', ...getFullYearRange(), '1990s', '1980s', '1970s', '1960s', '1950s', '1940s', '1930s', '1920s', '1910s', '1900s'
 ];
 
-export const SORT_TYPES = {
+export const SORT_TYPES_TV = {
+  'Most Popular': 'popularity.desc',
+  'Most Recent': 'primary_release_date.desc',
+  'Highest Vote Average': 'vote_average.desc',
+  'Highest Vote Count': 'vote_count.desc',
+  'Least Popular': 'popularity.asc',
+  'Least Recent': 'primary_release_date.asc',
+  'Lowest Vote Average': 'vote_average.asc',
+  'Lowest Vote Count': 'vote_count.asc'
+};
+
+export const SORT_TYPES_MOVIE = {
   'Most Popular': 'popularity.desc',
   'Most Recent': 'primary_release_date.desc',
   'Highest Grossing': 'revenue.desc',

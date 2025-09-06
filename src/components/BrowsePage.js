@@ -4,7 +4,7 @@ import TopNavbar from './TopNavbar';
 import Banner from './Banner';
 import CustomPagination from './CustomPagination';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { YEARS, SORT_TYPES } from '../utils/genres';
+import { YEARS, SORT_TYPES_MOVIE, SORT_TYPES_TV } from '../utils/genres';
 import { Spinner } from 'react-bootstrap';
 
 /**
@@ -40,6 +40,8 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   const moviesOrTvShows = contentData?.results || [];
   const totalPages = contentData?.total_pages || 0;
   const totalResults = contentData?.total_results || 0;
+  
+  const SORT_TYPES = title === "Movies" ? SORT_TYPES_MOVIE : SORT_TYPES_TV;
 
   useEffect(() => {
     window.scrollTo(0, 0);
