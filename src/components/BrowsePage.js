@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import SmallMovie from './SmallMovie';
 import TopNavbar from './TopNavbar';
 import Banner from './Banner';
+import CustomPagination from './CustomPagination';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Pagination from 'react-bootstrap/Pagination';
 import { YEARS, SORT_TYPES } from '../utils/genres';
 import { Spinner } from 'react-bootstrap';
 
@@ -26,7 +26,6 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedSortType, setSelectedSortType] = useState('popularity.desc');
   const [pageNum, setPageNum] = useState(1);
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   
   const isInitialRender = useRef(true);
   
@@ -41,34 +40,10 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   const moviesOrTvShows = contentData?.results || [];
   const totalPages = contentData?.total_pages || 0;
   const totalResults = contentData?.total_results || 0;
-  
-  const resultsPerPage = 20;
-  const startResult = totalResults > 0 ? ((pageNum - 1) * resultsPerPage) + 1 : 0;
-  const endResult = Math.min(pageNum * resultsPerPage, totalResults);
-  
-  const getVisiblePages = () => {
-    if (windowWidth < 576) {
-      return getArrayOfNums(totalPages).slice(Math.max(0, pageNum - 1), pageNum + 2);
-    }
-    else if (windowWidth < 768) {
-      return getArrayOfNums(totalPages).slice(Math.max(0, pageNum - 2), pageNum + 3);
-    }
-    else if (windowWidth < 992) {
-      return getArrayOfNums(totalPages).slice(Math.max(0, pageNum - 3), pageNum + 4);
-    }
-    else {
-      return getArrayOfNums(totalPages).slice(Math.max(0, pageNum - 4), pageNum + 5);
-    }
-  };
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    window.scrollTo(0, 0);
+  }, [title]);
 
   useEffect(() => {
     if (isInitialRender.current) {
@@ -81,13 +56,6 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
     }
   }, [genres, selectedYear, selectedSortType, pageNum]);
 
-  const getArrayOfNums = (num) => {
-    const arrayOfNums = [];
-    for (let i = 1; i <= num; i++) {
-      arrayOfNums.push(i);
-    }
-    return arrayOfNums;
-  };
 
   return (
     isLoading || !moviesOrTvShows.length ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
@@ -164,45 +132,15 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
               return <SmallMovie key={movieOrTvShow.id} movie={movieOrTvShow} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
             })}
           </div>
-          
-          {totalResults > 0 && (
-            <div className="py-2 container mx-auto px-3 px-md-0 text-center text-white mt-3 mb-2">
-              <div>Showing <strong>{startResult.toLocaleString()}</strong> to <strong>{endResult.toLocaleString()}</strong> of <strong>{totalResults.toLocaleString()}</strong> results</div>
-            </div>
-          )}
         </div>
 
-        {totalPages > 1 && (
-          <div className="pb-3 container mx-auto d-flex justify-content-center">
-            <Pagination className={`${paginationClassName}`}>
-              <Pagination.First 
-                onClick={() => setPageNum(1)} 
-                disabled={pageNum === 1}
-              />
-              <Pagination.Prev 
-                onClick={() => setPageNum(pageNum - 1)} 
-                disabled={pageNum === 1}
-              />
-              {getVisiblePages().map((num) => (
-                <Pagination.Item 
-                  key={num} 
-                  onClick={() => setPageNum(num)} 
-                  active={pageNum === num}
-                >
-                  {num}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next 
-                onClick={() => setPageNum(pageNum + 1)} 
-                disabled={pageNum === totalPages}
-              />
-              <Pagination.Last 
-                onClick={() => setPageNum(totalPages)} 
-                disabled={pageNum === totalPages}
-              />
-            </Pagination>
-          </div>
-        )}
+        <CustomPagination
+          currentPage={pageNum}
+          totalPages={totalPages}
+          totalResults={totalResults}
+          onPageChange={setPageNum}
+          className={paginationClassName}
+        />
       </div>
     )
   );
