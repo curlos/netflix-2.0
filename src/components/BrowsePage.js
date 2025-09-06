@@ -77,7 +77,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
               </Dropdown.Toggle>
 
               <Dropdown.Menu variant="dark" align="end">
-                <div className="p-2">
+                <div className="p-2 dropdown-scrollable">
                   {Object.keys(genres).map((genre) => {
                     return (
                       <div key={genre} className="cursor-pointer" onClick={() => setGenres({ ...genres, [genre]: !genres[genre] })}>
@@ -96,7 +96,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
               </Dropdown.Toggle>
 
               <Dropdown.Menu variant="dark" align="end">
-                <div className="p-2">
+                <div className="p-2 dropdown-scrollable">
                   {YEARS.map((year) => {
                     return (
                       <div key={year} className="cursor-pointer" onClick={() => setSelectedYear(year)}>
@@ -115,7 +115,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
               </Dropdown.Toggle>
 
               <Dropdown.Menu variant="dark" align="end">
-                <div className="p-2">
+                <div className="p-2 dropdown-scrollable">
                   {Object.keys(SORT_TYPES).map((sortType) => {
                     return (
                       <div key={sortType} className="cursor-pointer" onClick={() => setSelectedSortType(SORT_TYPES[sortType])}>
