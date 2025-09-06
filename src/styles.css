@@ -488,6 +488,7 @@ a:hover {
   grid-auto-flow: row;
   grid-template-columns: repeat(2, minmax(0, 1fr)); /* Default: 2 columns on small screens */
   grid-gap: 10px;
+  padding-right: 10px; /* Prevent rightmost movie from being cut off */
 }
 
 /* Medium screens and up (768px+) - 3 columns */
