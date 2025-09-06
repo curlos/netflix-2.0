@@ -64,13 +64,13 @@ const Banner = ({ data, isLoading }) => {
             <div className="fs-1 fw-bold mb-2">{movieOrTvShow?.title || movieOrTvShow?.name}</div>
             <div className="fs-5 fw-light mb-2" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }} ref={overviewRef}></div>
             <div className="d-flex">
-              <div className="btn btn-light me-2 fw-bold d-flex align-items-center">
+              <button className="btn btn-light me-2 fw-bold d-flex align-items-center" onClick={handleNavigation}>
                 <div className="bi-play-fill me-2 fs-4" />
-                <div className="fs-6" onClick={handleNavigation}>Play</div>
-              </div>
-              <button type="button" className="btn btn-secondary fw-bold d-flex align-items-center">
+                <div className="fs-6">Play</div>
+              </button>
+              <button type="button" className="btn btn-secondary fw-bold d-flex align-items-center" onClick={handleNavigation}>
                 <div className="bi-info-circle me-2 fs-4" />
-                <div className="fs-6" onClick={handleNavigation}>More Info</div>
+                <div className="fs-6">More Info</div>
               </button>
             </div>
           </div>
