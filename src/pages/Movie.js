@@ -34,7 +34,7 @@ const Movie = () => {
       <TopNavbar />
 
       {loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
-        <div className="moviePageContainer">
+        <div className="moviePageContainer container mx-auto px-3 px-sm-0">
           {/* If there's at least one video, then take the first video and show that. We'll be using YouTube as that's the most mainstream option plus most people already use it. */}
           {videos?.results?.length >= 1 ?
             (<div className="videoWrapper" style={{}}>

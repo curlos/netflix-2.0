@@ -65,12 +65,12 @@ const TVShows = () => {
         <TopNavbar />
         <Banner data={discoverTVQuery.data} isLoading={discoverTVQuery.isLoading} />
 
-        <div className="pt-5 text-white">
-          <div id="pageTitle" className="px-2 px-md-5 py-3 fw-bold fs-4 flex align-items-center">
+        <div className="pt-5 text-white container mx-auto px-3 px-sm-0">
+          <div id="pageTitle" className="py-3 fw-bold fs-4 flex align-items-center">
             TV Shows
           </div>
 
-          <div className="px-2 px-md-5 py-2 d-flex gap-2 dropdownsContainer">
+          <div className="py-2 d-flex gap-2 dropdownsContainer">
             <Dropdown>
               <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 bg-secondary" id="dropdown-basic" className="p-0">
                 <div className="">Genre</div>
@@ -132,14 +132,14 @@ const TVShows = () => {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          <div className="smallMoviesGrid px-2 px-md-5">
+          <div className="smallMoviesGrid">
             {movies.map((movie) => {
               return <SmallMovie key={movie.id} movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
             })}
           </div>
         </div>
 
-        <Pagination className="px-2 px-md-5 py-4 d-flex justify-content-center">
+        <Pagination className="py-4 d-flex justify-content-center">
           <Pagination.First onClick={() => setPageNum(1)} />
           <Pagination.Prev onClick={() => setPageNum(pageNum - 1)} />
           {getArrayOfNums(500).slice(pageNum - 1, (pageNum - 1) + 5).map((num) => {

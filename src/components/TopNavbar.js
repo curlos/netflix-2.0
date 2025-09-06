@@ -57,12 +57,16 @@ const TopNavbar = () => {
   };
 
   return (
-    <Navbar variant="dark" className="px-3 px-md-5 bg-black fixed-top topNavbar">
-      <Link to="/" className="navLink h-100 ps-0 d-flex align-items-center me-2">
-        <img src="/assets/netflix_logo.png" alt="" className="navImage" />
-      </Link>
-      <Nav className="w-100 text-white navLink d-flex justify-content-between align-items-center">
+    <Navbar variant="dark" className="bg-black fixed-top topNavbar">
+      <Nav className="w-100 text-white navLink d-flex justify-content-between align-items-center container mx-auto px-3 px-sm-0">
+        <Link to="/" className="navLink h-100 ps-0 d-flex align-items-center me-2 d-md-none">
+          <img src="/assets/netflix_logo.png" alt="" className="navImage" />
+        </Link>
+
         <div className="d-none d-md-flex">
+          <Link to="/" className="navLink h-100 ps-0 d-flex align-items-center me-2">
+            <img src="/assets/netflix_logo.png" alt="" className="navImage" />
+          </Link>
           <Link to="/" className="navLink nav-link">Home</Link>
           <Link to="/tv-shows" className="navLink nav-link">TV Shows</Link>
           <Link to="/movies" className="navLink nav-link">Movies</Link>

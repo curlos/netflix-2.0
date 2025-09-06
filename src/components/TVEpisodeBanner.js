@@ -37,7 +37,7 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
         }}
         className="bannerContainerInner d-flex justify-content-center"
       >
-        <div className="px-1 px-lg-5 tvEpisodeBannerInfo">
+        <div className="tvEpisodeBannerInfo container mx-auto">
           <Link to={`/title/tv/${tvShow.id}`}>
             <i className="bi bi-chevron-left"></i>
             <span className="ms-2">{tvShow.name || tvShow.original_name}</span>

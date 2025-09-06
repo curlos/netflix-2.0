@@ -60,7 +60,7 @@ const Banner = ({ data, isLoading }) => {
           }}
           className="vw-100 vh-100 mw-100 d-flex align-items-center"
         >
-          <div className="px-3 px-lg-5 w-100">
+          <div className="w-100 container mx-auto px-3 px-sm-0">
             <div className="fs-1 fw-bold mb-2">{movieOrTvShow?.title || movieOrTvShow?.name}</div>
             <div className="fs-5 fw-light mb-2" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7)' }} ref={overviewRef}></div>
             <div className="d-flex">

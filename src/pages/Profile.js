@@ -41,15 +41,15 @@ const Profile = () => {
 
   return (
     user ? (
-      <div className="d-flex justify-content-center align-items-center profilePage">
-        <div className="fixed-top p-4">
+      <div className="d-flex justify-content-center align-items-center container mx-auto px-3 px-sm-0 bg-black">
+         <div className="d-flex justify-content-between fixed-top p-4 container mx-auto px-3 px-sm-0 bg-black">
           <Link to="/">
-            <img src="/assets/netflix_logo.png" alt="" className="profileNetflixLogo" />
+            <img src="/assets/netflix_logo.png" alt="" className="authLogo" />
           </Link>
         </div>
 
-        <div className="profileContainer p-2 p-lg-4 overflow-auto navbarMarginTwo">
-          <h1>Edit Profile</h1>
+        <div className="w-100 p-2 p-lg-4 overflow-auto navbarMarginTwo">
+          <h1 className="mb-4">Edit Profile</h1>
           <div className="d-lg-flex gap-4">
             <div className="mb-4 mb-lg-0">
               <img src="/assets/netflix_avatar.png" alt="" className="profileProfileUserAvatar" />

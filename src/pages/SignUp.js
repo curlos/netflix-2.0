@@ -36,28 +36,30 @@ const SignUp = () => {
 
   return (
     <div className="authPage d-flex justify-content-center align-items-center">
-      <div className="d-flex justify-content-between fixed-top p-4">
+      <div className="d-flex justify-content-between fixed-top p-4 container mx-auto px-3 px-sm-0">
         <Link to="/">
           <img src="/assets/netflix_logo.png" alt="" className="authLogo" />
         </Link>
         <button className="netflixRedButton">Sign Up</button>
       </div>
 
-      <form className="authForm" onSubmit={handleRegister}>
-        <div className="fs-2 fw-bold">Sign Up</div>
+      <div className="container mx-auto px-3 px-sm-0 d-flex justify-content-center">
+        <form className="authForm" onSubmit={handleRegister}>
+          <div className="fs-2 fw-bold">Sign Up</div>
 
-        <div className="my-3">
-          <input ref={emailRef} type="text" className="w-100 mb-3 authInput" placeholder="Email" />
-          <input ref={passwordRef} type="password" className="w-100 authInput" placeholder="Password" />
-        </div>
+          <div className="my-3">
+            <input ref={emailRef} type="text" className="w-100 mb-3 authInput" placeholder="Email" />
+            <input ref={passwordRef} type="password" className="w-100 authInput" placeholder="Password" />
+          </div>
 
-        <button className="w-100 my-4 netflixRedButton" type="submit">Sign Up</button>
+          <button className="w-100 my-4 netflixRedButton" type="submit">Sign Up</button>
 
-        <div>
-          <span className="text-lightgray">Have an account?</span>
-          <Link to="/login" className="authLink">Login now.</Link>
-        </div>
-      </form>
+          <div>
+            <span className="text-lightgray">Have an account?</span>
+            <Link to="/login" className="authLink">Login now.</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

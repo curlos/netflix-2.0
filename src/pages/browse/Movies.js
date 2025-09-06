@@ -69,12 +69,12 @@ const Movies = () => {
         <TopNavbar />
         <Banner data={popularMoviesQuery.data} isLoading={popularMoviesQuery.isLoading} />
 
-        <div className="pt-5 text-white">
-          <div id="pageTitle" className="px-2 px-md-5 py-3 fw-bold fs-4 flex align-items-center">
+        <div className="pt-5 text-white container mx-auto px-3 px-sm-0">
+          <div id="pageTitle" className="py-3 fw-bold fs-4 flex align-items-center">
             Movies
           </div>
 
-          <div className="px-2 px-md-5 py-2 d-flex gap-2 dropdownsContainer">
+          <div className="py-2 d-flex gap-2 dropdownsContainer">
             {/* Filter by genre */}
             <Dropdown>
               <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 bg-secondary" id="dropdown-basic" className="p-0">
@@ -139,7 +139,7 @@ const Movies = () => {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          <div className="smallMoviesGrid px-2 px-md-5">
+          <div className="smallMoviesGrid">
             {movies.map((movie) => {
               return <SmallMovie key={movie.id} movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
             })}

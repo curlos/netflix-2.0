@@ -7,28 +7,16 @@ import { useWindowSize } from '../hooks/useWindowSize';
 
 const getNumOfMoviesShown = (windowSize) => {
   if (windowSize && windowSize.width) {
-    if (windowSize.width <= 576) {
-      return 2;
-    } else if (windowSize.width < 600) {
+    if (windowSize.width < 576) {
       return 2;
     } else if (windowSize.width < 768) {
       return 3;
     } else if (windowSize.width <= 992) {
-      return 4;
+      return 3;
     } else if (windowSize.width <= 1200) {
-      return 5;
-    } else if (windowSize.width <= 1400) {
-      return 5;
-    } else if (windowSize.width <= 1600) {
-      return 6;
-    } else if (windowSize.width <= 1700) {
-      return 7;
-    } else if (windowSize.width <= 1850) {
-      return 7;
-    } else if (windowSize.width <= 1920) {
-      return 7;
+      return 4;
     } else {
-      return 8;
+      return 5
     }
   }
 };
@@ -61,7 +49,7 @@ const ContentCarousel = ({ name, movies, isLoading, hoveredValue, setHoveredValu
 
   return (
     !isLoading && (
-      <div className="bg-black my-4 px-2 px-lg-4">
+      <div className="bg-black my-4 container mx-auto px-3 px-sm-0">
         <div className="fs-4">{name} {!['Netflix Originals', 'Documentaries', 'Trending'].includes(name) && 'Movies'}</div>
         <Row>
           <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
