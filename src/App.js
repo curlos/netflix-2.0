@@ -5,8 +5,7 @@ import {
   Route
 } from "react-router-dom";
 import Home from './pages/Home';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
+import AuthForm from './components/AuthForm';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import { useDispatch } from 'react-redux';
@@ -56,8 +55,8 @@ const App = () => {
       {/* Different pages that a user can visit. */}
       <Routes>
         <Route path="/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<AuthForm mode="login" />} />
+        <Route path="/signup" element={<AuthForm mode="signup" />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/tv-shows" element={<TVShows />} />
         <Route path="/title/movie/:id" element={<Movie />} exact />
