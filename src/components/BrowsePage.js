@@ -60,91 +60,100 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
 
 
   return (
-    isLoading  ? <div className="spinnerContainer pb-3"><Spinner animation="border" variant="danger" /></div> : (
-      <div className="bg-black pb-3">
-        <TopNavbar />
-        <Banner data={bannerQuery.data} isLoading={bannerQuery.isLoading} />
+    <div className="bg-black pb-3">
+      <TopNavbar />
+      <Banner data={bannerQuery.data} isLoading={bannerQuery.isLoading} />
 
-        <div className="pt-5 text-white container mx-auto px-3 px-sm-0">
-          <div id="pageTitle" className="py-3 fw-bold fs-4 flex align-items-center">
-            {title}
+      <div className="pt-5 text-white container mx-auto px-3 px-sm-0">
+        <div id="pageTitle" className="py-3 fw-bold fs-4 flex align-items-center">
+          {title}
+        </div>
+
+        <div className="py-2 d-flex gap-2 dropdownsContainer">
+          <Dropdown>
+            <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 bg-secondary" id="dropdown-basic" className="p-0">
+              <div className="">Genre</div>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu variant="dark" align="end">
+              <div className="p-2 dropdown-scrollable">
+                {Object.keys(genres).map((genre) => {
+                  return (
+                    <div key={genre} className="cursor-pointer" onClick={() => setGenres({ ...genres, [genre]: !genres[genre] })}>
+                      <input type="checkbox" className="me-1" checked={genres[genre]} onChange={() => setGenres({ ...genres, [genre]: !genres[genre] })} />
+                      <span>{genre}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </Dropdown.Menu>
+          </Dropdown>
+
+          <Dropdown>
+            <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 bg-secondary" id="dropdown-basic" className="p-0">
+              <div className="">Year</div>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu variant="dark" align="end">
+              <div className="p-2 dropdown-scrollable">
+                {YEARS.map((year) => {
+                  return (
+                    <div key={year} className="cursor-pointer" onClick={() => setSelectedYear(year)}>
+                      <input type="radio" name="year-option" className="me-1" checked={selectedYear === year} onChange={() => setSelectedYear(year)} />
+                      <span>{year}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </Dropdown.Menu>
+          </Dropdown>
+
+          <Dropdown>
+            <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0" id="dropdown-basic" className="p-0">
+              <div className="">Sort</div>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu variant="dark" align="end">
+              <div className="p-2 dropdown-scrollable">
+                {Object.keys(SORT_TYPES).map((sortType) => {
+                  return (
+                    <div key={sortType} className="cursor-pointer" onClick={() => setSelectedSortType(SORT_TYPES[sortType])}>
+                      <input type="radio" name="sort-option" className="me-1" checked={SORT_TYPES[sortType] === selectedSortType} onChange={() => setSelectedSortType(SORT_TYPES[sortType])} />
+                      <span>{sortType}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+        
+        {isLoading ? (
+          <div className="d-flex justify-content-center py-5 my-5">
+            <Spinner animation="border" variant="danger" />
           </div>
-
-          <div className="py-2 d-flex gap-2 dropdownsContainer">
-            <Dropdown>
-              <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 bg-secondary" id="dropdown-basic" className="p-0">
-                <div className="">Genre</div>
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu variant="dark" align="end">
-                <div className="p-2 dropdown-scrollable">
-                  {Object.keys(genres).map((genre) => {
-                    return (
-                      <div key={genre} className="cursor-pointer" onClick={() => setGenres({ ...genres, [genre]: !genres[genre] })}>
-                        <input type="checkbox" className="me-1" checked={genres[genre]} onChange={() => setGenres({ ...genres, [genre]: !genres[genre] })} />
-                        <span>{genre}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </Dropdown.Menu>
-            </Dropdown>
-
-            <Dropdown>
-              <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0 bg-secondary" id="dropdown-basic" className="p-0">
-                <div className="">Year</div>
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu variant="dark" align="end">
-                <div className="p-2 dropdown-scrollable">
-                  {YEARS.map((year) => {
-                    return (
-                      <div key={year} className="cursor-pointer" onClick={() => setSelectedYear(year)}>
-                        <input type="radio" name="year-option" className="me-1" checked={selectedYear === year} onChange={() => setSelectedYear(year)} />
-                        <span>{year}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </Dropdown.Menu>
-            </Dropdown>
-
-            <Dropdown>
-              <Dropdown.Toggle variant="transparent text-white d-flex align-items-center gap-1 border-0" id="dropdown-basic" className="p-0">
-                <div className="">Sort</div>
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu variant="dark" align="end">
-                <div className="p-2 dropdown-scrollable">
-                  {Object.keys(SORT_TYPES).map((sortType) => {
-                    return (
-                      <div key={sortType} className="cursor-pointer" onClick={() => setSelectedSortType(SORT_TYPES[sortType])}>
-                        <input type="radio" name="sort-option" className="me-1" checked={SORT_TYPES[sortType] === selectedSortType} onChange={() => setSelectedSortType(SORT_TYPES[sortType])} />
-                        <span>{sortType}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </Dropdown.Menu>
-            </Dropdown>
+        ) : moviesOrTvShows.length === 0 ? (
+          <div className="text-center py-5 my-5">
+            <div className="fs-2 text-white mb-3">No Results</div>
+            <div className="text-lightgray">Try adjusting your filters or search criteria</div>
           </div>
-          
+        ) : (
           <div className="smallMoviesGrid">
             {moviesOrTvShows.map((movieOrTvShow) => {
               return <SmallMovie key={movieOrTvShow.id} movie={movieOrTvShow} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
             })}
           </div>
-        </div>
-
-        <CustomPagination
-          currentPage={pageNum}
-          totalPages={totalPages}
-          totalResults={totalResults}
-          onPageChange={setPageNum}
-          className={paginationClassName}
-        />
+        )}
       </div>
-    )
+
+      <CustomPagination
+        currentPage={pageNum}
+        totalPages={totalPages}
+        totalResults={totalResults}
+        onPageChange={setPageNum}
+        className={paginationClassName}
+      />
+    </div>
   );
 };
 

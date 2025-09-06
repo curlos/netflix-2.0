@@ -66,8 +66,16 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
       ) : (
         <div className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} onMouseLeave={handleHoverLeave}>
           <div>
-            <img src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`} alt="" className={`movieImage m-1 rounded`}
-            />
+            {movie?.poster_path ? (
+              <img src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`} alt="" className={`movieImage m-1 rounded`} />
+            ) : (
+              <div className="movieImage m-1 rounded d-flex align-items-center justify-content-center text-center p-3" style={{backgroundColor: '#333', aspectRatio: '2/3'}}>
+                <div>
+                  <div className="fw-bold mb-2">{movie?.title || movie?.name}</div>
+                  <div className="text-muted small">No Image Available</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
