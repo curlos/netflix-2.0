@@ -9,6 +9,39 @@ import { YEARS, SORT_TYPES_MOVIE, SORT_TYPES_TV } from '../utils/genres';
 import { Spinner } from 'react-bootstrap';
 
 /**
+ * @description - Reusable filter badge component
+ */
+const FilterBadge = ({ label, value, paramKey, searchParams, setSearchParams }) => {
+  const handleClear = () => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete(paramKey);
+    newSearchParams.delete('page');
+    setSearchParams(newSearchParams);
+  };
+
+  return (
+    <div className="bg-dark rounded p-2 position-relative" style={{ paddingRight: '30px' }}>
+      <span className="text-white fs-6">
+        <span className="fw-bold">{label}:</span> {value}
+      </span>
+      <button 
+        className="bg-secondary rounded-circle border-0 d-flex align-items-center justify-content-center position-absolute"
+        style={{ 
+          width: '22px', 
+          height: '22px', 
+          fontSize: '20px', 
+          top: '-10px', 
+          right: '-10px' 
+        }}
+        onClick={handleClear}
+      >
+        <i className="bi bi-x text-white"></i>
+      </button>
+    </div>
+  );
+};
+
+/**
  * @description - Generic browse page component for Movies and TV Shows
  * @param {string} title - Page title ("Movies" or "TV Shows")
  * @param {Array} genres - Genre options (MOVIE_GENRES or TV_GENRES)
@@ -110,6 +143,47 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
         <div id="pageTitle" className="py-3 fw-bold fs-4 flex align-items-center">
           {title}
         </div>
+
+        {/* Applied Filters Section */}
+        {(Object.values(genres).some(Boolean) || selectedYear !== new Date().getFullYear() || selectedSortType !== 'popularity.desc') && (
+          <div className="py-2 mb-2">
+            <div className="text-white mb-2 fs-6 fw-bold">Applied Filters:</div>
+            <div className="d-flex flex-wrap gap-3">
+              {/* Genre Filters */}
+              {Object.values(genres).some(Boolean) && (
+                <FilterBadge
+                  label={Object.values(genres).filter(Boolean).length === 1 ? 'Genre' : 'Genres'}
+                  value={Object.entries(genres).filter(([, isSelected]) => isSelected).map(([genre]) => genre).join(', ')}
+                  paramKey="genres"
+                  searchParams={searchParams}
+                  setSearchParams={setSearchParams}
+                />
+              )}
+              
+              {/* Year Filter */}
+              {selectedYear !== new Date().getFullYear() && (
+                <FilterBadge
+                  label="Year"
+                  value={selectedYear}
+                  paramKey="year"
+                  searchParams={searchParams}
+                  setSearchParams={setSearchParams}
+                />
+              )}
+              
+              {/* Sort Filter */}
+              {selectedSortType !== 'popularity.desc' && (
+                <FilterBadge
+                  label="Sort"
+                  value={Object.keys(SORT_TYPES).find(key => SORT_TYPES[key] === selectedSortType)}
+                  paramKey="sort"
+                  searchParams={searchParams}
+                  setSearchParams={setSearchParams}
+                />
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="py-2 d-flex gap-2 dropdownsContainer">
           <Dropdown>
