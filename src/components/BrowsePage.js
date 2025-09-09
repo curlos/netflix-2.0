@@ -51,8 +51,16 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   const SORT_TYPES = title === "Movies" ? SORT_TYPES_MOVIE : SORT_TYPES_TV;
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [title]);
+    // Only scroll to top if there are no filters (clean page load)
+    const hasFilters = searchParams.get('genres') || 
+                      searchParams.get('year') || 
+                      searchParams.get('sort') || 
+                      searchParams.get('page');
+    
+    if (!hasFilters) {
+      window.scrollTo(0, 0);
+    }
+  }, [title, searchParams]);
 
   useEffect(() => {
     if (isInitialRender.current) {
@@ -64,28 +72,32 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
                         searchParams.get('page');
       
       if (hasFilters) {
-        const pageTitleElement = document.getElementById("pageTitle");
-        if (pageTitleElement) {
-          const offsetPosition = pageTitleElement.offsetTop;
-          
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-        }
+        setTimeout(() => {
+          const pageTitleElement = document.getElementById("pageTitle");
+          if (pageTitleElement) {
+            const offsetPosition = pageTitleElement.offsetTop - 70;
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
+        }, 100);
       }
       return;
     }
     
-    const pageTitleElement = document.getElementById("pageTitle");
-    if (pageTitleElement) {
-      const offsetPosition = pageTitleElement.offsetTop;
-      
-      pageTitleElement.scrollTo({
-        block: 'end',
-        behavior: 'smooth'
-      });
-    }
+    setTimeout(() => {
+      const pageTitleElement = document.getElementById("pageTitle");
+      if (pageTitleElement) {
+        const offsetPosition = pageTitleElement.offsetTop - 100;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
   }, [genres, selectedYear, selectedSortType, pageNum, searchParams]);
 
 
