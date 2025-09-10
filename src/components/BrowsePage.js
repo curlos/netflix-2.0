@@ -68,6 +68,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   const pageNum = parseInt(searchParams.get('page')) || 1;
   
   const isInitialRender = useRef(true);
+  const previousFilters = useRef({ genres: {}, selectedYear: null, selectedSortType: null, pageNum: null });
   
   // RTK Query for filtered content
   const { data: contentData, isLoading } = useContentQuery({
@@ -98,6 +99,8 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   useEffect(() => {
     if (isInitialRender.current) {
       isInitialRender.current = false;
+      previousFilters.current = { genres, selectedYear, selectedSortType, pageNum };
+      
       // If there are filters in URL on initial load, scroll to page title
       const hasFilters = searchParams.get('genres') || 
                         searchParams.get('year') || 
@@ -120,17 +123,28 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
       return;
     }
     
-    setTimeout(() => {
-      const pageTitleElement = document.getElementById("pageTitle");
-      if (pageTitleElement) {
-        const offsetPosition = pageTitleElement.offsetTop - 100;
-        
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    }, 100);
+    // Check if filters actually changed
+    const filtersChanged = 
+      JSON.stringify(genres) !== JSON.stringify(previousFilters.current.genres) ||
+      selectedYear !== previousFilters.current.selectedYear ||
+      selectedSortType !== previousFilters.current.selectedSortType ||
+      pageNum !== previousFilters.current.pageNum;
+    
+    if (filtersChanged) {
+      previousFilters.current = { genres, selectedYear, selectedSortType, pageNum };
+      
+      setTimeout(() => {
+        const pageTitleElement = document.getElementById("pageTitle");
+        if (pageTitleElement) {
+          const offsetPosition = pageTitleElement.offsetTop - 100;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    }
   }, [genres, selectedYear, selectedSortType, pageNum, searchParams]);
 
 
