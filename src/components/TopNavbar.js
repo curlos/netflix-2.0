@@ -20,9 +20,10 @@ const TopNavbar = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showInput, setShowInput] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '');
+  const [showInput, setShowInput] = useState(!!searchParams.get('query'));
   const searchContainerRef = useRef(null);
+  const searchInputRef = useRef(null);
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -42,8 +43,13 @@ const TopNavbar = () => {
   }, [searchQuery, debouncedNavigate]);
 
   useEffect(() => {
-    if (searchParams && searchParams.get('query') && searchParams.get('query').length === 1) {
-      setSearchQuery(searchParams.get('query'));
+    const query = searchParams.get('query');
+    if (query) {
+      setSearchQuery(query);
+      setShowInput(true);
+    } else {
+      setSearchQuery('');
+      setShowInput(false);
     }
   }, [searchParams]);
 
@@ -62,6 +68,16 @@ const TopNavbar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [showInput]);
+
+  const handleSearchIconClick = () => {
+    setShowInput(!showInput);
+    // Focus the input after the state update and transition
+    setTimeout(() => {
+      if (!showInput && searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }, 100);
+  };
 
   const handleLogout = async () => {
     try {
@@ -93,8 +109,8 @@ const TopNavbar = () => {
 
         <div className="d-flex align-items-center gap-3">
           <div className={`px-2 py-1 ${showInput ? 'border' : ''}`} ref={searchContainerRef}>
-            <i className="bi bi-search mediumIcon cursor-pointer" onClick={() => setShowInput(!showInput)}></i>
-            <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className={`bg-black border-0 text-white searchInput ${showInput ? 'fullInput p-1 px-2' : ''}`} placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
+            <i className="bi bi-search mediumIcon cursor-pointer" onClick={handleSearchIconClick}></i>
+            <input ref={searchInputRef} autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className={`bg-black border-0 text-white searchInput ${showInput ? 'fullInput p-1 px-2' : ''}`} placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
               setSearchQuery(e.target.value);
             }} onSubmit={(e) => navigate(`/?query=${e.target.value}`)} />
           </div>
