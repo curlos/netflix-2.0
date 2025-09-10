@@ -11,11 +11,18 @@ const MovieList = ({ movies, query, totalResults }) => {
   return (
     <div className="navbarMargin text-white container mx-auto px-3 px-md-0">
       <div className="px-3 px-lg-5 py-3 fw-bold fs-4 flex align-items-center">{query} ({totalResults.total_results})</div>
-      <div className="smallMoviesGrid px-3 px-lg-5">
-        {movies.map((movie) => {
-          return <SmallMovie key={movie.id} movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
-        })}
-      </div>
+      {movies.length === 0 ? (
+        <div className="px-3 px-lg-5 py-5 text-center">
+          <div className="fs-2 text-white mb-2">No results</div>
+          <div className="text-muted">Try adjusting your search</div>
+        </div>
+      ) : (
+        <div className="smallMoviesGrid px-3 px-lg-5">
+          {movies.map((movie) => {
+            return <SmallMovie key={movie.id} movie={movie} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
+          })}
+        </div>
+      )}
     </div>
   );
 };
