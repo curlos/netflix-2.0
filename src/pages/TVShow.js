@@ -65,7 +65,7 @@ const TVShow = () => {
               <img src={`https://image.tmdb.org/t/p/original${details?.poster_path || details?.backdrop_path}`} alt="" className="moviePoster" />
             </div>
 
-            <div>
+            <div className="w-100">
               <div className="d-flex justify-content-between align-items-center">
                 {details?.title || details?.original_name ? (
                   <div>
@@ -74,14 +74,14 @@ const TVShow = () => {
                 ) : null}
 
                 {details?.vote_count > 0 ? (
-                  <div className="d-flex align-items-center gap-2">
-                    <div>
-                      <i className="bi bi-star-fill fs-3 text-warning"></i>
+                  <div className="d-flex align-items-start gap-2">
+                    <div className="mt-2">
+                      <i className="bi bi-star-fill fs-4 text-warning"></i>
                     </div>
                     <div className="">
-                      <div className="text-center fs-3">
-                        <span>{Math.round((details?.vote_average + Number.EPSILON) * 100) / 100}</span>
-                        <span className="text-secondary">/10</span>
+                      <div className="text-center fs-2">
+                        <span className="fw-bold">{Math.round((details?.vote_average + Number.EPSILON) * 100) / 100}</span>
+                        <span className="text-secondary fs-4">/10</span>
                       </div>
 
                       <div className="fs-6 text-secondary text-center">{Number(details?.vote_count).toLocaleString()}</div>

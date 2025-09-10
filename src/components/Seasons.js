@@ -148,14 +148,14 @@ const Season = ({ tvShowID, seasonNumber, seasonDropdownRef }) => {
               </div>
 
               {episode?.vote_count > 0 ? (
-                <div className="d-none d-lg-flex align-items-center gap-2">
-                  <div>
-                    <i className="bi bi-star-fill fs-3 text-warning"></i>
+                <div className="d-none d-lg-flex align-items-start gap-2">
+                  <div className="mt-2">
+                    <i className="bi bi-star-fill fs-5 text-warning"></i>
                   </div>
                   <div className="">
-                    <div className="text-center fs-3">
-                      <span>{Math.round((episode?.vote_average + Number.EPSILON) * 100) / 100}</span>
-                      <span className="text-secondary">/10</span>
+                    <div className="text-center">
+                      <span className="fw-bold fs-3">{Math.round((episode?.vote_average + Number.EPSILON) * 100) / 100}</span>
+                      <span className="text-secondary fs-4">/10</span>
                     </div>
 
                     <div className="fs-6 text-secondary text-center">{Number(episode?.vote_count).toLocaleString()}</div>

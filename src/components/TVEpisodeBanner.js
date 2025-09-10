@@ -44,14 +44,18 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
           </Link>
           <div className="fs-1 fw-bold mb-2 d-flex justify-content-between">
             <span>{episode?.name}</span>
-            <div className="space-between-x-1">
-              <span className="me-1">
-                <i className="bi bi-star-fill fs-6 text-warning"></i>
-              </span>
-              <span>
-                <span>{Math.round((episode?.vote_average + Number.EPSILON) * 100) / 100}</span>
-                <span className="ms-2 text-secondary fs-3">/10</span>
-              </span>
+            <div>
+              <div className="d-flex align-items-center gap-2">
+                <span className="me-1 mb-2">
+                  <i className="bi bi-star-fill fs-3 text-warning"></i>
+                </span>
+                <span>
+                  <span>{Math.round((episode?.vote_average + Number.EPSILON) * 100) / 100}</span>
+                  <span className="ms-2 text-secondary fs-3">/10</span>
+                </span>
+              </div>
+
+              <div className="fs-4 text-secondary text-center" style={{ margin: "-12px" }}>{Number(episode?.vote_count).toLocaleString()}</div>
             </div>
           </div>
           <div className=" fw-light mb-2">
