@@ -66,7 +66,18 @@ const Season = ({ tvShowID, seasonNumber, seasonDropdownRef }) => {
       newSearchParams.set('page', newPage.toString());
     }
     setSearchParams(newSearchParams);
+    scrollToSeasonTitle()
   };
+
+  const scrollToSeasonTitle = () => {
+    const rect = seasonDropdownRef.current.getBoundingClientRect();
+    const offsetPosition = window.pageYOffset + rect.top - 70;
+    
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
   
   const { data: season, isLoading, error } = useGetTVShowSeasonsQuery({
     tvId: tvShowID,
@@ -90,17 +101,15 @@ const Season = ({ tvShowID, seasonNumber, seasonDropdownRef }) => {
   }, [tvShowID, setSearchParams]);
 
   useEffect(() => {
-    // Scroll to season dropdown when page changes
-    if (seasonDropdownRef.current) {
-      const rect = seasonDropdownRef.current.getBoundingClientRect();
-      const offsetPosition = window.pageYOffset + rect.top - 70;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+    // Only scroll to season dropdown when page changes and there's a season query param
+    const hasSeasonParam = searchParams.get('season');
+    
+    if (hasSeasonParam && seasonDropdownRef.current) {
+      setTimeout(() => {
+        scrollToSeasonTitle()
+      }, 100)
     }
-  }, [currentPage, seasonDropdownRef]);
+  }, [currentPage, seasonDropdownRef, searchParams]);
 
   if (isLoading) {
     return <div className="text-center py-4"><Spinner animation="border" variant="danger" /></div>;
