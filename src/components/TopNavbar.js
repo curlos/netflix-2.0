@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -22,6 +22,7 @@ const TopNavbar = () => {
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [showInput, setShowInput] = useState(false);
+  const searchContainerRef = useRef(null);
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -45,6 +46,22 @@ const TopNavbar = () => {
       setSearchQuery(searchParams.get('query'));
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        setShowInput(false);
+      }
+    };
+
+    if (showInput) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showInput]);
 
   const handleLogout = async () => {
     try {
@@ -75,15 +92,10 @@ const TopNavbar = () => {
         <div className="d-block d-lg-none" />
 
         <div className="d-flex align-items-center gap-3">
-          <div className="px-2 py-1">
+          <div className={`px-2 py-1 ${showInput ? 'border' : ''}`} ref={searchContainerRef}>
             <i className="bi bi-search mediumIcon cursor-pointer" onClick={() => setShowInput(!showInput)}></i>
             <input autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className={`bg-black border-0 text-white searchInput ${showInput ? 'fullInput p-1 px-2' : ''}`} placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
               setSearchQuery(e.target.value);
-              // if (e.target.value[e.target.value.length - 1] === ' ') {
-              //   navigate(`/?query=${e.target.value} `)
-              // } else {
-              //   navigate(`/?query=${e.target.value}`)
-              // }
             }} onSubmit={(e) => navigate(`/?query=${e.target.value}`)} />
           </div>
 

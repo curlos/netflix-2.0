@@ -632,13 +632,26 @@ a:hover {
 
 .searchInput {
   width: 0px;
-
-  transition: 0.4s;
+  opacity: 0;
+  transition: width 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.4s ease-in-out;
 }
 
 .fullInput {
-  width: 75%;
+  width: 200px;
+  opacity: 1;
   border: 1px solid white;
+}
+
+@media (max-width: 576px) {
+  .fullInput {
+    width: 150px;
+  }
+}
+
+@media (max-width: 370px) {
+  .fullInput {
+    width: 100px;
+  }
 }
 
 .cursor-pointer {
