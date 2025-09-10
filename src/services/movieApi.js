@@ -44,7 +44,7 @@ export const movieApi = createApi({
       query: (movieId) => `/movie/${movieId}/recommendations?api_key=${API_KEY}&language=en-US&page=1`,
     }),
     getSearchResults: builder.query({
-      query: (searchQuery) => `/search/multi?api_key=${API_KEY}&query=${searchQuery}`,
+      query: ({ query, page = 1 }) => `/search/multi?api_key=${API_KEY}&query=${query}&page=${page}`,
     }),
     getFilteredMovies: builder.query({
       query: ({ genres, selectedYear, selectedSortType, pageNum }) => {

@@ -32,11 +32,12 @@ const Home = () => {
   const [hoveredValue, setHoveredValue] = useState(null);
   const [searchParams] = useSearchParams();
 
-  // Get search query from URL params
+  // Get search query and page from URL params
   const searchQuery = searchParams.get('query');
+  const pageNum = parseInt(searchParams.get('page')) || 1;
   
   // RTK Query for search results (only when there's a search query)
-  const searchResults = useGetSearchResultsQuery(searchQuery, { 
+  const searchResults = useGetSearchResultsQuery({ query: searchQuery, page: pageNum }, { 
     skip: !searchQuery 
   });
 
