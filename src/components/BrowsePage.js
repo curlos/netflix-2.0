@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SmallMovie from './SmallMovie';
 import TopNavbar from './TopNavbar';
@@ -6,7 +6,32 @@ import Banner from './Banner';
 import CustomPagination from './CustomPagination';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { YEARS, SORT_TYPES_MOVIE, SORT_TYPES_TV } from '../utils/genres';
-import { Spinner } from 'react-bootstrap';
+
+/**
+ * @description - Skeleton loader for movie cards
+ */
+const SkeletonMovie = () => (
+  <div 
+    className="bg-secondary rounded" 
+    style={{ 
+      aspectRatio: '2/3', 
+      minHeight: '300px',
+      opacity: '0.7',
+      animation: 'pulse 2s infinite'
+    }}
+  ></div>
+);
+
+/**
+ * @description - Skeleton grid for loading state
+ */
+const SkeletonGrid = () => (
+  <div className="smallMoviesGrid">
+    {Array.from({ length: 20 }, (_, i) => (
+      <SkeletonMovie key={i} />
+    ))}
+  </div>
+);
 
 /**
  * @description - Reusable filter badge component
@@ -54,14 +79,14 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   const [searchParams, setSearchParams] = useSearchParams();
   const [hoveredValue, setHoveredValue] = useState();
   
-  // Parse genres from URL params
+  // Parse genres from URL params - memoized to prevent unnecessary recalculations
   const genreParams = searchParams.get('genres');
-  const genres = Object.fromEntries(
+  const genres = useMemo(() => Object.fromEntries(
     genreOptions.map(genre => [
       genre.name, 
       genreParams ? genreParams.split(',').includes(genre.name) : false
     ])
-  );
+  ), [genreOptions, genreParams]);
 
   const selectedYear = parseInt(searchParams.get('year')) || new Date().getFullYear();
   const selectedSortType = searchParams.get('sort') || 'popularity.desc';
@@ -71,7 +96,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   const previousFilters = useRef({ genres: {}, selectedYear: null, selectedSortType: null, pageNum: null });
   
   // RTK Query for filtered content
-  const { data: contentData, isLoading } = useContentQuery({
+  const { data: contentData, isFetching } = useContentQuery({
     genres,
     selectedYear,
     selectedSortType,
@@ -158,46 +183,48 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
           {title}
         </div>
 
-        {/* Applied Filters Section */}
-        {(Object.values(genres).some(Boolean) || selectedYear !== new Date().getFullYear() || selectedSortType !== 'popularity.desc') && (
-          <div className="py-2 mb-2">
-            <div className="text-white mb-2 fs-6 fw-bold">Applied Filters:</div>
-            <div className="d-flex flex-wrap gap-3">
-              {/* Genre Filters */}
-              {Object.values(genres).some(Boolean) && (
-                <FilterBadge
-                  label={Object.values(genres).filter(Boolean).length === 1 ? 'Genre' : 'Genres'}
-                  value={Object.entries(genres).filter(([, isSelected]) => isSelected).map(([genre]) => genre).join(', ')}
-                  paramKey="genres"
-                  searchParams={searchParams}
-                  setSearchParams={setSearchParams}
-                />
-              )}
-              
-              {/* Year Filter */}
-              {selectedYear !== new Date().getFullYear() && (
-                <FilterBadge
-                  label="Year"
-                  value={selectedYear}
-                  paramKey="year"
-                  searchParams={searchParams}
-                  setSearchParams={setSearchParams}
-                />
-              )}
-              
-              {/* Sort Filter */}
-              {selectedSortType !== 'popularity.desc' && (
-                <FilterBadge
-                  label="Sort"
-                  value={Object.keys(SORT_TYPES).find(key => SORT_TYPES[key] === selectedSortType)}
-                  paramKey="sort"
-                  searchParams={searchParams}
-                  setSearchParams={setSearchParams}
-                />
-              )}
+        {/* Applied Filters Section - Reserve space to prevent layout shift */}
+        <div style={{ minHeight: '60px' }}>
+          {(Object.values(genres).some(Boolean) || selectedYear !== new Date().getFullYear() || selectedSortType !== 'popularity.desc') && (
+            <div className="py-2 mb-2">
+              <div className="text-white mb-2 fs-6 fw-bold">Applied Filters:</div>
+              <div className="d-flex flex-wrap gap-3">
+                {/* Genre Filters */}
+                {Object.values(genres).some(Boolean) && (
+                  <FilterBadge
+                    label={Object.values(genres).filter(Boolean).length === 1 ? 'Genre' : 'Genres'}
+                    value={Object.entries(genres).filter(([, isSelected]) => isSelected).map(([genre]) => genre).join(', ')}
+                    paramKey="genres"
+                    searchParams={searchParams}
+                    setSearchParams={setSearchParams}
+                  />
+                )}
+                
+                {/* Year Filter */}
+                {selectedYear !== new Date().getFullYear() && (
+                  <FilterBadge
+                    label="Year"
+                    value={selectedYear}
+                    paramKey="year"
+                    searchParams={searchParams}
+                    setSearchParams={setSearchParams}
+                  />
+                )}
+                
+                {/* Sort Filter */}
+                {selectedSortType !== 'popularity.desc' && (
+                  <FilterBadge
+                    label="Sort"
+                    value={Object.keys(SORT_TYPES).find(key => SORT_TYPES[key] === selectedSortType)}
+                    paramKey="sort"
+                    searchParams={searchParams}
+                    setSearchParams={setSearchParams}
+                  />
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="py-2 d-flex gap-2 dropdownsContainer">
           <Dropdown>
@@ -302,22 +329,22 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
           </Dropdown>
         </div>
         
-        {isLoading ? (
-          <div className="d-flex justify-content-center py-5 my-5">
-            <Spinner animation="border" variant="danger" />
-          </div>
-        ) : moviesOrTvShows.length === 0 ? (
-          <div className="text-center py-5 my-5">
-            <div className="fs-2 text-white mb-3">No Results</div>
-            <div className="text-lightgray">Try adjusting your filters or search criteria</div>
-          </div>
-        ) : (
-          <div className="smallMoviesGrid">
-            {moviesOrTvShows.map((movieOrTvShow) => {
-              return <SmallMovie key={movieOrTvShow.id} movie={movieOrTvShow} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
-            })}
-          </div>
-        )}
+        <div style={{ minHeight: '400px' }}>
+          {isFetching ? (
+            <SkeletonGrid />
+          ) : moviesOrTvShows.length === 0 ? (
+            <div className="text-center py-5 my-5">
+              <div className="fs-2 text-white mb-3">No Results</div>
+              <div className="text-lightgray">Try adjusting your filters or search criteria</div>
+            </div>
+          ) : (
+            <div className="smallMoviesGrid">
+              {moviesOrTvShows.map((movieOrTvShow) => {
+                return <SmallMovie key={movieOrTvShow.id} movie={movieOrTvShow} hoveredValue={hoveredValue} setHoveredValue={setHoveredValue} />;
+              })}
+            </div>
+          )}
+        </div>
       </div>
 
       <CustomPagination
