@@ -88,7 +88,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
     ])
   ), [genreOptions, genreParams]);
 
-  const selectedYear = parseInt(searchParams.get('year')) || new Date().getFullYear();
+  const selectedYear = searchParams.get('year') || new Date().getFullYear().toString();
   const selectedSortType = searchParams.get('sort') || 'popularity.desc';
   const pageNum = parseInt(searchParams.get('page')) || 1;
   
@@ -171,7 +171,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
       }, 100);
     }
   }, [genres, selectedYear, selectedSortType, pageNum, searchParams]);
-
+  
 
   return (
     <div className="bg-black pb-3">
@@ -185,7 +185,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
 
         {/* Applied Filters Section - Reserve space to prevent layout shift */}
         <div style={{ minHeight: '60px' }}>
-          {(Object.values(genres).some(Boolean) || selectedYear !== new Date().getFullYear() || selectedSortType !== 'popularity.desc') && (
+          {(Object.values(genres).some(Boolean) || selectedYear !== new Date().getFullYear().toString() || selectedSortType !== 'popularity.desc') && (
             <div className="py-2 mb-2">
               <div className="text-white mb-2 fs-6 fw-bold">Applied Filters:</div>
               <div className="d-flex flex-wrap gap-3">
@@ -201,7 +201,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
                 )}
                 
                 {/* Year Filter */}
-                {selectedYear !== new Date().getFullYear() && (
+                {selectedYear !== new Date().getFullYear().toString() && (
                   <FilterBadge
                     label="Year"
                     value={selectedYear}
@@ -278,7 +278,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
                 {YEARS.map((year) => {
                   const handleYearChange = () => {
                     const newSearchParams = new URLSearchParams(searchParams);
-                    if (year === new Date().getFullYear()) {
+                    if (year.toString() === new Date().getFullYear().toString()) {
                       newSearchParams.delete('year');
                     } else {
                       newSearchParams.set('year', year.toString());
@@ -289,7 +289,7 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
 
                   return (
                     <div key={year} className="cursor-pointer" onClick={handleYearChange}>
-                      <input type="radio" name="year-option" className="me-1" checked={selectedYear === year} onChange={handleYearChange} />
+                      <input type="radio" name="year-option" className="me-1" checked={selectedYear === year.toString()} onChange={handleYearChange} />
                       <span>{year}</span>
                     </div>
                   );
