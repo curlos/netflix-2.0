@@ -5,7 +5,8 @@ import {
 import TopNavbar from '../components/TopNavbar';
 import TVEpisodeBanner from '../components/TVEpisodeBanner';
 import { Spinner } from 'react-bootstrap';
-import { useGetTVShowEpisodeQuery, useGetTVShowDetailsQuery } from '../services/tvApi';
+import { useGetTVShowEpisodeQuery } from '../services/tvApi';
+import { useGetMediaDetailsQuery } from '../services/mediaApi';
 
 /**
  * @description - 
@@ -22,7 +23,7 @@ const TVEpisode = () => {
     episodeNumber: episodeNum
   });
   
-  const { data: tvShow, isLoading: tvShowLoading } = useGetTVShowDetailsQuery(id);
+  const { data: tvShow, isLoading: tvShowLoading } = useGetMediaDetailsQuery({ mediaType: 'tv', id });
   
   
   const loading = episodeLoading || tvShowLoading;

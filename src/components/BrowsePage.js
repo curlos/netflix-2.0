@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import SmallMovie from './SmallMovie';
 import TopNavbar from './TopNavbar';
 import Banner from './Banner';
 import CustomPagination from './CustomPagination';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { YEARS, SORT_TYPES_MOVIE, SORT_TYPES_TV } from '../utils/genres';
+import { YEARS, SORT_TYPES_MOVIE, SORT_TYPES_TV, MOVIE_GENRES, TV_GENRES } from '../utils/genres';
+import { useGetFilteredMediaQuery } from '../services/mediaApi';
+import { useGetPopularMoviesQuery } from '../services/movieApi';
+import { useGetDiscoverTVQuery } from '../services/tvApi';
 
 /**
  * @description - Skeleton loader for movie cards
@@ -67,17 +70,25 @@ const FilterBadge = ({ label, value, paramKey, searchParams, setSearchParams }) 
 };
 
 /**
- * @description - Generic browse page component for Movies and TV Shows
- * @param {string} title - Page title ("Movies" or "TV Shows")
- * @param {Array} genres - Genre options (MOVIE_GENRES or TV_GENRES)
- * @param {Object} bannerQuery - RTK Query result for banner data
- * @param {Function} useContentQuery - RTK Query hook for filtered content
- * @param {string} paginationClassName - Optional extra classes for pagination
+ * @description - Browse page component that handles both Movies and TV Shows based on the current route
  * @returns {React.FC}
  */
-const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery, paginationClassName = "" }) => {
+const BrowsePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [hoveredValue, setHoveredValue] = useState();
+  const location = useLocation();
+  
+  // Determine content type from route
+  const isMovies = location.pathname === '/movies';
+  const title = isMovies ? 'Movies' : 'TV Shows';
+  const mediaType = isMovies ? 'movie' : 'tv';
+  const genreOptions = isMovies ? MOVIE_GENRES : TV_GENRES;
+  const paginationClassName = isMovies ? 'px-2 px-md-5' : '';
+  
+  // Get appropriate banner query based on content type
+  const moviesBannerQuery = useGetPopularMoviesQuery(undefined, { skip: !isMovies });
+  const tvBannerQuery = useGetDiscoverTVQuery(undefined, { skip: isMovies });
+  const bannerQuery = isMovies ? moviesBannerQuery : tvBannerQuery;
   
   // Parse genres from URL params - memoized to prevent unnecessary recalculations
   const genreParams = searchParams.get('genres');
@@ -95,8 +106,9 @@ const BrowsePage = ({ title, genres: genreOptions, bannerQuery, useContentQuery,
   const isInitialRender = useRef(true);
   const previousFilters = useRef({ genres: {}, selectedYear: null, selectedSortType: null, pageNum: null });
   
-  // RTK Query for filtered content
-  const { data: contentData, isFetching } = useContentQuery({
+  // RTK Query for filtered content using unified API
+  const { data: contentData, isFetching } = useGetFilteredMediaQuery({
+    mediaType,
     genres,
     selectedYear,
     selectedSortType,

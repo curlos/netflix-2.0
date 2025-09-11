@@ -5,18 +5,20 @@ import { combineReducers } from '@reduxjs/toolkit';
 import userReducer from '../features/userSlice';
 import { movieApi } from '../services/movieApi';
 import { tvApi } from '../services/tvApi';
+import { mediaApi } from '../services/mediaApi';
 import { personApi } from '../services/personApi';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user', movieApi.reducerPath, tvApi.reducerPath, personApi.reducerPath],
+  whitelist: ['user', movieApi.reducerPath, tvApi.reducerPath, mediaApi.reducerPath, personApi.reducerPath],
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
   [movieApi.reducerPath]: movieApi.reducer,
   [tvApi.reducerPath]: tvApi.reducer,
+  [mediaApi.reducerPath]: mediaApi.reducer,
   [personApi.reducerPath]: personApi.reducer,
 });
 
@@ -32,7 +34,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
       },
-    }).concat(movieApi.middleware, tvApi.middleware, personApi.middleware),
+    }).concat(movieApi.middleware, tvApi.middleware, mediaApi.middleware, personApi.middleware),
 });
 
 export const persistor = persistStore(store);

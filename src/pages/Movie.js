@@ -8,7 +8,7 @@ import { getGenreNames } from '../utils/genres_v2';
 import { getAllDirectors, getAllActors } from '../utils/credits';
 import RecommendedMoviesList from '../components/RecommendedMoviesList';
 import moment from 'moment';
-import { useGetMovieDetailsQuery, useGetMovieVideosQuery, useGetMovieCreditsQuery, useGetMovieRecommendationsQuery } from '../services/movieApi';
+import { useGetMediaDetailsQuery, useGetMediaVideosQuery, useGetMediaCreditsQuery, useGetMediaRecommendationsQuery } from '../services/mediaApi';
 
 /**
  * @description - Page that shows a movie with a preview video and details such as its rating, genres, release date, director, production, cast, box office and recommended movies.
@@ -18,10 +18,10 @@ const Movie = () => {
   const { id } = useParams();
 
   // RTK Query hooks
-  const { data: details, isLoading: detailsLoading } = useGetMovieDetailsQuery(id);
-  const { data: videos, isLoading: videosLoading } = useGetMovieVideosQuery(id);
-  const { data: credits, isLoading: creditsLoading } = useGetMovieCreditsQuery(id);
-  const { data: recommendedMovies, isLoading: recommendedLoading } = useGetMovieRecommendationsQuery(id);
+  const { data: details, isLoading: detailsLoading } = useGetMediaDetailsQuery({ mediaType: 'movie', id });
+  const { data: videos, isLoading: videosLoading } = useGetMediaVideosQuery({ mediaType: 'movie', id });
+  const { data: credits, isLoading: creditsLoading } = useGetMediaCreditsQuery({ mediaType: 'movie', id });
+  const { data: recommendedMovies, isLoading: recommendedLoading } = useGetMediaRecommendationsQuery({ mediaType: 'movie', id });
   
   const loading = detailsLoading || videosLoading || creditsLoading || recommendedLoading;
 

@@ -11,8 +11,7 @@ import { auth } from './firebase';
 import { useDispatch } from 'react-redux';
 import { login, logout } from './features/userSlice';
 import Profile from './pages/Profile';
-import Movies from './pages/browse/Movies';
-import TVShows from './pages/browse/TVShows';
+import BrowsePage from './components/BrowsePage';
 import Movie from './pages/Movie';
 import TVShow from './pages/TVShow';
 import TVEpisode from './pages/TVEpisode';
@@ -57,8 +56,8 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<AuthForm mode="login" />} />
         <Route path="/signup" element={<AuthForm mode="signup" />} />
-        <Route path="/movies" element={<Movies />} />
-        <Route path="/tv-shows" element={<TVShows />} />
+        <Route path="/movies" element={<BrowsePage />} />
+        <Route path="/tv-shows" element={<BrowsePage />} />
         <Route path="/title/movie/:id" element={<Movie />} exact />
         <Route path="/title/tv/:id" element={<TVShow />} exact />
         <Route path="/title/tv/:id/season/:seasonNum/episode/:episodeNum" element={<TVEpisode />} />

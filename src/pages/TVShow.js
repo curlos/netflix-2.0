@@ -9,7 +9,7 @@ import { getAllDirectors, getAllActors } from '../utils/credits';
 import RecommendedMoviesList from '../components/RecommendedMoviesList';
 import Seasons from '../components/Seasons';
 import moment from 'moment';
-import { useGetTVShowDetailsQuery, useGetTVVideosQuery, useGetTVCreditsQuery, useGetTVRecommendationsQuery } from '../services/tvApi';
+import { useGetMediaDetailsQuery, useGetMediaVideosQuery, useGetMediaCreditsQuery, useGetMediaRecommendationsQuery } from '../services/mediaApi';
 
 /**
  * @description - 
@@ -19,10 +19,10 @@ const TVShow = () => {
   const { id } = useParams();
 
   // RTK Query hooks
-  const { data: details, isLoading: detailsLoading } = useGetTVShowDetailsQuery(id);
-  const { data: videos, isLoading: videosLoading } = useGetTVVideosQuery(id);
-  const { data: credits, isLoading: creditsLoading } = useGetTVCreditsQuery(id);
-  const { data: recommendedTVShows, isLoading: recommendedLoading } = useGetTVRecommendationsQuery(id);
+  const { data: details, isLoading: detailsLoading } = useGetMediaDetailsQuery({ mediaType: 'tv', id });
+  const { data: videos, isLoading: videosLoading } = useGetMediaVideosQuery({ mediaType: 'tv', id });
+  const { data: credits, isLoading: creditsLoading } = useGetMediaCreditsQuery({ mediaType: 'tv', id });
+  const { data: recommendedTVShows, isLoading: recommendedLoading } = useGetMediaRecommendationsQuery({ mediaType: 'tv', id });
   
   const loading = detailsLoading || videosLoading || creditsLoading || recommendedLoading;
 

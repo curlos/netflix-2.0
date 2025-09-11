@@ -3,13 +3,9 @@ import Card from 'react-bootstrap/Card';
 import { getGenreNames } from '../utils/genres';
 import { useNavigate } from 'react-router';
 import { 
-  useGetMovieDetailsQuery,
-  useGetMovieVideosQuery
-} from '../services/movieApi';
-import { 
-  useGetTVShowDetailsQuery,
-  useGetTVVideosQuery
-} from '../services/tvApi';
+  useGetMediaDetailsQuery,
+  useGetMediaVideosQuery
+} from '../services/mediaApi';
 
 /**
  * @description - 
@@ -22,16 +18,11 @@ const HoveredMovie = ({ setHoveredValue, movie }) => {
 
   // Determine if this is a TV show or movie
   const isTV = !!movie.first_air_date;
+  const mediaType = isTV ? 'tv' : 'movie';
   
-  // Call all hooks (required by React hooks rules)
-  const movieDetails = useGetMovieDetailsQuery(movie.id, { skip: isTV });
-  const movieVideos = useGetMovieVideosQuery(movie.id, { skip: isTV });
-  const tvDetails = useGetTVShowDetailsQuery(movie.id, { skip: !isTV });
-  const tvVideos = useGetTVVideosQuery(movie.id, { skip: !isTV });
-  
-  // Use appropriate data based on content type
-  const details = isTV ? tvDetails.data : movieDetails.data;
-  const videos = isTV ? tvVideos.data : movieVideos.data;
+  // Use unified media API
+  const { data: details } = useGetMediaDetailsQuery({ mediaType, id: movie.id });
+  const { data: videos } = useGetMediaVideosQuery({ mediaType, id: movie.id });
 
   // Helper function to convert minutes to hours and minutes
   const convertMinToHours = (n) => {
