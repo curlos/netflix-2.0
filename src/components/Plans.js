@@ -67,7 +67,6 @@ const Plans = () => {
         
         existingSubscriptionsSnapshot.forEach((doc) => {
           const existingData = doc.data();
-          console.log('Deleting existing subscription:', doc.id, existingData.stripe_subscription_id);
           
           // Delete from Firebase
           deletePromises.push(deleteDoc(doc.ref));
@@ -83,12 +82,6 @@ const Plans = () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ subscription_id: existingData.stripe_subscription_id })
-              }).then(response => {
-                if (response.ok) {
-                  console.log('Stripe subscription canceled:', existingData.stripe_subscription_id);
-                } else {
-                  console.error('Failed to cancel Stripe subscription:', existingData.stripe_subscription_id);
-                }
               }).catch(error => {
                 console.error('Error canceling subscription on Stripe:', error);
               })
@@ -118,7 +111,6 @@ const Plans = () => {
           created_at: new Date()
         });
 
-        console.log('Real subscription synced to Firebase');
         alert('Subscription activated successfully!');
         
         // Refresh the page to show updated subscription
@@ -151,17 +143,15 @@ const Plans = () => {
         const customerDoc = doc(db, 'customers', user.uid);
         const querySnapshot = await getDocs(collection(customerDoc, 'subscriptions'));
 
-        console.log(querySnapshot)
-
         if (!querySnapshot.empty) {
           const subscriptionDoc = querySnapshot.docs[0];
-          setSubscription({
-            role: subscriptionDoc.data().role,
-            current_period_end: subscriptionDoc.data().current_period_end.seconds,
-            current_period_start: subscriptionDoc.data().current_period_start.seconds,
-            price_id: subscriptionDoc.data().price_id,
-            amount: subscriptionDoc.data().amount
-          });
+          const data = subscriptionDoc.data();
+          
+          // Convert timestamp to seconds for consistency
+          data.current_period_end = data.current_period_end.seconds;
+          data.current_period_start = data.current_period_start.seconds;
+          
+          setSubscription(data);
         }
       } catch (error) {
         console.error('Error fetching subscription:', error);
@@ -192,8 +182,6 @@ const Plans = () => {
           });
         }));
 
-        console.log(products)
-        
         setProducts(products);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -217,6 +205,53 @@ const Plans = () => {
     window.location.href = paymentLink;
   };
 
+  const cancelCurrentPlan = async () => {
+    if (!subscription) return;
+
+    const confirmed = window.confirm(
+      `Are you sure you want to cancel your ${PLAN_NAMES[subscription.amount] || subscription.role} plan? This action cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const customerDoc = doc(db, 'customers', user.uid);
+
+      
+      // Cancel the subscription on Stripe
+      if (subscription.stripe_subscription_id) {
+        const cancelApiUrl = process.env.NODE_ENV === 'production' 
+          ? '/api/cancel-subscription'
+          : 'http://localhost:3001/api/cancel-subscription';
+        
+        
+        const response = await fetch(cancelApiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subscription_id: subscription.stripe_subscription_id })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`Failed to cancel subscription on Stripe: ${errorData.error || errorData.details || 'Unknown error'}`);
+        }
+      }
+
+      // Delete the subscription document from Firebase
+      const subscriptionDoc = doc(collection(customerDoc, 'subscriptions'), subscription.price_id);
+      await deleteDoc(subscriptionDoc);
+      
+      // Update local state
+      setSubscription(null);
+      
+      alert('Your subscription has been canceled successfully.');
+
+    } catch (error) {
+      console.error('Error canceling subscription:', error);
+      alert('There was an error canceling your subscription. Please try again or contact support.');
+    }
+  };
+
   const getTitleCase = (string) => {
     const strArr = [];
     string.split(' ').forEach((word) => {
@@ -234,10 +269,18 @@ const Plans = () => {
           </div> : null}
         {subscription ?
           (
-            <div className="fw-bold">
+            <div className="fw-bold mb-4">
               <div>Plans (Current Plan: {PLAN_NAMES[subscription?.amount] || getTitleCase(subscription?.role)})</div>
               <div className="fs-md">
                 Renewal date: {new Date(subscription.current_period_end * 1000).toLocaleDateString()}
+              </div>
+              <div className="mt-2">
+                <button 
+                  className="btn btn-outline-danger btn-sm"
+                  onClick={cancelCurrentPlan}
+                >
+                  Cancel Plan
+                </button>
               </div>
             </div>
           ) : null}
