@@ -16,6 +16,7 @@ import TVShows from './pages/browse/TVShows';
 import Movie from './pages/Movie';
 import TVShow from './pages/TVShow';
 import TVEpisode from './pages/TVEpisode';
+import Person from './pages/Person';
 
 
 const App = () => {
@@ -61,6 +62,7 @@ const App = () => {
         <Route path="/title/movie/:id" element={<Movie />} exact />
         <Route path="/title/tv/:id" element={<TVShow />} exact />
         <Route path="/title/tv/:id/season/:seasonNum/episode/:episodeNum" element={<TVEpisode />} />
+        <Route path="/person/:personId" element={<Person />} exact />
 
         <Route path="/" element={<Home />} />
       </Routes>

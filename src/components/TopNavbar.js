@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { debounce } from 'lodash';
 import { useDispatch } from 'react-redux';
 import { logout } from '../features/userSlice';
@@ -20,6 +20,7 @@ const TopNavbar = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '');
   const [showInput, setShowInput] = useState(!!searchParams.get('query'));
   const searchContainerRef = useRef(null);
@@ -39,7 +40,9 @@ const TopNavbar = () => {
   );
 
   useEffect(() => {
-    debouncedNavigate(searchQuery);
+    if (searchQuery.trim()) {
+      debouncedNavigate(searchQuery);
+    }
   }, [searchQuery, debouncedNavigate]);
 
   useEffect(() => {

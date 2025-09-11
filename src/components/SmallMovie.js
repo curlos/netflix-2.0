@@ -48,6 +48,11 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
 
 
   const handleNavigation = () => {
+    if (movie?.media_type === 'person') {
+      navigate(`/person/${movie.id}`);
+      return;
+    }
+    
     if (movie.first_air_date) {
       navigate(`/title/tv/${movie.id}`);
     } else {
@@ -55,9 +60,11 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
     }
   };
 
+  const imagePath = movie?.media_type === 'person' ? movie?.profile_path : movie?.poster_path;
+
   return (
     <div className="flex-1" onClick={handleNavigation}>
-      {hoveredValue && hoveredValue === movie ? (
+      {hoveredValue && hoveredValue === movie && movie?.media_type !== 'person' ? (
 
         <div className="text-white">
           <HoveredMovie handleShow={handleShow} setHoveredValue={setHoveredValue} movie={movie} />
@@ -66,8 +73,8 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
       ) : (
         <div className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} onMouseLeave={handleHoverLeave}>
           <div>
-            {movie?.poster_path ? (
-              <img src={`https://image.tmdb.org/t/p/original${movie?.poster_path}`} alt="" className={`movieImage m-1 rounded`} />
+            {imagePath ? (
+              <img src={`https://image.tmdb.org/t/p/original${imagePath}`} alt="" className={`movieImage m-1 rounded`} />
             ) : (
               <div className="movieImage m-1 rounded d-flex align-items-center justify-content-center text-center p-3" style={{backgroundColor: '#333', aspectRatio: '2/3'}}>
                 <div>
