@@ -6,7 +6,7 @@ import HoveredMovie from './HoveredMovie';
  * @description - 
  * @returns {React.FC}
  */
-const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
+const SmallMovie = ({ movie, hoveredValue, setHoveredValue, roleInfo }) => {
   const [_show, setShow] = useState(false);
   const navigate = useNavigate();
 
@@ -72,14 +72,23 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue }) => {
 
       ) : (
         <div className="smallMovie text-white fs-6" onClick={handleShow} onMouseEnter={handleHover} onMouseLeave={handleHoverLeave}>
-          <div>
-            {imagePath ? (
-              <img src={`https://image.tmdb.org/t/p/original${imagePath}`} alt="" className={`movieImage m-1 rounded`} />
-            ) : (
-              <div className="movieImage m-1 rounded d-flex align-items-center justify-content-center text-center p-3" style={{backgroundColor: '#333', aspectRatio: '2/3'}}>
-                <div>
-                  <div className="fw-bold mb-2">{movie?.title || movie?.name}</div>
-                  <div className="text-muted small">No Image Available</div>
+          <div className="d-flex flex-column justify-content-between h-100">
+            <div >
+              {imagePath ? (
+                <img src={`https://image.tmdb.org/t/p/original${imagePath}`} alt="" className={`movieImage rounded`} />
+              ) : (
+                <div className="movieImage rounded d-flex align-items-center justify-content-center text-center p-3" style={{backgroundColor: '#333', aspectRatio: '2/3'}}>
+                  <div>
+                    <div className="fw-bold mb-2">{movie?.title || movie?.name}</div>
+                    <div className="text-muted small">No Image Available</div>
+                  </div>
+                </div>
+              )}
+            </div>
+            {roleInfo && (
+              <div className="px-2 py-1">
+                <div className="text-muted small text-center" style={{ fontSize: '0.75rem', lineHeight: '1.2' }}>
+                  {roleInfo}
                 </div>
               </div>
             )}

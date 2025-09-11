@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import TopNavbar from '../components/TopNavbar';
@@ -11,6 +11,7 @@ const Person = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [hoveredValue, setHoveredValue] = useState(null);
   const [showFullBio, setShowFullBio] = useState(false);
+  const [activeTab, setActiveTab] = useState('cast');
   const moviesPerPage = 10;
   const previousPersonIdRef = useRef(null);
   
@@ -18,6 +19,19 @@ const Person = () => {
   
   const { data: personDetails, isLoading, error } = useGetPersonDetailsQuery(personId);
   const { data: combinedCredits, isLoading: creditsLoading } = useGetPersonCombinedCreditsQuery(personId);
+  
+  // Set default tab based on which has more credits
+  const defaultTab = useMemo(() => {
+    if (!combinedCredits) return 'cast';
+    const castCount = combinedCredits?.cast?.length || 0;
+    const crewCount = combinedCredits?.crew?.length || 0;
+    return castCount >= crewCount ? 'cast' : 'crew';
+  }, [combinedCredits]);
+  
+  // Update active tab when data loads or person changes
+  useEffect(() => {
+    setActiveTab(defaultTab);
+  }, [defaultTab]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,17 +48,27 @@ const Person = () => {
   }, [personId, searchParams, setSearchParams]);
   
   // Calculate pagination for combined credits (movies and TV shows)
-  // Filter out duplicates by ID first, then sort by popularity
-  const uniqueCredits = combinedCredits?.cast ? 
+  // Process cast credits
+  const uniqueCastCredits = combinedCredits?.cast ? 
     [...combinedCredits.cast].filter((credit, index, array) => 
       array.findIndex(c => c.id === credit.id) === index
     ) : [];
-  const sortedCredits = uniqueCredits.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
-  const totalCredits = sortedCredits.length;
+  const sortedCastCredits = uniqueCastCredits.sort((a, b) => (b.vote_count || 0) - (a.vote_count || 0));
+  
+  // Process crew credits
+  const uniqueCrewCredits = combinedCredits?.crew ? 
+    [...combinedCredits.crew].filter((credit, index, array) => 
+      array.findIndex(c => c.id === credit.id) === index
+    ) : [];
+  const sortedCrewCredits = uniqueCrewCredits.sort((a, b) => (b.vote_count || 0) - (a.vote_count || 0));
+  
+  // Get current tab's data
+  const currentTabCredits = activeTab === 'cast' ? sortedCastCredits : sortedCrewCredits;
+  const totalCredits = currentTabCredits.length;
   const totalPages = Math.ceil(totalCredits / moviesPerPage);
   const startIndex = (currentPage - 1) * moviesPerPage;
   const endIndex = startIndex + moviesPerPage;
-  const currentCredits = sortedCredits.slice(startIndex, endIndex);
+  const currentCredits = currentTabCredits.slice(startIndex, endIndex);
   
   const displayPerson = personDetails;
   const loading = isLoading || creditsLoading;
@@ -128,13 +152,6 @@ const Person = () => {
                     )}
                   </div>
                 )}
-                
-                {displayPerson?.popularity && (
-                  <div className="mb-3">
-                    <span className="text-lightgray me-2">Popularity:</span>
-                    <span>{Math.round(displayPerson.popularity * 10) / 10}</span>
-                  </div>
-                )}
               </div>
               
               {displayPerson?.biography && (
@@ -162,43 +179,101 @@ const Person = () => {
             </div>
           </div>
 
-          {combinedCredits?.cast && combinedCredits.cast.length > 0 && (
+          {(combinedCredits?.cast?.length > 0 || combinedCredits?.crew?.length > 0) && (
             <div id="movies-tv-section">
-              <h2 className="fs-2 mb-3">Movies & TV Shows ({totalCredits})</h2>
-              <div className="smallMoviesGrid">
-                {currentCredits.map((credit) => (
-                  <SmallMovie 
-                    key={`${credit.id}-${credit.media_type}`} 
-                    movie={credit} 
-                    hoveredValue={hoveredValue} 
-                    setHoveredValue={setHoveredValue} 
-                  />
-                ))}
-              </div>
+              <h2 className="fs-2 mb-3">Movies & TV Shows</h2>
               
-              {totalPages > 1 && (
-                <CustomPagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  totalResults={totalCredits}
-                  resultsPerPage={moviesPerPage}
-                  onPageChange={(newPage) => {
-                    const newSearchParams = new URLSearchParams(searchParams);
-                    if (newPage === 1) {
+              {/* Tabs */}
+              <div className="mb-4">
+                <nav className="nav nav-tabs">
+                  <button 
+                    className={`nav-link ${activeTab === 'cast' ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveTab('cast');
+                      // Reset to page 1 when switching tabs
+                      const newSearchParams = new URLSearchParams(searchParams);
                       newSearchParams.delete('page');
-                    } else {
-                      newSearchParams.set('page', newPage.toString());
-                    }
-                    setSearchParams(newSearchParams);
-                    
-                    // Scroll to Movies & TV Shows section
-                    const moviesSection = document.querySelector('#movies-tv-section');
-                    if (moviesSection) {
-                      moviesSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                  className="mt-3"
-                />
+                      setSearchParams(newSearchParams);
+                    }}
+                    style={{ 
+                      backgroundColor: activeTab === 'cast' ? '#dc3545' : 'transparent',
+                      borderColor: activeTab === 'cast' ? '#dc3545' : '#6c757d',
+                      color: activeTab === 'cast' ? 'white' : '#6c757d'
+                    }}
+                  >
+                    As Cast ({sortedCastCredits.length})
+                  </button>
+                  <button 
+                    className={`nav-link ${activeTab === 'crew' ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveTab('crew');
+                      // Reset to page 1 when switching tabs
+                      const newSearchParams = new URLSearchParams(searchParams);
+                      newSearchParams.delete('page');
+                      setSearchParams(newSearchParams);
+                    }}
+                    style={{ 
+                      backgroundColor: activeTab === 'crew' ? '#dc3545' : 'transparent',
+                      borderColor: activeTab === 'crew' ? '#dc3545' : '#6c757d',
+                      color: activeTab === 'crew' ? 'white' : '#6c757d'
+                    }}
+                  >
+                    As Crew ({sortedCrewCredits.length})
+                  </button>
+                </nav>
+              </div>
+
+              {totalCredits > 0 ? (
+                <>
+                  <div className="smallMoviesGrid">
+                    {currentCredits.map((credit) => {
+                      const roleInfo = activeTab === 'cast' 
+                        ? credit.character 
+                        : credit.job;
+                      
+                      return (
+                        <SmallMovie 
+                          key={`${credit.id}-${credit.media_type}-${activeTab}`} 
+                          movie={credit} 
+                          hoveredValue={hoveredValue} 
+                          setHoveredValue={setHoveredValue}
+                          roleInfo={roleInfo}
+                        />
+                      );
+                    })}
+                  </div>
+                  
+                  {totalPages > 1 && (
+                    <CustomPagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      totalResults={totalCredits}
+                      resultsPerPage={moviesPerPage}
+                      onPageChange={(newPage) => {
+                        const newSearchParams = new URLSearchParams(searchParams);
+                        if (newPage === 1) {
+                          newSearchParams.delete('page');
+                        } else {
+                          newSearchParams.set('page', newPage.toString());
+                        }
+                        setSearchParams(newSearchParams);
+                        
+                        // Scroll to Movies & TV Shows section
+                        const moviesSection = document.querySelector('#movies-tv-section');
+                        if (moviesSection) {
+                          moviesSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                      className="mt-3"
+                    />
+                  )}
+                </>
+              ) : (
+                <div className="text-center py-5">
+                  <div className="text-muted">
+                    No {activeTab === 'cast' ? 'acting' : 'crew'} credits found
+                  </div>
+                </div>
               )}
             </div>
           )}
