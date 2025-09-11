@@ -25,6 +25,7 @@ const TopNavbar = () => {
   const [showInput, setShowInput] = useState(!!searchParams.get('query'));
   const searchContainerRef = useRef(null);
   const searchInputRef = useRef(null);
+  const isUserSearching = useRef(false);
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -40,7 +41,8 @@ const TopNavbar = () => {
   );
 
   useEffect(() => {
-    if (searchQuery.trim()) {
+    if (searchQuery.trim() && isUserSearching.current) {
+      console.log(`navigating to ${searchQuery}`)
       debouncedNavigate(searchQuery);
     }
   }, [searchQuery, debouncedNavigate]);
@@ -48,13 +50,15 @@ const TopNavbar = () => {
   useEffect(() => {
     const query = searchParams.get('query');
     if (query) {
+      isUserSearching.current = false;
       setSearchQuery(query);
       setShowInput(true);
     } else {
+      isUserSearching.current = false;
       setSearchQuery('');
       setShowInput(false);
     }
-  }, [searchParams]);
+  }, [searchParams, location.pathname]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -114,8 +118,9 @@ const TopNavbar = () => {
           <div className={`px-2 py-1 ${showInput ? 'border' : ''}`} ref={searchContainerRef}>
             <i className="bi bi-search mediumIcon cursor-pointer" onClick={handleSearchIconClick}></i>
             <input ref={searchInputRef} autoFocus={searchParams.get('query') && searchParams.get('query').length > 0} className={`bg-black border-0 text-white searchInput ${showInput ? 'fullInput p-1 px-2' : ''}`} placeholder="Titles, people, genres" value={searchQuery} onChange={(e) => {
+              isUserSearching.current = true;
               setSearchQuery(e.target.value);
-            }} onSubmit={(e) => navigate(`/?query=${e.target.value}`)} />
+            }} />
           </div>
 
           {user && user.email ? (
