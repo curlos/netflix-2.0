@@ -64,7 +64,7 @@ const Profile = () => {
           <hr />
 
           <div className="d-flex flex-column flex-lg-row justify-content-center gap-2">
-            <button type="button" className="profileBottomButton" onClick={handleLogout}>Sign Out</button>
+            <button type="button" className="profileBottomButton mb-4" onClick={handleLogout}>Sign Out</button>
           </div>
         </div>
       </div>
