@@ -5,7 +5,7 @@ import {
 import TopNavbar from '../components/TopNavbar';
 import TVEpisodeBanner from '../components/TVEpisodeBanner';
 import { Spinner } from 'react-bootstrap';
-import { useGetTVShowEpisodeQuery } from '../services/tvApi';
+import { useGetTVShowEpisodeQuery, useGetTVShowSeasonsQuery } from '../services/tvApi';
 import { useGetMediaDetailsQuery } from '../services/mediaApi';
 
 /**
@@ -25,8 +25,13 @@ const TVEpisode = () => {
   
   const { data: tvShow, isLoading: tvShowLoading } = useGetMediaDetailsQuery({ mediaType: 'tv', id });
   
+  // Fetch current season data to know total episodes for navigation
+  const { data: currentSeason, isLoading: seasonLoading } = useGetTVShowSeasonsQuery({
+    tvId: id,
+    seasonNumber: seasonNum
+  });
   
-  const loading = episodeLoading || tvShowLoading;
+  const loading = episodeLoading || tvShowLoading || seasonLoading;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,7 +42,14 @@ const TVEpisode = () => {
     loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
       <div>
         <TopNavbar />
-        <TVEpisodeBanner tvShow={tvShow} episode={episode} />
+        <TVEpisodeBanner 
+          tvShow={tvShow} 
+          episode={episode} 
+          currentSeason={currentSeason}
+          tvShowId={id}
+          currentSeasonNum={parseInt(seasonNum)}
+          currentEpisodeNum={parseInt(episodeNum)}
+        />
       </div>
     )
   );

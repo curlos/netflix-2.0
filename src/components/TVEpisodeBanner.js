@@ -2,14 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
 import moment from 'moment';
+import { useGetTVShowSeasonsQuery } from '../services/tvApi';
 
 /**
  * @description - 
  * @returns {React.FC}
  */
-const TVEpisodeBanner = ({ tvShow, episode }) => {
+const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeasonNum, currentEpisodeNum }) => {
   const overviewRef = useRef(null);
   const typedRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const options = {
@@ -27,6 +29,44 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
 
   }, [episode]);
 
+  // Fetch previous season data when we're on episode 1 of current season (for prev navigation)
+  const needsPrevSeasonData = currentEpisodeNum === 1 && currentSeasonNum > 1;
+  const { data: prevSeason } = useGetTVShowSeasonsQuery({
+    tvId: tvShowId,
+    seasonNumber: currentSeasonNum - 1
+  }, {
+    skip: !needsPrevSeasonData
+  });
+
+  // Navigation logic
+  const totalEpisodesInSeason = currentSeason?.episodes?.length || 0;
+  const totalSeasons = tvShow?.number_of_seasons || 0;
+  const prevSeasonEpisodeCount = prevSeason?.episodes?.length || 0;
+
+  const hasPrevEpisode = currentEpisodeNum > 1 || currentSeasonNum > 1;
+  const hasNextEpisode = currentEpisodeNum < totalEpisodesInSeason || currentSeasonNum < totalSeasons;
+
+  const handlePrevEpisode = () => {
+    if (currentEpisodeNum > 1) {
+      // Previous episode in same season
+      navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum}/episode/${currentEpisodeNum - 1}`);
+    } else if (currentSeasonNum > 1) {
+      // Last episode of previous season
+      const lastEpisodeOfPrevSeason = prevSeasonEpisodeCount || 1;
+      navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum - 1}/episode/${lastEpisodeOfPrevSeason}`);
+    }
+  };
+
+  const handleNextEpisode = () => {
+    if (currentEpisodeNum < totalEpisodesInSeason) {
+      // Next episode in same season
+      navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum}/episode/${currentEpisodeNum + 1}`);
+    } else if (currentSeasonNum < totalSeasons) {
+      // First episode of next season
+      navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum + 1}/episode/1`);
+    }
+  };
+
   return (
     <div className="bannerContainer">
       <div
@@ -42,6 +82,27 @@ const TVEpisodeBanner = ({ tvShow, episode }) => {
             <i className="bi bi-chevron-left"></i>
             <span className="ms-2">{tvShow.name || tvShow.original_name}</span>
           </Link>
+          <div className="fs-5 fw-light mt-3 d-flex align-items-center gap-3" style={{ marginBottom: '-10px' }}>
+            {hasPrevEpisode && (
+              <button 
+                onClick={handlePrevEpisode}
+                className="btn btn-link text-white p-0 border-0 d-flex align-items-center"
+                style={{ textDecoration: 'none', fontSize: '1.5rem' }}
+              >
+                <i className="bi bi-chevron-left"></i>
+              </button>
+            )}
+            <span>Season {episode?.season_number}, Episode {episode?.episode_number}</span>
+            {hasNextEpisode && (
+              <button 
+                onClick={handleNextEpisode}
+                className="btn btn-link text-white p-0 border-0 d-flex align-items-center"
+                style={{ textDecoration: 'none', fontSize: '1.5rem' }}
+              >
+                <i className="bi bi-chevron-right"></i>
+              </button>
+            )}
+          </div>
           <div className="fs-1 fw-bold mb-2 d-flex justify-content-between">
             <span>{episode?.name}</span>
             <div>
