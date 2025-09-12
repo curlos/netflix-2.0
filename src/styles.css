@@ -734,7 +734,7 @@ a:hover {
 
 /* Episode Dropdown Styles */
 .episode-dropdown-menu {
-  max-width: 450px;
+  max-width: 370px;
 }
 
 .episode-dropdown-menu::-webkit-scrollbar {
@@ -742,7 +742,7 @@ a:hover {
 }
 
 .episode-dropdown-menu::-webkit-scrollbar-track {
-  background: transparent;
+  background: #444444;
 }
 
 .episode-dropdown-menu::-webkit-scrollbar-thumb {

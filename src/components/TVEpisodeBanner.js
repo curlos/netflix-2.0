@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import Typed from 'typed.js';
@@ -90,9 +90,20 @@ const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeas
               <span className="ms-2">{tvShow.name || tvShow.original_name}</span>
             </Link>
             
-            <div className="d-flex gap-2">
-              {/* Season Dropdown */}
-              <Dropdown>
+            <div className="d-flex gap-2 align-items-center">
+              {hasPrevEpisode && (
+                <button 
+                  onClick={handlePrevEpisode}
+                  className="btn btn-link text-white p-0 border-0 d-flex align-items-center"
+                  style={{ textDecoration: 'none', fontSize: '1.5rem' }}
+                >
+                  <i className="bi bi-chevron-left"></i>
+                </button>
+              )}
+              
+              <div className="d-flex gap-2">
+                {/* Season Dropdown */}
+                <Dropdown>
                 <Dropdown.Toggle
                   id="dropdown-no-bg"
                   size="sm"
@@ -141,7 +152,7 @@ const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeas
                   style={{ fontSize: '1rem' }}
                 >
                   <span className="pe-1 fs-5">
-                    Episodes
+                    Episode {currentEpisodeNum}
                   </span>
                 </Dropdown.Toggle>
 
@@ -191,28 +202,18 @@ const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeas
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
+              </div>
+              
+              {hasNextEpisode && (
+                <button 
+                  onClick={handleNextEpisode}
+                  className="btn btn-link text-white p-0 border-0 d-flex align-items-center"
+                  style={{ textDecoration: 'none', fontSize: '1.5rem' }}
+                >
+                  <i className="bi bi-chevron-right"></i>
+                </button>
+              )}
             </div>
-          </div>
-          <div className="fs-5 fw-light mt-3 d-flex align-items-center gap-3" style={{ marginBottom: '-10px' }}>
-            {hasPrevEpisode && (
-              <button 
-                onClick={handlePrevEpisode}
-                className="btn btn-link text-white p-0 border-0 d-flex align-items-center"
-                style={{ textDecoration: 'none', fontSize: '1.5rem' }}
-              >
-                <i className="bi bi-chevron-left"></i>
-              </button>
-            )}
-            <span>Season {episode?.season_number}, Episode {episode?.episode_number}</span>
-            {hasNextEpisode && (
-              <button 
-                onClick={handleNextEpisode}
-                className="btn btn-link text-white p-0 border-0 d-flex align-items-center"
-                style={{ textDecoration: 'none', fontSize: '1.5rem' }}
-              >
-                <i className="bi bi-chevron-right"></i>
-              </button>
-            )}
           </div>
           <div className="fs-1 fw-bold mb-2 d-flex justify-content-between">
             <span>{episode?.name}</span>
