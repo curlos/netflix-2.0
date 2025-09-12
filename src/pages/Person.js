@@ -196,8 +196,8 @@ const Person = () => {
                       setSearchParams(newSearchParams);
                     }}
                     style={{ 
-                      backgroundColor: activeTab === 'cast' ? '#dc3545' : 'transparent',
-                      borderColor: activeTab === 'cast' ? '#dc3545' : '#6c757d',
+                      backgroundColor: activeTab === 'cast' ? '#E50914' : 'transparent',
+                      borderColor: activeTab === 'cast' ? '#E50914' : '#6c757d',
                       color: activeTab === 'cast' ? 'white' : '#6c757d'
                     }}
                   >
@@ -213,8 +213,8 @@ const Person = () => {
                       setSearchParams(newSearchParams);
                     }}
                     style={{ 
-                      backgroundColor: activeTab === 'crew' ? '#dc3545' : 'transparent',
-                      borderColor: activeTab === 'crew' ? '#dc3545' : '#6c757d',
+                      backgroundColor: activeTab === 'crew' ? '#E50914' : 'transparent',
+                      borderColor: activeTab === 'crew' ? '#E50914' : '#6c757d',
                       color: activeTab === 'crew' ? 'white' : '#6c757d'
                     }}
                   >
