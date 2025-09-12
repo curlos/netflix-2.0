@@ -53,7 +53,7 @@ const SmallMovie = ({ movie, hoveredValue, setHoveredValue, roleInfo }) => {
       return;
     }
     
-    if (movie.first_air_date) {
+    if (movie.first_air_date || movie.media_type === 'tv') {
       navigate(`/title/tv/${movie.id}`);
     } else {
       navigate(`/title/movie/${movie.id}`);
