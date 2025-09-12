@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import TopNavbar from '../components/TopNavbar';
 import { Spinner } from 'react-bootstrap';
 import { getGenreNames } from '../utils/genres_v2';
@@ -16,6 +16,7 @@ import { useGetMediaDetailsQuery, useGetMediaVideosQuery, useGetMediaCreditsQuer
 const MediaDetails = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   
   // Determine media type from route
   const isMovie = location.pathname.includes('/title/movie/');
@@ -125,7 +126,20 @@ const MediaDetails = () => {
                 {credits && credits?.crew && credits?.crew?.filter((member) => member.job === 'Director').length >= 1 ? (
                   <div>
                     <span className="text-lightgray me-1 span">Director:</span>
-                    <span>{getAllDirectors(credits)}</span>
+                    {getAllDirectors(credits).map((director, index) => (
+                      <span key={director.id}>
+                        <span 
+                          className="text-white cursor-pointer hover:text-gray-300"
+                          style={{ cursor: 'pointer', textDecoration: 'none' }}
+                          onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                          onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                          onClick={() => navigate(`/person/${director.id}`)}
+                        >
+                          {director.name}
+                        </span>
+                        {index < getAllDirectors(credits).length - 1 && ', '}
+                      </span>
+                    ))}
                   </div>
                 ) : null}
 
@@ -139,7 +153,23 @@ const MediaDetails = () => {
 
                 {/* Cast */}
                 {credits?.cast && credits?.cast?.length > 0 ? (
-                  <div><span className="text-lightgray">Cast:</span> {getAllActors(credits)}</div>
+                  <div>
+                    <span className="text-lightgray">Cast:</span>{' '}
+                    {getAllActors(credits).map((actor, index) => (
+                      <span key={actor.id}>
+                        <span 
+                          className="text-white cursor-pointer hover:text-gray-300"
+                          style={{ cursor: 'pointer', textDecoration: 'none' }}
+                          onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                          onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                          onClick={() => navigate(`/person/${actor.id}`)}
+                        >
+                          {actor.name}
+                        </span>
+                        {index < getAllActors(credits).length - 1 && ', '}
+                      </span>
+                    ))}
+                  </div>
                 ) : null}
 
                 {/* Box office - Movies: show if revenue exists, TV: show if release_date exists (matches original logic) */}

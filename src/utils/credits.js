@@ -1,11 +1,7 @@
 export const getAllActors = (credits) => {
-  const actors = [];
-
-  credits.cast.filter((cast) => cast.known_for_department === 'Acting').slice(0, 3).map((actor, i) => {
-    actors.push(actor.name);
-  });
-
-  return actors.join(', ');
+  return credits.cast
+    .filter((cast) => cast.known_for_department === 'Acting')
+    .slice(0, 3);
 };
 
 export const getAllCostumeAndMakeup = (credits) => {
@@ -29,12 +25,7 @@ export const getAllCamera = (credits) => {
 };
 
 export const getAllDirectors = (credits) => {
-  const directorsArr = [];
-  const directorsObj = credits.crew.filter((member) => member.job === 'Director');
-  directorsObj.forEach((director) => {
-    directorsArr.push(director.name);
-  });
-  return directorsArr.join(', ');
+  return credits.crew.filter((member) => member.job === 'Director');
 };
 
 export const getAllCrew = (credits) => {
