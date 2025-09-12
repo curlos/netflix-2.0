@@ -104,6 +104,7 @@ const BrowsePage = () => {
   const pageNum = parseInt(searchParams.get('page')) || 1;
   
   const isInitialRender = useRef(true);
+  const previousPath = useRef(location.pathname);
   const previousFilters = useRef({ genres: {}, selectedYear: null, selectedSortType: null, pageNum: null });
   
   // RTK Query for filtered content using unified API
@@ -134,6 +135,12 @@ const BrowsePage = () => {
   }, [title, searchParams]);
 
   useEffect(() => {
+    // Reset isInitialRender when path changes (Movies <-> TV Shows navigation)
+    if (previousPath.current !== location.pathname) {
+      isInitialRender.current = true;
+      previousPath.current = location.pathname;
+    }
+    
     if (isInitialRender.current) {
       isInitialRender.current = false;
       previousFilters.current = { genres, selectedYear, selectedSortType, pageNum };
@@ -182,7 +189,7 @@ const BrowsePage = () => {
         }
       }, 100);
     }
-  }, [genres, selectedYear, selectedSortType, pageNum, searchParams]);
+  }, [genres, selectedYear, selectedSortType, pageNum, searchParams, location.pathname]);
   
 
   return (
