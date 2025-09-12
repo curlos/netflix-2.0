@@ -46,7 +46,6 @@ const AuthForm = ({ mode }) => {
         <Link to="/">
           <img src="/assets/netflix_logo.png" alt="" className="authLogo" />
         </Link>
-        <button className="netflixRedButton">{buttonText}</button>
       </div>
 
       <div className="container mx-auto px-3 px-sm-0 d-flex justify-content-center">
