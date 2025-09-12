@@ -1,27 +1,31 @@
 import React, { useEffect } from 'react';
-import {
-  useParams
-} from "react-router-dom";
+import { useParams, useLocation } from 'react-router-dom';
 import TopNavbar from '../components/TopNavbar';
 import { Spinner } from 'react-bootstrap';
 import { getGenreNames } from '../utils/genres_v2';
 import { getAllDirectors, getAllActors } from '../utils/credits';
 import RecommendedMoviesList from '../components/RecommendedMoviesList';
+import Seasons from '../components/Seasons';
 import moment from 'moment';
 import { useGetMediaDetailsQuery, useGetMediaVideosQuery, useGetMediaCreditsQuery, useGetMediaRecommendationsQuery } from '../services/mediaApi';
 
 /**
- * @description - Page that shows a movie with a preview video and details such as its rating, genres, release date, director, production, cast, box office and recommended movies.
+ * @description - Unified page that shows media (movie or TV show) details with preview video, rating, metadata, and recommendations
  * @returns {React.FC}
  */
-const Movie = () => {
+const MediaDetails = () => {
   const { id } = useParams();
-
-  // RTK Query hooks
-  const { data: details, isLoading: detailsLoading } = useGetMediaDetailsQuery({ mediaType: 'movie', id });
-  const { data: videos, isLoading: videosLoading } = useGetMediaVideosQuery({ mediaType: 'movie', id });
-  const { data: credits, isLoading: creditsLoading } = useGetMediaCreditsQuery({ mediaType: 'movie', id });
-  const { data: recommendedMovies, isLoading: recommendedLoading } = useGetMediaRecommendationsQuery({ mediaType: 'movie', id });
+  const location = useLocation();
+  
+  // Determine media type from route
+  const isMovie = location.pathname.includes('/title/movie/');
+  const mediaType = isMovie ? 'movie' : 'tv';
+  
+  // RTK Query hooks using unified media API
+  const { data: details, isLoading: detailsLoading } = useGetMediaDetailsQuery({ mediaType, id });
+  const { data: videos, isLoading: videosLoading } = useGetMediaVideosQuery({ mediaType, id });
+  const { data: credits, isLoading: creditsLoading } = useGetMediaCreditsQuery({ mediaType, id });
+  const { data: recommendedContent, isLoading: recommendedLoading } = useGetMediaRecommendationsQuery({ mediaType, id });
   
   const loading = detailsLoading || videosLoading || creditsLoading || recommendedLoading;
 
@@ -29,39 +33,50 @@ const Movie = () => {
     window.scrollTo(0, 0);
   }, [id]);
 
+  // TV-specific: Get the year range for TV shows
+  const getYears = (details) => {
+    const startYear = new Date(details.first_air_date).getFullYear();
+    const endYear = details.next_episode_to_air === null ? new Date(details.last_air_date).getFullYear() : '';
+    return (
+      <span>
+        <span className="text-lightgray">Year{startYear !== endYear ? 's' : ''}: </span>
+        <span>{startYear !== endYear ? `${startYear} - ${endYear}` : startYear}</span>
+      </span>
+    );
+  };
+
   return (
     <div className="bg-black navbarMargin pb-3">
       <TopNavbar />
 
       {loading ? <div className="spinnerContainer"><Spinner animation="border" variant="danger" /></div> : (
         <div className="moviePageContainer container mx-auto px-3 px-sm-0">
-          {/* If there's at least one video, then take the first video and show that. We'll be using YouTube as that's the most mainstream option plus most people already use it. */}
+          {/* Video or image display */}
           {videos?.results?.length >= 1 ?
             (<div className="videoWrapper" style={{}}>
               <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videos?.results?.[0]?.key}?&autoplay=1&loop=1`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen={true} loop={true} autoPlay={true} muted={true} className="video-size"></iframe>
             </div>) : (
-              // If there's NO videos, then show an image of the movie. Get the horizontal poster if possible BUT if not just use the normal poster.
               <div>
                 <img src={`https://image.tmdb.org/t/p/original${details?.backdrop_path || details?.poster_path}`} alt="" className="w-100" />
               </div>
             )}
 
           <div className="d-flex gap-4 my-4">
-            {/* Shows the movie poster. Will not appear on mobile (screen sizes smaller than 600px) */}
+            {/* Media poster */}
             <div>
               <img src={`https://image.tmdb.org/t/p/original${details?.poster_path || details?.backdrop_path}`} alt="" className="moviePoster" />
             </div>
 
-            <div>
+            <div className={isMovie ? '' : 'w-100'}>
               <div className="d-flex justify-content-between align-items-center">
-                {/* Title */}
-                {details?.title ? (
+                {/* Title - TV shows have more fallback options */}
+                {(isMovie ? details?.title : (details?.title || details?.original_name)) ? (
                   <div>
                     <h1 className="fw-bold">{details?.title || details?.name || details?.original_name}</h1>
                   </div>
                 ) : null}
 
-                {/* Star rating (i.e. 7.35/10) with the number of times it's been rated (i.e. 1,619) */}
+                {/* Star rating */}
                 {details?.vote_count > 0 ? (
                   <div className="d-flex align-items-start gap-2">
                     <div className="mt-2">
@@ -72,14 +87,13 @@ const Movie = () => {
                         <span className="fw-bold">{Math.round((details?.vote_average + Number.EPSILON) * 100) / 100}</span>
                         <span className="text-secondary fs-4">/10</span>
                       </div>
-
                       <div className="fs-6 text-secondary text-center">{Number(details?.vote_count).toLocaleString()}</div>
                     </div>
                   </div>
                 ) : null}
               </div>
 
-              {/* A short paragraph describing what the movie is about. */}
+              {/* Overview */}
               <div className="mb-4">{details?.overview}</div>
 
               <div className="space-between-y-1">
@@ -88,17 +102,29 @@ const Movie = () => {
                   <div><span className="text-lightgray" style={{ width: '100px' }}>Genre:</span> {getGenreNames(details?.genres)}</div>
                 ) : null}
 
-                {/* Release date */}
-                {details?.release_date ? (
-                  <div><span className="text-lightgray">Release:</span> {moment(details?.release_date).format('MMMM Do, YYYY')}</div>
-                ) : null}
+                {/* Date - Different logic for movies vs TV shows */}
+                {isMovie ? (
+                  // Movies: Show release date
+                  details?.release_date ? (
+                    <div><span className="text-lightgray">Release:</span> {moment(details?.release_date).format('MMMM Do, YYYY')}</div>
+                  ) : null
+                ) : (
+                  // TV Shows: Show year range or release date if available
+                  <>
+                    {details?.release_date ? (
+                      <div><span className="text-lightgray">Release Date:</span> {moment(details?.air_date).format('MMMM Do, YYYY')}</div>
+                    ) : null}
+                    
+                    {!details?.release_date && details?.first_air_date && details?.last_air_date ? (
+                      <div>{getYears(details)}</div>
+                    ) : null}
+                  </>
+                )}
 
                 {/* Director */}
                 {credits && credits?.crew && credits?.crew?.filter((member) => member.job === 'Director').length >= 1 ? (
                   <div>
-                    <span className="text-lightgray me-1 span">
-                      Director:
-                    </span>
+                    <span className="text-lightgray me-1 span">Director:</span>
                     <span>{getAllDirectors(credits)}</span>
                   </div>
                 ) : null}
@@ -106,32 +132,33 @@ const Movie = () => {
                 {/* Production companies */}
                 {details?.production_companies && details?.production_companies?.length > 0 ? (
                   <div>
-                    <span className="text-lightgray me-1 span">
-                      Production:
-                    </span>
+                    <span className="text-lightgray me-1 span">Production:</span>
                     {details?.production_companies?.map((company, i) => <span key={company.id || i}>{company.name}{i !== details?.production_companies?.length - 1 ? ', ' : null}</span>)}
                   </div>
                 ) : null}
 
-                {/* Cast (or actors) */}
+                {/* Cast */}
                 {credits?.cast && credits?.cast?.length > 0 ? (
                   <div><span className="text-lightgray">Cast:</span> {getAllActors(credits)}</div>
                 ) : null}
 
-                {/* Box office */}
-                {details?.revenue ? (
+                {/* Box office - Movies: show if revenue exists, TV: show if release_date exists (matches original logic) */}
+                {(isMovie ? details?.revenue : details?.release_date) ? (
                   <div><span className="text-lightgray">Box Office:</span> ${Number(details?.revenue).toLocaleString()}</div>
                 ) : null}
               </div>
             </div>
           </div>
 
-          {/* Shows the list of recommended movies. */}
-          <RecommendedMoviesList recommendedMovies={recommendedMovies} />
+          {/* TV Show specific: Seasons component */}
+          {!isMovie && <Seasons tvShowID={id} tvShowDetails={details} />}
+
+          {/* Recommended content */}
+          <RecommendedMoviesList recommendedMovies={recommendedContent} />
         </div>
       )}
     </div>
   );
 };
 
-export default Movie;
+export default MediaDetails;

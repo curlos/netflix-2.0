@@ -12,8 +12,7 @@ import { useDispatch } from 'react-redux';
 import { login, logout } from './features/userSlice';
 import Profile from './pages/Profile';
 import BrowsePage from './components/BrowsePage';
-import Movie from './pages/Movie';
-import TVShow from './pages/TVShow';
+import MediaDetails from './pages/MediaDetails';
 import TVEpisode from './pages/TVEpisode';
 import Person from './pages/Person';
 
@@ -58,8 +57,8 @@ const App = () => {
         <Route path="/signup" element={<AuthForm mode="signup" />} />
         <Route path="/movies" element={<BrowsePage />} />
         <Route path="/tv-shows" element={<BrowsePage />} />
-        <Route path="/title/movie/:id" element={<Movie />} exact />
-        <Route path="/title/tv/:id" element={<TVShow />} exact />
+        <Route path="/title/movie/:id" element={<MediaDetails />} exact />
+        <Route path="/title/tv/:id" element={<MediaDetails />} exact />
         <Route path="/title/tv/:id/season/:seasonNum/episode/:episodeNum" element={<TVEpisode />} />
         <Route path="/person/:personId" element={<Person />} exact />
 
