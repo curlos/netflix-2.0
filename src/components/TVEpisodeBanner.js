@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 import Typed from 'typed.js';
 import moment from 'moment';
 import { useGetTVShowSeasonsQuery } from '../services/tvApi';
@@ -67,9 +68,32 @@ const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeas
     }
   };
 
+  // Handle episode selection from dropdown
+  const handleEpisodeSelect = (seasonNum, episodeNum) => {
+    navigate(`/title/tv/${tvShowId}/season/${seasonNum}/episode/${episodeNum}`);
+  };
+
   return (
-    <div className="bannerContainer">
-      <div
+    <>
+      <style>
+        {`
+          .episode-dropdown-menu::-webkit-scrollbar {
+            width: 6px;
+          }
+          .episode-dropdown-menu::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          .episode-dropdown-menu::-webkit-scrollbar-thumb {
+            background-color: #6c757d;
+            border-radius: 3px;
+          }
+          .episode-dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background-color: #495057;
+          }
+        `}
+      </style>
+      <div className="bannerContainer">
+        <div
         style={{
           backgroundSize: 'cover',
           backgroundImage: `url("https://image.tmdb.org/t/p/original/${episode?.still_path}")`,
@@ -78,10 +102,115 @@ const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeas
         className="bannerContainerInner d-flex justify-content-center"
       >
         <div className="tvEpisodeBannerInfo container mx-auto">
-          <Link to={`/title/tv/${tvShow.id}`}>
-            <i className="bi bi-chevron-left"></i>
-            <span className="ms-2">{tvShow.name || tvShow.original_name}</span>
-          </Link>
+          <div className="d-flex justify-content-between align-items-center">
+            <Link to={`/title/tv/${tvShow.id}`}>
+              <i className="bi bi-chevron-left"></i>
+              <span className="ms-2">{tvShow.name || tvShow.original_name}</span>
+            </Link>
+            
+            <div className="d-flex gap-2">
+              {/* Season Dropdown */}
+              <Dropdown>
+                <Dropdown.Toggle
+                  id="dropdown-no-bg"
+                  size="sm"
+                  className="border-0 bg-transparent text-white"
+                  style={{ fontSize: '1rem' }}
+                >
+                  <span className="pe-1 fs-5">
+                    Season {currentSeasonNum}
+                  </span>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu 
+                  variant="dark"
+                  align="end" 
+                  className="border-0 shadow episode-dropdown-menu"
+                  style={{ 
+                    maxHeight: '300px', 
+                    overflowY: 'auto'
+                  }}
+                >
+                  {Array.from({ length: totalSeasons }, (_, i) => i + 1).map((seasonNum) => (
+                    <Dropdown.Item 
+                      key={seasonNum}
+                      onClick={() => handleEpisodeSelect(seasonNum, 1)}
+                      style={{ 
+                        fontSize: '1.1rem', 
+                        padding: '8px 16px',
+                        backgroundColor: seasonNum === currentSeasonNum ? '#E50914' : 'transparent'
+                      }}
+                    >
+                      <div className="text-white">
+                        Season {seasonNum}
+                      </div>
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+
+              {/* Episodes Dropdown */}
+              <Dropdown>
+                <Dropdown.Toggle
+                  id="dropdown-no-bg"
+                  size="sm"
+                  className="border-0 bg-transparent text-white"
+                  style={{ fontSize: '1rem' }}
+                >
+                  <span className="pe-1 fs-5">
+                    Episodes
+                  </span>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu 
+                  variant="dark"
+                  align="end" 
+                  className="border-0 shadow episode-dropdown-menu"
+                  style={{ 
+                    maxHeight: '400px', 
+                    overflowY: 'auto',
+                    maxWidth: '450px'
+                  }}
+                >
+                  {currentSeason?.episodes?.map((ep) => (
+                    <Dropdown.Item 
+                      key={ep.episode_number}
+                      onClick={() => handleEpisodeSelect(currentSeasonNum, ep.episode_number)}
+                      className={ep.episode_number === currentEpisodeNum ? 'text-white' : 'text-white'}
+                      style={{ 
+                        padding: '12px 16px', 
+                        fontSize: '1rem',
+                        backgroundColor: ep.episode_number === currentEpisodeNum ? '#E50914' : 'transparent'
+                      }}
+                    >
+                      <div>
+                        <div 
+                          className="fw-bold text-white mb-2 text-truncate" 
+                          style={{ fontSize: '1.1rem' }}
+                          title={`E${ep.episode_number}: ${ep.name}`}
+                        >
+                          E{ep.episode_number}: {ep.name}
+                        </div>
+                        <div className="d-flex align-items-start gap-3">
+                          <img 
+                            src={`https://image.tmdb.org/t/p/w300${ep.still_path}`} 
+                            alt={ep.name}
+                            className="rounded"
+                            style={{ height: '110px', objectFit: 'cover' }}
+                            onError={(e) => {
+                              e.target.src = `https://image.tmdb.org/t/p/w300${episode?.still_path}`;
+                            }}
+                          />
+                          <div className="flex-grow-1">
+                          </div>
+                        </div>
+                      </div>
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          </div>
           <div className="fs-5 fw-light mt-3 d-flex align-items-center gap-3" style={{ marginBottom: '-10px' }}>
             {hasPrevEpisode && (
               <button 
@@ -130,7 +259,8 @@ const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeas
       </div>
       <div className="fade-effect-less-harsh" />
 
-    </div>
+      </div>
+    </>
   );
 };
 

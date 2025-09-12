@@ -357,6 +357,10 @@ a {
   outline: none !important;
 }
 
+#dropdown-no-bg {
+  background-color: transparent !important;
+}
+
 .dropdownMenu {
   background-color: black;
   font-size: 14px;
