@@ -196,7 +196,7 @@ const BrowsePage = () => {
         </div>
 
         {/* Applied Filters Section - Reserve space to prevent layout shift */}
-        <div style={{ minHeight: '60px' }}>
+        <div>
           {(Object.values(genres).some(Boolean) || selectedYear !== new Date().getFullYear().toString() || selectedSortType !== 'popularity.desc') && (
             <div className="py-2 mb-2">
               <div className="text-white mb-2 fs-6 fw-bold">Applied Filters:</div>

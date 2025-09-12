@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "server.js": {
+      "runtime": "@vercel/node"
+    }
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/server.js" }
+  ]
+}

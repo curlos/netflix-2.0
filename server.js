@@ -105,10 +105,16 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log('Available endpoints:');
-  console.log(`  POST http://localhost:${PORT}/api/verify-stripe-session`);
-  console.log(`  POST http://localhost:${PORT}/api/cancel-subscription`);
-  console.log(`  GET  http://localhost:${PORT}/api/health`);
-});
+// For Vercel serverless functions, export the app
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log('Available endpoints:');
+    console.log(`  POST http://localhost:${PORT}/api/verify-stripe-session`);
+    console.log(`  POST http://localhost:${PORT}/api/cancel-subscription`);
+    console.log(`  GET  http://localhost:${PORT}/api/health`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
