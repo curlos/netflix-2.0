@@ -6,6 +6,7 @@ import { selectUser } from '../features/userSlice';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { logout } from '../features/userSlice';
+import TopNavbar from '../components/TopNavbar';
 
 /**
  * @description - Page where the user can view their profile and their plans. They can subscribe to a different plan and also sign out.
@@ -42,13 +43,9 @@ const Profile = () => {
   return (
     user ? (
       <div className="d-flex justify-content-center align-items-center container mx-auto px-3 px-sm-0 bg-black">
-         <div className="d-flex justify-content-between fixed-top p-4 container mx-auto px-3 px-sm-0 bg-black">
-          <Link to="/">
-            <img src="/assets/netflix_logo.png" alt="" className="authLogo" />
-          </Link>
-        </div>
+         <TopNavbar />
 
-        <div className="w-100 p-2 p-lg-4 overflow-auto navbarMarginTwo">
+        <div className="w-100 overflow-auto navbarMarginTwo">
           <h1 className="mb-4">Edit Profile</h1>
           <div className="d-lg-flex gap-4">
             <div className="mb-4 mb-lg-0">
