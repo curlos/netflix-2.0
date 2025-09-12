@@ -47,18 +47,18 @@ const SideNavbar = ({ open, setOpen }) => {
       {open && <div className="sidenav-overlay" onClick={() => setOpen(false)} />}
       <div ref={sidenavRef} id="mySidenav" className={`sidenav ${open ? 'sidenavOpen' : ''}`}>
         <button className="closebtn" onClick={() => setOpen(false)}>&times;</button>
-        <Link to="/">Home</Link>
-        <Link to="/movies">Movies</Link>
-        <Link to="/tv-shows">TV Shows</Link>
+        <Link to="/" onClick={() => setOpen(false)}>Home</Link>
+        <Link to="/movies" onClick={() => setOpen(false)}>Movies</Link>
+        <Link to="/tv-shows" onClick={() => setOpen(false)}>TV Shows</Link>
         {user && user.email ? (
           <span>
-            <Link to="/profile">My Account</Link>
+            <Link to="/profile" onClick={() => setOpen(false)}>My Account</Link>
             <div className="sidenavLogout" onClick={handleLogout}>Sign Out</div>
           </span>
         ) : (
           <span>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Sign Up</Link>
+            <Link to="/login" onClick={() => setOpen(false)}>Login</Link>
+            <Link to="/signup" onClick={() => setOpen(false)}>Sign Up</Link>
           </span>
         )}
       </div>
