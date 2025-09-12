@@ -86,18 +86,24 @@ const Season = ({ tvShowID, seasonNumber, seasonDropdownRef }) => {
   
   const episodesPerPage = 13;
 
+  const prevTvShowIDRef = useRef(tvShowID);
+  
   useEffect(() => {
-    // Reset page to 1 when show ID changes (but not on initial render)
+    // Reset page to 1 only when TV show ID actually changes
     if (isInitialRender.current) {
       isInitialRender.current = false;
+      prevTvShowIDRef.current = tvShowID;
       return;
     }
     
-    setSearchParams(prev => {
-      const newParams = new URLSearchParams(prev);
-      newParams.delete('page');
-      return newParams;
-    });
+    if (prevTvShowIDRef.current !== tvShowID) {
+      setSearchParams(prev => {
+        const newParams = new URLSearchParams(prev);
+        newParams.delete('page');
+        return newParams;
+      });
+      prevTvShowIDRef.current = tvShowID;
+    }
   }, [tvShowID, setSearchParams]);
 
   useEffect(() => {
