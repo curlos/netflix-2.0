@@ -259,9 +259,14 @@ const Person = () => {
                         setSearchParams(newSearchParams);
                         
                         // Scroll to Movies & TV Shows section
-                        const moviesSection = document.querySelector('#movies-tv-section');
+                        const moviesSection = document.querySelector('#movies-tv-section h2');
                         if (moviesSection) {
-                          moviesSection.scrollIntoView({ behavior: 'smooth' });
+                          const offsetPosition = moviesSection.offsetTop - 70;
+                          console.log('Scrolling to position:', offsetPosition);
+                          window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                          });
                         }
                       }}
                       className="mt-3"
