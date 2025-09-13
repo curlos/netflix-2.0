@@ -42,7 +42,6 @@ const TopNavbar = () => {
 
   useEffect(() => {
     if (searchQuery.trim() && isUserSearching.current) {
-      console.log(`navigating to ${searchQuery}`)
       debouncedNavigate(searchQuery);
     }
   }, [searchQuery, debouncedNavigate]);

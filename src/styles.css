@@ -778,3 +778,16 @@ a:hover {
     gap: 0.5rem !important;
   }
 }
+
+.season-poster {
+  border-radius: 8px;
+  margin-right: 1rem;
+  max-width: 150px;
+}
+
+/* Hide season poster on screens less than 576px */
+@media (max-width: 575px) {
+  .season-poster {
+    display: none;
+  }
+}

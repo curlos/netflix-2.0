@@ -85,8 +85,6 @@ const Person = () => {
     );
   }
 
-  console.log(currentCredits)
-
   return (
     <div className="bg-black navbarMargin pb-3">
       <TopNavbar />
@@ -262,7 +260,6 @@ const Person = () => {
                         const moviesSection = document.querySelector('#movies-tv-section h2');
                         if (moviesSection) {
                           const offsetPosition = moviesSection.offsetTop - 70;
-                          console.log('Scrolling to position:', offsetPosition);
                           window.scrollTo({
                             top: offsetPosition,
                             behavior: 'smooth'

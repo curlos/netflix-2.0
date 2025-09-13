@@ -15,6 +15,14 @@ const Seasons = ({ tvShowID, tvShowDetails }) => {
   const selectedSeason = parseInt(searchParams.get('season')) || 1;
   const seasonDropdownRef = useRef(null);
 
+  // Fetch season data in the parent component (must be called before early returns)
+  const { data: season, isLoading, error } = useGetTVShowSeasonsQuery({
+    tvId: tvShowID,
+    seasonNumber: selectedSeason
+  }, {
+    skip: !tvShowDetails?.number_of_seasons
+  });
+
   if (!tvShowDetails?.number_of_seasons) {
     return null;
   }
@@ -32,27 +40,52 @@ const Seasons = ({ tvShowID, tvShowDetails }) => {
 
   return (
     <div>
-      <Dropdown className="fs-6">
-        <Dropdown.Toggle ref={seasonDropdownRef} variant="transparent text-white d-flex align-items-center gap-1 border-0 fs-3 fw-bold" id="dropdown-basic" className="p-0 ">
-          Season {selectedSeason}
-        </Dropdown.Toggle>
+      <div className="d-flex w-100">
+        <div>
+          {season?.poster_path && (
+            <img 
+              src={`https://image.tmdb.org/t/p/w300${season.poster_path}`} 
+              alt={`Season ${selectedSeason}${season?.name ? ` - ${season.name}` : ''}`}
+              className="season-poster"
+            />
+          )}
+        </div>
 
-        <Dropdown.Menu variant="dark" align="end">
-          {seasonNumbers.map((seasonNum) => (
-            <Dropdown.Item key={seasonNum} onClick={() => handleSeasonChange(seasonNum)}>
-              Season {seasonNum}
-            </Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
+        <div>
+          <Dropdown className="fs-6">
+            <Dropdown.Toggle ref={seasonDropdownRef} variant="transparent text-white d-flex align-items-center gap-1 border-0 fs-3 fw-bold" id="dropdown-basic" className="p-0 ">
+              Season {selectedSeason}{season?.name && !season.name.toLowerCase().includes(`season ${selectedSeason}`) ? ` (${season.name})` : ''}
+            </Dropdown.Toggle>
 
-      <Season tvShowID={tvShowID} seasonNumber={selectedSeason} seasonDropdownRef={seasonDropdownRef} />
+            <Dropdown.Menu variant="dark" align="end">
+              {seasonNumbers.map((seasonNum) => (
+                <Dropdown.Item key={seasonNum} onClick={() => handleSeasonChange(seasonNum)}>
+                  Season {seasonNum}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+
+          <div className="season-overview">
+            {season?.overview && <div>{season?.overview}</div>}
+          </div>
+        </div>
+      </div>
+
+      <Season 
+        tvShowID={tvShowID} 
+        seasonNumber={selectedSeason} 
+        seasonData={season}
+        isLoading={isLoading}
+        error={error}
+        seasonDropdownRef={seasonDropdownRef} 
+      />
     </div>
   );
 };
 
-// Season component that fetches individual season data
-const Season = ({ tvShowID, seasonNumber, seasonDropdownRef }) => {
+// Season component that displays season data (data fetched by parent)
+const Season = ({ tvShowID, seasonNumber, seasonData, isLoading, error, seasonDropdownRef }) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get('page')) || 1;
@@ -78,11 +111,6 @@ const Season = ({ tvShowID, seasonNumber, seasonDropdownRef }) => {
       behavior: 'smooth'
     });
   }
-  
-  const { data: season, isLoading, error } = useGetTVShowSeasonsQuery({
-    tvId: tvShowID,
-    seasonNumber: seasonNumber
-  });
   
   const episodesPerPage = 13;
 
@@ -121,11 +149,11 @@ const Season = ({ tvShowID, seasonNumber, seasonDropdownRef }) => {
     return <div className="text-center py-4"><Spinner animation="border" variant="danger" /></div>;
   }
 
-  if (error || !season) {
+  if (error || !seasonData) {
     return <div className="text-center py-4 text-danger">Error loading season data</div>;
   }
 
-  const episodes = season.episodes || [];
+  const episodes = seasonData.episodes || [];
   const totalEpisodes = episodes.length;
   const totalPages = Math.ceil(totalEpisodes / episodesPerPage);
   
@@ -136,9 +164,6 @@ const Season = ({ tvShowID, seasonNumber, seasonDropdownRef }) => {
 
   return (
     <div>
-      <div className="season-overview">
-        {season.overview && <div>{season.overview}</div>}
-      </div>
       <div>
         {currentEpisodes.map((episode) => {
           return (
