@@ -34,16 +34,16 @@ Netflix 2.0 is a responsive streaming platform that enhances the original Netfli
   <img src="https://github.com/user-attachments/assets/bb578df8-fa85-4929-ac1b-c1da45882169" height="250" /> <img src="https://github.com/user-attachments/assets/21748cac-9c3f-45c8-af1b-1dc29b920e24" height="250" />
 </div>
 
-### 👟 Movies (Desktop & Mobile)
+### 🎬 Movies (Desktop & Mobile)
 <img src="https://github.com/user-attachments/assets/2dd87bfc-b68d-460d-8b48-6e671c4b1958" height="250" /> <img src="https://github.com/user-attachments/assets/48323362-1896-4ba4-a9a0-36366135b7cc" height="250" />
 
-### 👟 TV Shows (Desktop & Mobile)
+### 📺 TV Shows (Desktop & Mobile)
 <img src="https://github.com/user-attachments/assets/019f5720-d269-4c09-b7ba-c6338552ab00" height="250" /> <img src="https://github.com/user-attachments/assets/bba28725-fd98-4843-ac2b-723cf3d46c31" height="250" />
 
-### 🛒 TV Show Details (Desktop & Mobile)
+### 🎭 TV Show Details (Desktop & Mobile)
 <img src="https://github.com/user-attachments/assets/32a80f2b-2d17-4df9-914b-aa99373ab1a0" height="250" /> <img src="https://github.com/user-attachments/assets/270ea0c7-5407-403f-aa8a-1632bb2f2e92" height="250" />
 
-### 💳 TV Episode (Desktop & Mobile)
+### 📹 TV Episode (Desktop & Mobile)
 <img src="https://github.com/user-attachments/assets/8006a142-ef28-45ee-bfc0-0ed1659dec7a" height="250" /> <img src="https://github.com/user-attachments/assets/1696294a-8b14-4094-97c9-8674fed47a14" height="250" />
 
 </div>
