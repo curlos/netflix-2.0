@@ -30,8 +30,11 @@ const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeas
 
   }, [episode]);
 
-  // Fetch previous season data when we're on episode 1 of current season (for prev navigation)
-  const needsPrevSeasonData = currentEpisodeNum === 1 && currentSeasonNum > 1;
+  // Get first episode number for current season to determine if we need prev season data
+  const firstEpisodeOfCurrentSeason = currentSeason?.episodes?.[0]?.episode_number || 1;
+  
+  // Fetch previous season data when we're on the first episode of current season (for prev navigation)
+  const needsPrevSeasonData = currentEpisodeNum === firstEpisodeOfCurrentSeason && currentSeasonNum > 1;
   const { data: prevSeason } = useGetTVShowSeasonsQuery({
     tvId: tvShowId,
     seasonNumber: currentSeasonNum - 1
@@ -44,27 +47,40 @@ const TVEpisodeBanner = ({ tvShow, episode, currentSeason, tvShowId, currentSeas
   const totalSeasons = tvShow?.number_of_seasons || 0;
   const prevSeasonEpisodeCount = prevSeason?.episodes?.length || 0;
 
-  const hasPrevEpisode = currentEpisodeNum > 1 || currentSeasonNum > 1;
-  const hasNextEpisode = currentEpisodeNum < totalEpisodesInSeason || currentSeasonNum < totalSeasons;
+  // Get last episode number for current season
+  const lastEpisodeOfCurrentSeason = currentSeason?.episodes?.[currentSeason?.episodes?.length - 1]?.episode_number || totalEpisodesInSeason;
+
+  // Fetch next season data when we're on the last episode of current season (for next navigation)
+  const needsNextSeasonData = currentEpisodeNum === lastEpisodeOfCurrentSeason && currentSeasonNum < totalSeasons;
+  const { data: nextSeason } = useGetTVShowSeasonsQuery({
+    tvId: tvShowId,
+    seasonNumber: currentSeasonNum + 1
+  }, {
+    skip: !needsNextSeasonData
+  });
+
+  const hasPrevEpisode = currentEpisodeNum > firstEpisodeOfCurrentSeason || currentSeasonNum > 1;
+  const hasNextEpisode = currentEpisodeNum < lastEpisodeOfCurrentSeason || currentSeasonNum < totalSeasons;
 
   const handlePrevEpisode = () => {
-    if (currentEpisodeNum > 1) {
+    if (currentEpisodeNum > firstEpisodeOfCurrentSeason) {
       // Previous episode in same season
       navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum}/episode/${currentEpisodeNum - 1}`);
     } else if (currentSeasonNum > 1) {
       // Last episode of previous season
-      const lastEpisodeOfPrevSeason = prevSeasonEpisodeCount || 1;
+      const lastEpisodeOfPrevSeason = prevSeason?.episodes?.[prevSeason?.episodes?.length - 1]?.episode_number || prevSeasonEpisodeCount || 1;
       navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum - 1}/episode/${lastEpisodeOfPrevSeason}`);
     }
   };
 
   const handleNextEpisode = () => {
-    if (currentEpisodeNum < totalEpisodesInSeason) {
+    if (currentEpisodeNum < lastEpisodeOfCurrentSeason) {
       // Next episode in same season
       navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum}/episode/${currentEpisodeNum + 1}`);
     } else if (currentSeasonNum < totalSeasons) {
-      // First episode of next season
-      navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum + 1}/episode/1`);
+      // First episode of next season - get actual first episode number
+      const firstEpisodeOfNextSeason = nextSeason?.episodes?.[0]?.episode_number || 1;
+      navigate(`/title/tv/${tvShowId}/season/${currentSeasonNum + 1}/episode/${firstEpisodeOfNextSeason}`);
     }
   };
 
