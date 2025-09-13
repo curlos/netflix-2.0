@@ -1,72 +1,63 @@
-<!--
+# Netflix 2.0
 
-<!-- PROJECT LOGO -->
-<br />
 <p align="center">
-  <a href="https://github.com/Curlos/Rock-Paper-Scissors">
-    <img src="/public/netflix_icon.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">Netflix 2.0</h3>
-
-  <p align="center">
-    <a href="https://netflix-clone-e0edc.web.app/">View Demo</a>
-    ·
-    <a href="https://github.com/curlos/netflix-clone/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/curlos/netflix-clone/issues">Request Feature</a>
-  </p>
+  <img src="/public/netflix_icon.png" alt="Netflix 2.0 Logo" width="80" height="80">
 </p>
 
+<p align="center">
+  <strong>🎬 A modern Netflix clone with enhanced features and extensive content library</strong>
+</p>
 
+<p align="center">
+  <a href="https://netflix-2-0-lac.vercel.app/">🚀 Live Demo</a>
+  ·
+  <a href="https://github.com/curlos/netflix-2.0/issues">🐛 Report Bug</a>
+  ·
+  <a href="https://github.com/curlos/netflix-2.0/issues">✨ Request Feature</a>
+</p>
 
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#license">License</a></li>
-  </ol>
-</details>
+---
 
+## 🌟 About The Project
 
+Netflix 2.0 is a responsive streaming platform that enhances the original Netflix experience with a vast collection of movies and TV shows powered by the TMDB API. The platform includes content that even Netflix doesn't have, with advanced filtering, sorting, and subscription management features.
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+### ✨ Key Features
 
-Netflix 2.0 a responsive Netflix clone which improves upon the original by having a collection of thousands of movies and TV shows using the TMDB API which would include movies that even Netflix doesn't have. Movies and TV Shows can be filtered by genres and years. They can also be sorted by several options like popularity, revenue and release date. There is also three subscription plans (basic, standard, and premium) which users can subscribe to using the Stripe API.
-### Built With
+- **🎭 Extensive Content Library** - Thousands of movies and TV shows via TMDB API
+- **🔍 Advanced Filtering** - Filter by genres, years, and multiple sorting options
+- **👤 User Authentication** - Secure login/signup with Firebase Auth
+- **💳 Subscription Management** - Three-tier plans (Basic, Standard, Premium) with Stripe integration
+- **📱 Responsive Design** - Optimized for all device sizes
+- **🎬 Media Details** - Comprehensive movie/TV show pages with trailers, cast, and recommendations
+- **📺 TV Episode Viewing** - Full season navigation and episode details
 
-* React
-* Javascript
-* Bootstrap
-* Redux
-* Firebase
-* TMDB API
-* Stripe
+### 🛠 Built With
 
+**Frontend:**
+- React 17 with modern hooks and patterns
+- Redux Toolkit Query (RTK Query) for state management
+- React Router for navigation
+- Bootstrap & React Bootstrap for styling
+- Firebase Authentication
 
-<!-- USAGE EXAMPLES -->
-## Usage
+**Backend:**
+- Express.js server for Stripe webhook handling
+- TMDB API integration for media content
+- Stripe API for subscription management
 
+**Deployment:**
+- Vercel (Frontend & Serverless Functions)
 
-<div style={{"display": "flex"}}>
-  <div style={{"display": "flex"}}>
-    <img src="https://user-images.githubusercontent.com/41396365/148654247-e40f8c14-9ff0-436f-a329-943aab929701.png" height="250" />
-    <img src="https://user-images.githubusercontent.com/41396365/148654251-b4fe9b87-0190-400d-900b-b600eb736cb0.png" height="250" />
-  </div>
+## 🏗 Architecture
 
-</div>
+This is a full-stack web application featuring:
+- **Frontend**: React SPA with Redux Toolkit Query for efficient data fetching and caching
+- **Backend**: Express.js server handling Stripe webhooks and payment processing
+- **Database**: Firebase for user authentication and management
+- **External APIs**: TMDB for movie/TV data, Stripe for payments
+- **Deployment**: Vercel for both frontend hosting and serverless backend functions
 
-
-
-<!-- LICENSE -->
-## License
+## 📝 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
