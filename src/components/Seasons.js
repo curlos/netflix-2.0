@@ -54,7 +54,7 @@ const Seasons = ({ tvShowID, tvShowDetails }) => {
         <div>
           <Dropdown className="fs-6">
             <Dropdown.Toggle ref={seasonDropdownRef} variant="transparent text-white d-flex align-items-center gap-1 border-0 fs-3 fw-bold" id="dropdown-basic" className="p-0 ">
-              Season {selectedSeason}{season?.name && !season.name.toLowerCase().includes(`season ${selectedSeason}`) ? ` (${season.name})` : ''}
+              Season {selectedSeason}{season?.name && !/^season\s+\d+$/i.test(season.name.trim()) ? ` (${season.name})` : ''}
             </Dropdown.Toggle>
 
             <Dropdown.Menu variant="dark" align="end">
